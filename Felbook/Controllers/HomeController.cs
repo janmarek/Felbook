@@ -11,9 +11,11 @@ namespace Felbook.Controllers
 	{
 		public ActionResult Index()
 		{
-			ViewData["Message"] = "Welcome to ASP.NET MVC!";
+			Felbook.Models.FelbookDataContext db = new Models.FelbookDataContext();
 
-			return View();
+            ViewData["Message"] = db.Informations.Single(i => i.InfoAboutUser == 10 ).getContent();
+
+            return View();
 		}
 
 		public ActionResult About()
