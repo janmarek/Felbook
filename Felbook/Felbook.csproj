@@ -80,6 +80,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Felbook.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\GroupRepository.cs" />
+    <Compile Include="Models\IGroupRepository.cs" />
+    <Compile Include="Models\IUserRepository.cs" />
+    <Compile Include="Models\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +124,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Models\Felbook.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Felbook.designer.cs</LastGenOutput>

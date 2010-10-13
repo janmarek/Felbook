@@ -1,0 +1,8 @@
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\bin\Debug\Felbook.Tests.dll.config
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\bin\Debug\Felbook.Tests.dll
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\bin\Debug\Felbook.Tests.pdb
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\bin\Debug\Felbook.dll
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\bin\Debug\Felbook.pdb
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\obj\Debug\Felbook.Tests.dll
+C:\Users\jakub\Desktop\Felbook\Felbook.Tests\obj\Debug\Felbook.Tests.pdb
