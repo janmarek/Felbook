@@ -1,0 +1,998 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FelBookDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="FelBookDBModelStoreContainer">
+    <EntitySet Name="UserSet" EntityType="FelBookDBModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupSet" EntityType="FelBookDBModel.Store.GroupSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MessageSet" EntityType="FelBookDBModel.Store.MessageSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StatusSet" EntityType="FelBookDBModel.Store.StatusSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="LinkSet" EntityType="FelBookDBModel.Store.LinkSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CommentSet" EntityType="FelBookDBModel.Store.CommentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FileSet" EntityType="FelBookDBModel.Store.FileSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ImageSet" EntityType="FelBookDBModel.Store.ImageSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserGroupMembership" EntityType="FelBookDBModel.Store.UserGroupMembership" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupAdministration" EntityType="FelBookDBModel.Store.GroupAdministration" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Followings" EntityType="FelBookDBModel.Store.Followings" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MessageReaders" EntityType="FelBookDBModel.Store.MessageReaders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StatusInformationLinks" EntityType="FelBookDBModel.Store.StatusInformationLinks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StatusInformationImages" EntityType="FelBookDBModel.Store.StatusInformationImages" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StatusInformationFiles" EntityType="FelBookDBModel.Store.StatusInformationFiles" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_UserGroupMembership_User" Association="FelBookDBModel.Store.FK_UserGroupMembership_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="UserGroupMembership" EntitySet="UserGroupMembership" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserGroupMembership_Group" Association="FelBookDBModel.Store.FK_UserGroupMembership_Group">
+      <End Role="Group" EntitySet="GroupSet" />
+      <End Role="UserGroupMembership" EntitySet="UserGroupMembership" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupAdministration_User" Association="FelBookDBModel.Store.FK_GroupAdministration_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="GroupAdministration" EntitySet="GroupAdministration" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupAdministration_Group" Association="FelBookDBModel.Store.FK_GroupAdministration_Group">
+      <End Role="Group" EntitySet="GroupSet" />
+      <End Role="GroupAdministration" EntitySet="GroupAdministration" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Followings_User" Association="FelBookDBModel.Store.FK_Followings_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Followings" EntitySet="Followings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Followings_User1" Association="FelBookDBModel.Store.FK_Followings_User1">
+      <End Role="User1" EntitySet="UserSet" />
+      <End Role="Followings" EntitySet="Followings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MessageReaders_Message" Association="FelBookDBModel.Store.FK_MessageReaders_Message">
+      <End Role="Message" EntitySet="MessageSet" />
+      <End Role="MessageReaders" EntitySet="MessageReaders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MessageReaders_User" Association="FelBookDBModel.Store.FK_MessageReaders_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="MessageReaders" EntitySet="MessageReaders" />
+    </AssociationSet>
+    <AssociationSet Name="MessageReplies" Association="FelBookDBModel.Store.MessageReplies">
+      <End Role="Message" EntitySet="MessageSet" />
+      <End Role="Message1" EntitySet="MessageSet" />
+    </AssociationSet>
+    <AssociationSet Name="StatusInformationComment" Association="FelBookDBModel.Store.StatusInformationComment">
+      <End Role="StatusInformation" EntitySet="StatusSet" />
+      <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StatusInformationLinks_StatusInformation" Association="FelBookDBModel.Store.FK_StatusInformationLinks_StatusInformation">
+      <End Role="StatusInformation" EntitySet="StatusSet" />
+      <End Role="StatusInformationLinks" EntitySet="StatusInformationLinks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StatusInformationLinks_Link" Association="FelBookDBModel.Store.FK_StatusInformationLinks_Link">
+      <End Role="Link" EntitySet="LinkSet" />
+      <End Role="StatusInformationLinks" EntitySet="StatusInformationLinks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StatusInformationImages_StatusInformation" Association="FelBookDBModel.Store.FK_StatusInformationImages_StatusInformation">
+      <End Role="StatusInformation" EntitySet="StatusSet" />
+      <End Role="StatusInformationImages" EntitySet="StatusInformationImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StatusInformationImages_Image" Association="FelBookDBModel.Store.FK_StatusInformationImages_Image">
+      <End Role="Image" EntitySet="ImageSet" />
+      <End Role="StatusInformationImages" EntitySet="StatusInformationImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StatusInformationFiles_StatusInformation" Association="FelBookDBModel.Store.FK_StatusInformationFiles_StatusInformation">
+      <End Role="StatusInformation" EntitySet="StatusSet" />
+      <End Role="StatusInformationFiles" EntitySet="StatusInformationFiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StatusInformationFiles_File" Association="FelBookDBModel.Store.FK_StatusInformationFiles_File">
+      <End Role="File" EntitySet="FileSet" />
+      <End Role="StatusInformationFiles" EntitySet="StatusInformationFiles" />
+    </AssociationSet>
+    <AssociationSet Name="GroupStatuses" Association="FelBookDBModel.Store.GroupStatuses">
+      <End Role="Group" EntitySet="GroupSet" />
+      <End Role="StatusInformation" EntitySet="StatusSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserStatuses" Association="FelBookDBModel.Store.UserStatuses">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Status" EntitySet="StatusSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserGroupCreator" Association="FelBookDBModel.Store.UserGroupCreator">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Group" EntitySet="GroupSet" />
+    </AssociationSet>
+    <AssociationSet Name="SentMessages" Association="FelBookDBModel.Store.SentMessages">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Message" EntitySet="MessageSet" />
+    </AssociationSet>
+    <AssociationSet Name="GroupChildren" Association="FelBookDBModel.Store.GroupChildren">
+      <End Role="Group" EntitySet="GroupSet" />
+      <End Role="Group1" EntitySet="GroupSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Created" Type="datetime" Nullable="false" />
+    <Property Name="LastLogged" Type="datetime" Nullable="false" />
+    <Property Name="Mail" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GroupSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Creator_Id" Type="int" Nullable="true" />
+    <Property Name="Children_Id" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="MessageSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Created" Type="datetime" Nullable="false" />
+    <Property Name="Replies_Id" Type="int" Nullable="true" />
+    <Property Name="Sender_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StatusSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Created" Type="datetime" Nullable="false" />
+    <Property Name="Group_Id" Type="int" Nullable="false" />
+    <Property Name="User_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LinkSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="URL" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CommentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Created" Type="datetime" Nullable="false" />
+    <Property Name="StatusInformationComment_Comment_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FileSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ImageSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserGroupMembership">
+    <Key>
+      <PropertyRef Name="Users_Id" />
+      <PropertyRef Name="JoinedGroups_Id" />
+    </Key>
+    <Property Name="Users_Id" Type="int" Nullable="false" />
+    <Property Name="JoinedGroups_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GroupAdministration">
+    <Key>
+      <PropertyRef Name="Administrators_Id" />
+      <PropertyRef Name="AdminedGroups_Id" />
+    </Key>
+    <Property Name="Administrators_Id" Type="int" Nullable="false" />
+    <Property Name="AdminedGroups_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Followings">
+    <Key>
+      <PropertyRef Name="Followers_Id" />
+      <PropertyRef Name="Followings_Id" />
+    </Key>
+    <Property Name="Followers_Id" Type="int" Nullable="false" />
+    <Property Name="Followings_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MessageReaders">
+    <Key>
+      <PropertyRef Name="Messages_Id" />
+      <PropertyRef Name="Users_Id" />
+    </Key>
+    <Property Name="Messages_Id" Type="int" Nullable="false" />
+    <Property Name="Users_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StatusInformationLinks">
+    <Key>
+      <PropertyRef Name="StatusInformationLinks_Link_Id" />
+      <PropertyRef Name="Links_Id" />
+    </Key>
+    <Property Name="StatusInformationLinks_Link_Id" Type="int" Nullable="false" />
+    <Property Name="Links_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StatusInformationImages">
+    <Key>
+      <PropertyRef Name="StatusInformationImages_Image_Id" />
+      <PropertyRef Name="Images_Id" />
+    </Key>
+    <Property Name="StatusInformationImages_Image_Id" Type="int" Nullable="false" />
+    <Property Name="Images_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StatusInformationFiles">
+    <Key>
+      <PropertyRef Name="StatusInformationFiles_File_Id" />
+      <PropertyRef Name="Files_Id" />
+    </Key>
+    <Property Name="StatusInformationFiles_File_Id" Type="int" Nullable="false" />
+    <Property Name="Files_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MessageReplies">
+    <End Role="Message" Type="FelBookDBModel.Store.MessageSet" Multiplicity="0..1" />
+    <End Role="Message1" Type="FelBookDBModel.Store.MessageSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Message">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Message1">
+        <PropertyRef Name="Replies_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StatusInformationComment">
+    <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="1" />
+    <End Role="Comment" Type="FelBookDBModel.Store.CommentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusInformation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="StatusInformationComment_Comment_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GroupStatuses">
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="1" />
+    <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformation">
+        <PropertyRef Name="Group_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserStatuses">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Status" Type="FelBookDBModel.Store.StatusSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Status">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserGroupCreator">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="0..1" />
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Group">
+        <PropertyRef Name="Creator_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SentMessages">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Message" Type="FelBookDBModel.Store.MessageSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="Sender_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GroupChildren">
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="0..1" />
+    <End Role="Group1" Type="FelBookDBModel.Store.GroupSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Group1">
+        <PropertyRef Name="Children_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserGroupMembership_User">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <End Role="UserGroupMembership" Type="FelBookDBModel.Store.UserGroupMembership" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserGroupMembership">
+        <PropertyRef Name="Users_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserGroupMembership_Group">
+    <End Role="UserGroupMembership" Type="FelBookDBModel.Store.UserGroupMembership" Multiplicity="*" />
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserGroupMembership">
+        <PropertyRef Name="JoinedGroups_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupAdministration_User">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <End Role="GroupAdministration" Type="FelBookDBModel.Store.GroupAdministration" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GroupAdministration">
+        <PropertyRef Name="Administrators_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupAdministration_Group">
+    <End Role="GroupAdministration" Type="FelBookDBModel.Store.GroupAdministration" Multiplicity="*" />
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GroupAdministration">
+        <PropertyRef Name="AdminedGroups_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Followings_User">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Followings" Type="FelBookDBModel.Store.Followings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Followings">
+        <PropertyRef Name="Followers_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Followings_User1">
+    <End Role="Followings" Type="FelBookDBModel.Store.Followings" Multiplicity="*" />
+    <End Role="User1" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User1">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Followings">
+        <PropertyRef Name="Followings_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MessageReaders_Message">
+    <End Role="Message" Type="FelBookDBModel.Store.MessageSet" Multiplicity="1" />
+    <End Role="MessageReaders" Type="FelBookDBModel.Store.MessageReaders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Message">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MessageReaders">
+        <PropertyRef Name="Messages_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MessageReaders_User">
+    <End Role="MessageReaders" Type="FelBookDBModel.Store.MessageReaders" Multiplicity="*" />
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MessageReaders">
+        <PropertyRef Name="Users_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StatusInformationLinks_StatusInformation">
+    <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="1" />
+    <End Role="StatusInformationLinks" Type="FelBookDBModel.Store.StatusInformationLinks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusInformation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformationLinks">
+        <PropertyRef Name="StatusInformationLinks_Link_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StatusInformationLinks_Link">
+    <End Role="StatusInformationLinks" Type="FelBookDBModel.Store.StatusInformationLinks" Multiplicity="*" />
+    <End Role="Link" Type="FelBookDBModel.Store.LinkSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Link">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformationLinks">
+        <PropertyRef Name="Links_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StatusInformationImages_StatusInformation">
+    <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="1" />
+    <End Role="StatusInformationImages" Type="FelBookDBModel.Store.StatusInformationImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusInformation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformationImages">
+        <PropertyRef Name="StatusInformationImages_Image_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StatusInformationImages_Image">
+    <End Role="StatusInformationImages" Type="FelBookDBModel.Store.StatusInformationImages" Multiplicity="*" />
+    <End Role="Image" Type="FelBookDBModel.Store.ImageSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Image">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformationImages">
+        <PropertyRef Name="Images_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StatusInformationFiles_StatusInformation">
+    <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="1" />
+    <End Role="StatusInformationFiles" Type="FelBookDBModel.Store.StatusInformationFiles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StatusInformation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformationFiles">
+        <PropertyRef Name="StatusInformationFiles_File_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StatusInformationFiles_File">
+    <End Role="StatusInformationFiles" Type="FelBookDBModel.Store.StatusInformationFiles" Multiplicity="*" />
+    <End Role="File" Type="FelBookDBModel.Store.FileSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="File">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StatusInformationFiles">
+        <PropertyRef Name="Files_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FelBookDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="FelBookDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserSet" EntityType="FelBookDBModel.User" />
+          <EntitySet Name="GroupSet" EntityType="FelBookDBModel.Group" />
+          <AssociationSet Name="UserGroupMembership" Association="FelBookDBModel.UserGroupMembership">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Group" EntitySet="GroupSet" />
+          </AssociationSet>
+          <AssociationSet Name="GroupAdministration" Association="FelBookDBModel.GroupAdministration">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Group" EntitySet="GroupSet" />
+          </AssociationSet>
+          <AssociationSet Name="Followings" Association="FelBookDBModel.Followings">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="User1" EntitySet="UserSet" />
+          </AssociationSet>
+          <EntitySet Name="MessageSet" EntityType="FelBookDBModel.Message" />
+          <AssociationSet Name="MessageReaders" Association="FelBookDBModel.MessageReaders">
+            <End Role="Message" EntitySet="MessageSet" />
+            <End Role="User" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="MessageReplies" Association="FelBookDBModel.MessageReplies">
+            <End Role="Message" EntitySet="MessageSet" />
+            <End Role="Message1" EntitySet="MessageSet" />
+          </AssociationSet>
+          <EntitySet Name="StatusSet" EntityType="FelBookDBModel.Status" />
+          <EntitySet Name="LinkSet" EntityType="FelBookDBModel.Link" />
+          <EntitySet Name="CommentSet" EntityType="FelBookDBModel.Comment" />
+          <EntitySet Name="FileSet" EntityType="FelBookDBModel.File" />
+          <EntitySet Name="ImageSet" EntityType="FelBookDBModel.Image" />
+          <AssociationSet Name="StatusInformationComment" Association="FelBookDBModel.StatusInformationComment">
+            <End Role="StatusInformation" EntitySet="StatusSet" />
+            <End Role="Comment" EntitySet="CommentSet" />
+          </AssociationSet>
+          <AssociationSet Name="StatusInformationLinks" Association="FelBookDBModel.StatusInformationLinks">
+            <End Role="StatusInformation" EntitySet="StatusSet" />
+            <End Role="Link" EntitySet="LinkSet" />
+          </AssociationSet>
+          <AssociationSet Name="StatusInformationImages" Association="FelBookDBModel.StatusInformationImages">
+            <End Role="StatusInformation" EntitySet="StatusSet" />
+            <End Role="Image" EntitySet="ImageSet" />
+          </AssociationSet>
+          <AssociationSet Name="StatusInformationFiles" Association="FelBookDBModel.StatusInformationFiles">
+            <End Role="StatusInformation" EntitySet="StatusSet" />
+            <End Role="File" EntitySet="FileSet" />
+          </AssociationSet>
+          <AssociationSet Name="GroupStatuses" Association="FelBookDBModel.GroupStatuses">
+            <End Role="Group" EntitySet="GroupSet" />
+            <End Role="StatusInformation" EntitySet="StatusSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserStatuses" Association="FelBookDBModel.UserStatuses">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Status" EntitySet="StatusSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserGroupCreator" Association="FelBookDBModel.UserGroupCreator">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Group" EntitySet="GroupSet" />
+          </AssociationSet>
+          <AssociationSet Name="SentMessages" Association="FelBookDBModel.SentMessages">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Message" EntitySet="MessageSet" />
+          </AssociationSet>
+          <AssociationSet Name="GroupChildren" Association="FelBookDBModel.GroupChildren">
+            <End Role="Group" EntitySet="GroupSet" />
+            <End Role="Group1" EntitySet="GroupSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Surname" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+          <Property Type="DateTime" Name="LastLogged" Nullable="false" />
+          <Property Type="String" Name="Mail" Nullable="false" />
+          <NavigationProperty Name="JoinedGroups" Relationship="FelBookDBModel.UserGroupMembership" FromRole="User" ToRole="Group" />
+          <NavigationProperty Name="AdminedGroups" Relationship="FelBookDBModel.GroupAdministration" FromRole="User" ToRole="Group" />
+          <NavigationProperty Name="Followings" Relationship="FelBookDBModel.Followings" FromRole="User" ToRole="User1" />
+          <NavigationProperty Name="Followers" Relationship="FelBookDBModel.Followings" FromRole="User1" ToRole="User" />
+          <NavigationProperty Name="Messages" Relationship="FelBookDBModel.MessageReaders" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="Statuses" Relationship="FelBookDBModel.UserStatuses" FromRole="User" ToRole="Status" />
+          <NavigationProperty Name="CreatedGroups" Relationship="FelBookDBModel.UserGroupCreator" FromRole="User" ToRole="Group" />
+          <NavigationProperty Name="SentMessages" Relationship="FelBookDBModel.SentMessages" FromRole="User" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="FelBookDBModel.UserGroupMembership" FromRole="Group" ToRole="User" />
+          <NavigationProperty Name="Administrators" Relationship="FelBookDBModel.GroupAdministration" FromRole="Group" ToRole="User" />
+          <NavigationProperty Name="Statuses" Relationship="FelBookDBModel.GroupStatuses" FromRole="Group" ToRole="StatusInformation" />
+          <NavigationProperty Name="Creator" Relationship="FelBookDBModel.UserGroupCreator" FromRole="Group" ToRole="User" />
+          <NavigationProperty Name="Parent" Relationship="FelBookDBModel.GroupChildren" FromRole="Group" ToRole="Group1" />
+          <NavigationProperty Name="Children" Relationship="FelBookDBModel.GroupChildren" FromRole="Group1" ToRole="Group" />
+        </EntityType>
+        <Association Name="UserGroupMembership">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="*" />
+        </Association>
+        <Association Name="GroupAdministration">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="*" />
+        </Association>
+        <Association Name="Followings">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
+          <End Type="FelBookDBModel.User" Role="User1" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Text" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="FelBookDBModel.MessageReaders" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="FirstMessage" Relationship="FelBookDBModel.MessageReplies" FromRole="Message" ToRole="Message1" />
+          <NavigationProperty Name="Replies" Relationship="FelBookDBModel.MessageReplies" FromRole="Message1" ToRole="Message" />
+          <NavigationProperty Name="Sender" Relationship="FelBookDBModel.SentMessages" FromRole="Message" ToRole="User" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </EntityType>
+        <Association Name="MessageReaders">
+          <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <Association Name="MessageReplies">
+          <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="0..1" />
+          <End Type="FelBookDBModel.Message" Role="Message1" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Text" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="FelBookDBModel.StatusInformationComment" FromRole="StatusInformation" ToRole="Comment" />
+          <NavigationProperty Name="Links" Relationship="FelBookDBModel.StatusInformationLinks" FromRole="StatusInformation" ToRole="Link" />
+          <NavigationProperty Name="Images" Relationship="FelBookDBModel.StatusInformationImages" FromRole="StatusInformation" ToRole="Image" />
+          <NavigationProperty Name="Files" Relationship="FelBookDBModel.StatusInformationFiles" FromRole="StatusInformation" ToRole="File" />
+          <NavigationProperty Name="Group" Relationship="FelBookDBModel.GroupStatuses" FromRole="StatusInformation" ToRole="Group" />
+          <NavigationProperty Name="User" Relationship="FelBookDBModel.UserStatuses" FromRole="Status" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Link">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="URL" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Text" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </EntityType>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FileName" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FileName" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" />
+        </EntityType>
+        <Association Name="StatusInformationComment">
+          <End Type="FelBookDBModel.Status" Role="StatusInformation" Multiplicity="1" />
+          <End Type="FelBookDBModel.Comment" Role="Comment" Multiplicity="*" />
+        </Association>
+        <Association Name="StatusInformationLinks">
+          <End Type="FelBookDBModel.Status" Role="StatusInformation" Multiplicity="*" />
+          <End Type="FelBookDBModel.Link" Role="Link" Multiplicity="*" />
+        </Association>
+        <Association Name="StatusInformationImages">
+          <End Type="FelBookDBModel.Status" Role="StatusInformation" Multiplicity="*" />
+          <End Type="FelBookDBModel.Image" Role="Image" Multiplicity="*" />
+        </Association>
+        <Association Name="StatusInformationFiles">
+          <End Type="FelBookDBModel.Status" Role="StatusInformation" Multiplicity="*" />
+          <End Type="FelBookDBModel.File" Role="File" Multiplicity="*" />
+        </Association>
+        <Association Name="GroupStatuses">
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="1" />
+          <End Type="FelBookDBModel.Status" Role="StatusInformation" Multiplicity="*" />
+        </Association>
+        <Association Name="UserStatuses">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="FelBookDBModel.Status" Role="Status" Multiplicity="*" />
+        </Association>
+        <Association Name="UserGroupCreator">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="*" />
+        </Association>
+        <Association Name="SentMessages">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
+        </Association>
+        <Association Name="GroupChildren">
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="0..1" />
+          <End Type="FelBookDBModel.Group" Role="Group1" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="FelBookDBModelStoreContainer" CdmEntityContainer="FelBookDBEntities">
+    <EntitySetMapping Name="UserSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.User)">
+        <MappingFragment StoreEntitySet="UserSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="LastLogged" ColumnName="LastLogged" />
+          <ScalarProperty Name="Mail" ColumnName="Mail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GroupSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Group)">
+        <MappingFragment StoreEntitySet="GroupSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MessageSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Message)">
+        <MappingFragment StoreEntitySet="MessageSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StatusSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Status)">
+        <MappingFragment StoreEntitySet="StatusSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LinkSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Link)">
+        <MappingFragment StoreEntitySet="LinkSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Comment)">
+        <MappingFragment StoreEntitySet="CommentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FileSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.File)">
+        <MappingFragment StoreEntitySet="FileSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ImageSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Image)">
+        <MappingFragment StoreEntitySet="ImageSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UserGroupMembership" TypeName="FelBookDBModel.UserGroupMembership" StoreEntitySet="UserGroupMembership">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Users_Id" />
+      </EndProperty>
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="JoinedGroups_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GroupAdministration" TypeName="FelBookDBModel.GroupAdministration" StoreEntitySet="GroupAdministration">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Administrators_Id" />
+      </EndProperty>
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="AdminedGroups_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Followings" TypeName="FelBookDBModel.Followings" StoreEntitySet="Followings">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Followers_Id" />
+      </EndProperty>
+      <EndProperty Name="User1">
+        <ScalarProperty Name="Id" ColumnName="Followings_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MessageReaders" TypeName="FelBookDBModel.MessageReaders" StoreEntitySet="MessageReaders">
+      <EndProperty Name="Message">
+        <ScalarProperty Name="Id" ColumnName="Messages_Id" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Users_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MessageReplies" TypeName="FelBookDBModel.MessageReplies" StoreEntitySet="MessageSet">
+      <EndProperty Name="Message">
+        <ScalarProperty Name="Id" ColumnName="Replies_Id" />
+      </EndProperty>
+      <EndProperty Name="Message1">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Replies_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="StatusInformationComment" TypeName="FelBookDBModel.StatusInformationComment" StoreEntitySet="CommentSet">
+      <EndProperty Name="StatusInformation">
+        <ScalarProperty Name="Id" ColumnName="StatusInformationComment_Comment_Id" />
+      </EndProperty>
+      <EndProperty Name="Comment">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="StatusInformationLinks" TypeName="FelBookDBModel.StatusInformationLinks" StoreEntitySet="StatusInformationLinks">
+      <EndProperty Name="StatusInformation">
+        <ScalarProperty Name="Id" ColumnName="StatusInformationLinks_Link_Id" />
+      </EndProperty>
+      <EndProperty Name="Link">
+        <ScalarProperty Name="Id" ColumnName="Links_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="StatusInformationImages" TypeName="FelBookDBModel.StatusInformationImages" StoreEntitySet="StatusInformationImages">
+      <EndProperty Name="StatusInformation">
+        <ScalarProperty Name="Id" ColumnName="StatusInformationImages_Image_Id" />
+      </EndProperty>
+      <EndProperty Name="Image">
+        <ScalarProperty Name="Id" ColumnName="Images_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="StatusInformationFiles" TypeName="FelBookDBModel.StatusInformationFiles" StoreEntitySet="StatusInformationFiles">
+      <EndProperty Name="StatusInformation">
+        <ScalarProperty Name="Id" ColumnName="StatusInformationFiles_File_Id" />
+      </EndProperty>
+      <EndProperty Name="File">
+        <ScalarProperty Name="Id" ColumnName="Files_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GroupStatuses" TypeName="FelBookDBModel.GroupStatuses" StoreEntitySet="StatusSet">
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="Group_Id" />
+      </EndProperty>
+      <EndProperty Name="StatusInformation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserStatuses" TypeName="FelBookDBModel.UserStatuses" StoreEntitySet="StatusSet">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="User_Id" />
+      </EndProperty>
+      <EndProperty Name="Status">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserGroupCreator" TypeName="FelBookDBModel.UserGroupCreator" StoreEntitySet="GroupSet">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Creator_Id" />
+      </EndProperty>
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Creator_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SentMessages" TypeName="FelBookDBModel.SentMessages" StoreEntitySet="MessageSet">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Sender_Id" />
+      </EndProperty>
+      <EndProperty Name="Message">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GroupChildren" TypeName="FelBookDBModel.GroupChildren" StoreEntitySet="GroupSet">
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="Children_Id" />
+      </EndProperty>
+      <EndProperty Name="Group1">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Children_Id" IsNull="false" />
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="FelbookModel" ZoomLevel="86">
+        <EntityTypeShape EntityType="FelBookDBModel.User" Width="1.5" PointX="6.25" PointY="4.125" Height="3.5186979166666665" />
+        <EntityTypeShape EntityType="FelBookDBModel.Group" Width="1.5" PointX="10.75" PointY="4.625" Height="2.7494921874999996" />
+        <AssociationConnector Association="FelBookDBModel.UserGroupMembership">
+          <ConnectorPoint PointX="7.75" PointY="5.5942742858330412" />
+          <ConnectorPoint PointX="10.75" PointY="5.5942742858330412" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.GroupAdministration">
+          <ConnectorPoint PointX="7.75" PointY="5.0471371429165206" />
+          <ConnectorPoint PointX="10.75" PointY="5.0471371429165206" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.Followings">
+          <ConnectorPoint PointX="6.7819230769230767" PointY="4.125" />
+          <ConnectorPoint PointX="6.7819230769230767" PointY="3.875" />
+          <ConnectorPoint PointX="7.2284615384615378" PointY="3.875" />
+          <ConnectorPoint PointX="7.2284615384615378" PointY="4.125" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="FelBookDBModel.Message" Width="1.5" PointX="4.25" PointY="7.625" Height="2.3648893229166656" />
+        <AssociationConnector Association="FelBookDBModel.MessageReaders">
+          <ConnectorPoint PointX="5" PointY="7.625" />
+          <ConnectorPoint PointX="5" PointY="5.8749995000000013" />
+          <ConnectorPoint PointX="6.25" PointY="5.8749995000000013" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.MessageReplies">
+          <ConnectorPoint PointX="4.7819230769230767" PointY="9.9898893229166656" />
+          <ConnectorPoint PointX="4.7819230769230767" PointY="10.239889322916666" />
+          <ConnectorPoint PointX="5.2284615384615378" PointY="10.239889322916666" />
+          <ConnectorPoint PointX="5.2284615384615378" PointY="9.9898893229166656" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="FelBookDBModel.Status" Width="1.5" PointX="8.375" PointY="6.625" Height="2.5571907552083335" />
+        <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.625" Height="1.4033821614583335" />
+        <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="9.625" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="FelBookDBModel.File" Width="1.5" PointX="12.5" PointY="9.625" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="FelBookDBModel.Image" Width="1.5" PointX="10.75" PointY="9.625" Height="1.5956835937500031" />
+        <AssociationConnector Association="FelBookDBModel.StatusInformationComment">
+          <ConnectorPoint PointX="8.375" PointY="9.1821907552083335" />
+          <ConnectorPoint PointX="8.125" PointY="9.625" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.StatusInformationLinks">
+          <ConnectorPoint PointX="9.4375" PointY="9.1821907552083335" />
+          <ConnectorPoint PointX="9.4375" PointY="9.625" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.StatusInformationImages">
+          <ConnectorPoint PointX="8.6875025" PointY="9.1821907552083335" />
+          <ConnectorPoint PointX="8.6875025" PointY="11.155782877604167" />
+          <ConnectorPoint PointX="10.75" PointY="11.155782877604167" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.StatusInformationFiles">
+          <ConnectorPoint PointX="9.875" PointY="8.4033414713541674" />
+          <ConnectorPoint PointX="13.25" PointY="8.4033414713541674" />
+          <ConnectorPoint PointX="13.25" PointY="9.625" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.GroupStatuses">
+          <ConnectorPoint PointX="10.75" PointY="6.99974609375" />
+          <ConnectorPoint PointX="9.875" PointY="6.99974609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.UserStatuses">
+          <ConnectorPoint PointX="7.75" PointY="7.2304996744791659" />
+          <ConnectorPoint PointX="8.375" PointY="7.2304996744791659" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.UserGroupCreator">
+          <ConnectorPoint PointX="7.75" PointY="6.2090171428645649" />
+          <ConnectorPoint PointX="10.75" PointY="6.2090171428645649" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.SentMessages">
+          <ConnectorPoint PointX="7" PointY="7.8359993489583326" />
+          <ConnectorPoint PointX="7" PointY="8.8074446614583337" />
+          <ConnectorPoint PointX="5.75" PointY="8.8074446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.GroupChildren">
+          <ConnectorPoint PointX="11.281923076923077" PointY="7.3744921875" />
+          <ConnectorPoint PointX="11.281923076923077" PointY="7.6244921875" />
+          <ConnectorPoint PointX="11.728461538461538" PointY="7.6244921875" />
+          <ConnectorPoint PointX="11.728461538461538" PointY="7.3744921875" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
