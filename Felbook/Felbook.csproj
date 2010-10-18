@@ -80,6 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Felbook.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\FelbookAccountModels.cs" />
     <Compile Include="Models\GroupRepository.cs" />
     <Compile Include="Models\IGroupRepository.cs" />
     <Compile Include="Models\IUserRepository.cs" />

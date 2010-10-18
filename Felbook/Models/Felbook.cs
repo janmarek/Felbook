@@ -56,7 +56,7 @@ namespace Felbook.Models
     partial class Information
     {
 
-        static protected int loggedUserID = 10;
+        static protected int loggedUserID = 1;
         
         protected bool canUserReadMe(int userID)
         {
