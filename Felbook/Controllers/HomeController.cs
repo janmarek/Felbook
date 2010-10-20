@@ -13,7 +13,7 @@ namespace Felbook.Controllers
 		{
 			Felbook.Models.FelbookDataContext db = new Models.FelbookDataContext();
 
-            ViewData["Message"] = db.Informations.Single(i => i.InfoAboutUser == 10 ).getContent();
+            //ViewData["Message"] = db.Informations.Single(i => i.InfoAboutUser == 10 ).getContent();
 
             return View();
 		}
