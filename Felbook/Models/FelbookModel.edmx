@@ -127,7 +127,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Creator_Id" Type="int" Nullable="true" />
-    <Property Name="Children_Id" Type="int" Nullable="true" />
+    <Property Name="Parent_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="MessageSet">
     <Key>
@@ -146,7 +146,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Created" Type="datetime" Nullable="false" />
-    <Property Name="Group_Id" Type="int" Nullable="false" />
+    <Property Name="Group_Id" Type="int" Nullable="true" />
     <Property Name="User_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LinkSet">
@@ -262,7 +262,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="GroupStatuses">
-    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="1" />
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="0..1" />
     <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Group">
@@ -310,14 +310,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="GroupChildren">
-    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="0..1" />
-    <End Role="Group1" Type="FelBookDBModel.Store.GroupSet" Multiplicity="*" />
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="*" />
+    <End Role="Group1" Type="FelBookDBModel.Store.GroupSet" Multiplicity="0..1" />
     <ReferentialConstraint>
-      <Principal Role="Group">
+      <Principal Role="Group1">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Group1">
-        <PropertyRef Name="Children_Id" />
+      <Dependent Role="Group">
+        <PropertyRef Name="Parent_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -688,7 +688,7 @@
           <End Type="FelBookDBModel.File" Role="File" Multiplicity="*" />
         </Association>
         <Association Name="GroupStatuses">
-          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="1" />
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="0..1" />
           <End Type="FelBookDBModel.Status" Role="StatusInformation" Multiplicity="*" />
         </Association>
         <Association Name="UserStatuses">
@@ -704,8 +704,8 @@
           <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
         </Association>
         <Association Name="GroupChildren">
-          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="0..1" />
-          <End Type="FelBookDBModel.Group" Role="Group1" Multiplicity="*" />
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="*" />
+          <End Type="FelBookDBModel.Group" Role="Group1" Multiplicity="0..1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -869,6 +869,7 @@
       <EndProperty Name="StatusInformation">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
+      <Condition ColumnName="Group_Id" IsNull="false" />
     </AssociationSetMapping>
     <AssociationSetMapping Name="UserStatuses" TypeName="FelBookDBModel.UserStatuses" StoreEntitySet="StatusSet">
       <EndProperty Name="User">
@@ -896,13 +897,13 @@
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="GroupChildren" TypeName="FelBookDBModel.GroupChildren" StoreEntitySet="GroupSet">
-      <EndProperty Name="Group">
-        <ScalarProperty Name="Id" ColumnName="Children_Id" />
-      </EndProperty>
       <EndProperty Name="Group1">
+        <ScalarProperty Name="Id" ColumnName="Parent_Id" />
+      </EndProperty>
+      <EndProperty Name="Group">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
-      <Condition ColumnName="Children_Id" IsNull="false" />
+      <Condition ColumnName="Parent_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
