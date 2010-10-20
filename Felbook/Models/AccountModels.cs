@@ -159,6 +159,12 @@ namespace Felbook.Models
 		{
 			if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
 
+            FelBookDBEntities db = new FelBookDBEntities(
+                    "metadata=\"C:\\Users\\Administrator\\Documents\\Felbook\\Felbook\\obj\\Debug\\edmxResourcesToEmbed\\Models\";provider=System.Data.SqlClient;provider connection string=\"Data Source=VIRTUAL-WIN2008\\SQLEXPRESS;Initial Catalog=FelBookDB;Integrated Security=True\"");
+
+            db.UserSet.Single(u => u.Username == userName).LastLogged = DateTime.Now;
+            db.SaveChanges();
+
 			FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
 		}
 

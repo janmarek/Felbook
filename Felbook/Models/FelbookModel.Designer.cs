@@ -1485,7 +1485,9 @@ namespace Felbook.Models
         /// <param name="created">Initial value of the Created property.</param>
         /// <param name="lastLogged">Initial value of the LastLogged property.</param>
         /// <param name="mail">Initial value of the Mail property.</param>
-        public static User CreateUser(global::System.Int32 id, global::System.String name, global::System.String surname, global::System.DateTime created, global::System.DateTime lastLogged, global::System.String mail)
+        /// <param name="username">Initial value of the Username property.</param>
+        /// <param name="passwordHash">Initial value of the PasswordHash property.</param>
+        public static User CreateUser(global::System.Int32 id, global::System.String name, global::System.String surname, global::System.DateTime created, global::System.DateTime lastLogged, global::System.String mail, global::System.String username, global::System.String passwordHash)
         {
             User user = new User();
             user.Id = id;
@@ -1494,6 +1496,8 @@ namespace Felbook.Models
             user.Created = created;
             user.LastLogged = lastLogged;
             user.Mail = mail;
+            user.Username = username;
+            user.PasswordHash = passwordHash;
             return user;
         }
 
@@ -1646,6 +1650,54 @@ namespace Felbook.Models
         private global::System.String _Mail;
         partial void OnMailChanging(global::System.String value);
         partial void OnMailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Username
+        {
+            get
+            {
+                return _Username;
+            }
+            set
+            {
+                OnUsernameChanging(value);
+                ReportPropertyChanging("Username");
+                _Username = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Username");
+                OnUsernameChanged();
+            }
+        }
+        private global::System.String _Username;
+        partial void OnUsernameChanging(global::System.String value);
+        partial void OnUsernameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String PasswordHash
+        {
+            get
+            {
+                return _PasswordHash;
+            }
+            set
+            {
+                OnPasswordHashChanging(value);
+                ReportPropertyChanging("PasswordHash");
+                _PasswordHash = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("PasswordHash");
+                OnPasswordHashChanged();
+            }
+        }
+        private global::System.String _PasswordHash;
+        partial void OnPasswordHashChanging(global::System.String value);
+        partial void OnPasswordHashChanged();
 
         #endregion
     

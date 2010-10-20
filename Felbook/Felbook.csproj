@@ -36,8 +36,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -72,19 +75,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Felbook.cs">
-      <DependentUpon>Felbook.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Felbook.designer.cs">
+    <Compile Include="Models\FelbookAccountModels.cs" />
+    <Compile Include="Models\FelbookModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Felbook.dbml</DependentUpon>
+      <DependentUpon>FelbookModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\FelbookAccountModels.cs" />
-    <Compile Include="Models\GroupRepository.cs" />
-    <Compile Include="Models\IGroupRepository.cs" />
-    <Compile Include="Models\IUserRepository.cs" />
-    <Compile Include="Models\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +89,7 @@
       <DependentUpon>FelBookDB.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
+    <Content Include="Models\FelbookModel.edmx.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -126,19 +123,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
-    <None Include="Models\Felbook.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Felbook.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <EntityDeploy Include="Models\FelbookModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FelbookModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Models\Felbook.dbml.layout">
-      <DependentUpon>Felbook.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

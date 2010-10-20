@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Felbook.Models;
+using System.Web.Security;
+using System.Data.SqlClient;
+using System.Data.EntityClient;
+using System.Data.Objects;
 
 namespace Felbook.Tests.Models
 {
@@ -11,12 +15,15 @@ namespace Felbook.Tests.Models
     public class FelbookAccountModelTest
     {
 
+        private static string connString = "metadata=\"C:\\Users\\Administrator\\Documents\\Felbook\\Felbook\\obj\\Debug\\edmxResourcesToEmbed\\Models\";provider=System.Data.SqlClient;provider connection string=\"Data Source=VIRTUAL-WIN2008\\SQLEXPRESS;Initial Catalog=FelBookDB;Integrated Security=True\"";
+
         #region ValidateUserTests
         [TestMethod]
         public void ValidateUserTest1()
         {
 
-            IMembershipService MembershipService = new FelbookAccountMembershipService();
+            FelBookDBEntities db = new FelBookDBEntities(connString);
+            IMembershipService MembershipService = new FelbookAccountMembershipService(db);
 
             #region usernameTests
             try
@@ -73,17 +80,26 @@ namespace Felbook.Tests.Models
         public void ValidateUserTest2()
         {
 
-            IMembershipService MembershipService = new FelbookAccountMembershipService();
+            FelBookDBEntities db = new FelBookDBEntities(connString);
+            IMembershipService MembershipService = new FelbookAccountMembershipService(db);
             bool result;
-
+                        
             // TODO - vytvoření uživatele "good user" s heslem "good passwod"
             // pokud existuje, tak je zálohován původní a nahrazen testovacím
-
+            User user = User.CreateUser(0, "Ota", "Sandr", 
+                DateTime.Now, DateTime.Now, "mail", "good user",
+                FelbookAccountMembershipService.CalculateSHA1WithSalt("good password", "good user"));
+            db.UserSet.AddObject(user);
+            db.SaveChanges();
+                         
             result = MembershipService.ValidateUser("good user", "good password");
             Assert.IsTrue(result);
 
             result = MembershipService.ValidateUser("good user", "bad password");
             Assert.IsFalse(result);
+
+            db.UserSet.DeleteObject(user);
+            db.SaveChanges();
 
             // TODO - odstranění uživatele "good user" a vrácení původního, byl-li tam 
             // TODO - pokud existuje uživatel "bad user", tak se vyjme z DB
@@ -100,7 +116,8 @@ namespace Felbook.Tests.Models
         public void CreateUserTest1()
         {
 
-            IMembershipService MembershipService = new FelbookAccountMembershipService();
+            FelBookDBEntities db = new FelBookDBEntities(connString);
+            IMembershipService MembershipService = new FelbookAccountMembershipService(db);
 
             #region usernameTests
             try
@@ -165,11 +182,48 @@ namespace Felbook.Tests.Models
             try
             {
                 MembershipService.CreateUser("some username", "some password", "some email");
+                User user = db.UserSet.Single(u => u.Username == "some username");
+                db.UserSet.DeleteObject(user);
+                db.SaveChanges();
             }
             catch (ArgumentException)
             {
                 Assert.Fail();
             }
+
+        }
+
+        [TestMethod]
+        public void CreateUserTest2()
+        {
+
+            FelBookDBEntities db = new FelBookDBEntities(connString);
+            IMembershipService MembershipService = new FelbookAccountMembershipService(db);
+            MembershipCreateStatus result;
+
+            // vytvoření duplicateUser
+            User user = User.CreateUser(0, "Ota", "Sandr",
+                DateTime.Now, DateTime.Now, "mail", "duplicateUser",
+                FelbookAccountMembershipService.CalculateSHA1WithSalt("good password", "duplicateUser"));
+            db.UserSet.AddObject(user);
+            db.SaveChanges();
+
+            result = MembershipService.CreateUser("duplicateUser", "password", "email@provider.xy");
+            Assert.AreEqual(MembershipCreateStatus.DuplicateUserName, result);
+
+            // smazání duplicateUser
+            db.UserSet.DeleteObject(user);
+            db.SaveChanges();
+
+            // zálohování normalUser
+            
+            result = MembershipService.CreateUser("normalUser", "password", "email@provider.xy");
+            Assert.AreEqual(MembershipCreateStatus.Success, result);
+
+            // smazání normalUser a případná obnova zálohy
+            User user2 = db.UserSet.Single(u => u.Username == "normalUser");
+            db.UserSet.DeleteObject(user2);
+            db.SaveChanges();
 
         }
         #endregion
@@ -178,6 +232,110 @@ namespace Felbook.Tests.Models
         [TestMethod]
         public void ChangePasswordTest1()
         {
+            FelBookDBEntities db = new FelBookDBEntities(connString);
+            IMembershipService MembershipService = new FelbookAccountMembershipService(db);
+
+            #region usernameTests
+            try
+            {
+                MembershipService.ChangePassword(null, "old password", "new password");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Value cannot be null or empty." + Environment.NewLine + "Parameter name: userName", ex.Message);
+            }
+
+            try
+            {
+                MembershipService.ChangePassword("", "old password", "new password");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Value cannot be null or empty." + Environment.NewLine + "Parameter name: userName", ex.Message);
+            }
+            #endregion
+
+            #region oldPasswordTests
+            try
+            {
+                MembershipService.ChangePassword("some username", null, "new password");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Value cannot be null or empty." + Environment.NewLine + "Parameter name: oldPassword", ex.Message);
+            }
+
+            try
+            {
+                MembershipService.ChangePassword("some username", "", "new password");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Value cannot be null or empty." + Environment.NewLine + "Parameter name: oldPassword", ex.Message);
+            }
+            #endregion
+
+            #region newPasswordTests
+            try
+            {
+                MembershipService.ChangePassword("some username", "old password", null);
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Value cannot be null or empty." + Environment.NewLine + "Parameter name: newPassword", ex.Message);
+            }
+
+            try
+            {
+                MembershipService.ChangePassword("some username", "old password", "");
+            }
+            catch (ArgumentException ex)
+            {
+                Assert.AreEqual("Value cannot be null or empty." + Environment.NewLine + "Parameter name: newPassword", ex.Message);
+            }
+            #endregion
+
+            try
+            {
+                MembershipService.ChangePassword("some username", "old password", "new password");
+            }
+            catch (ArgumentException)
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void ChangePasswordTest2()
+        {
+
+            FelBookDBEntities db = new FelBookDBEntities(connString);
+            IMembershipService MembershipService = new FelbookAccountMembershipService(db);
+            bool result;
+
+            // záloha badUser
+
+            result = MembershipService.ChangePassword("badUser", "old password", "new password");
+            Assert.IsFalse(result);
+
+            // případné obnovení badUser
+
+            // vytvoření someUser s goodPassword
+            User user = User.CreateUser(0, "Ota", "Sandr",
+                DateTime.Now, DateTime.Now, "mail", "someUser",
+                FelbookAccountMembershipService.CalculateSHA1WithSalt("goodPassword", "someUser"));
+            db.UserSet.AddObject(user);
+            db.SaveChanges();
+
+            result = MembershipService.ChangePassword("someUser", "bad password", "new password");
+            Assert.IsFalse(result);
+
+            result = MembershipService.ChangePassword("someUser", "goodPassword", "new password");
+            Assert.IsTrue(result);
+
+            // odstranění someUser
+            db.UserSet.DeleteObject(user);
+            db.SaveChanges();
 
         }
         #endregion

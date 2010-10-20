@@ -116,6 +116,8 @@
     <Property Name="Created" Type="datetime" Nullable="false" />
     <Property Name="LastLogged" Type="datetime" Nullable="false" />
     <Property Name="Mail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="GroupSet">
     <Key>
@@ -575,6 +577,8 @@
           <NavigationProperty Name="Statuses" Relationship="FelBookDBModel.UserStatuses" FromRole="User" ToRole="Status" />
           <NavigationProperty Name="CreatedGroups" Relationship="FelBookDBModel.UserGroupCreator" FromRole="User" ToRole="Group" />
           <NavigationProperty Name="SentMessages" Relationship="FelBookDBModel.SentMessages" FromRole="User" ToRole="Message" />
+          <Property Type="String" Name="Username" Nullable="false" ConcurrencyMode="None" />
+          <Property Type="String" Name="PasswordHash" Nullable="false" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -718,6 +722,8 @@
           <ScalarProperty Name="Created" ColumnName="Created" />
           <ScalarProperty Name="LastLogged" ColumnName="LastLogged" />
           <ScalarProperty Name="Mail" ColumnName="Mail" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -918,27 +924,26 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="FelbookModel" ZoomLevel="86">
-        <EntityTypeShape EntityType="FelBookDBModel.User" Width="1.5" PointX="6.25" PointY="4.125" Height="3.5186979166666665" />
+        <EntityTypeShape EntityType="FelBookDBModel.User" Width="1.5" PointX="6.25" PointY="4.125" Height="4.0956022135416656" />
         <EntityTypeShape EntityType="FelBookDBModel.Group" Width="1.5" PointX="10.75" PointY="4.625" Height="2.7494921874999996" />
         <AssociationConnector Association="FelBookDBModel.UserGroupMembership">
-          <ConnectorPoint PointX="7.75" PointY="5.5942742858330412" />
-          <ConnectorPoint PointX="10.75" PointY="5.5942742858330412" />
+          <ConnectorPoint PointX="7.75" PointY="5.6023317857226358" />
+          <ConnectorPoint PointX="10.75" PointY="5.6023317857226358" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupAdministration">
-          <ConnectorPoint PointX="7.75" PointY="5.0471371429165206" />
-          <ConnectorPoint PointX="10.75" PointY="5.0471371429165206" />
+          <ConnectorPoint PointX="7.75" PointY="5.0511658928613183" />
+          <ConnectorPoint PointX="10.75" PointY="5.0511658928613183" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.Followings">
-          <ConnectorPoint PointX="6.7819230769230767" PointY="4.125" />
-          <ConnectorPoint PointX="6.7819230769230767" PointY="3.875" />
-          <ConnectorPoint PointX="7.2284615384615378" PointY="3.875" />
-          <ConnectorPoint PointX="7.2284615384615378" PointY="4.125" />
+          <ConnectorPoint PointX="6.7819230769230767" PointY="8.2206022135416656" />
+          <ConnectorPoint PointX="6.7819230769230767" PointY="8.4706022135416656" />
+          <ConnectorPoint PointX="7.2284615384615378" PointY="8.4706022135416656" />
+          <ConnectorPoint PointX="7.2284615384615378" PointY="8.2206022135416656" />
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.Message" Width="1.5" PointX="4.25" PointY="7.625" Height="2.3648893229166656" />
         <AssociationConnector Association="FelBookDBModel.MessageReaders">
-          <ConnectorPoint PointX="5" PointY="7.625" />
-          <ConnectorPoint PointX="5" PointY="5.8749995000000013" />
-          <ConnectorPoint PointX="6.25" PointY="5.8749995000000013" />
+          <ConnectorPoint PointX="5.75" PointY="8.0044637044270832" />
+          <ConnectorPoint PointX="6.25" PointY="8.0044637044270832" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.MessageReplies">
           <ConnectorPoint PointX="4.7819230769230767" PointY="9.9898893229166656" />
@@ -974,17 +979,16 @@
           <ConnectorPoint PointX="9.875" PointY="6.99974609375" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.UserStatuses">
-          <ConnectorPoint PointX="7.75" PointY="7.2304996744791659" />
-          <ConnectorPoint PointX="8.375" PointY="7.2304996744791659" />
+          <ConnectorPoint PointX="7.75" PointY="7.4228011067708328" />
+          <ConnectorPoint PointX="8.375" PointY="7.4228011067708328" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.UserGroupCreator">
-          <ConnectorPoint PointX="7.75" PointY="6.2090171428645649" />
-          <ConnectorPoint PointX="10.75" PointY="6.2090171428645649" />
+          <ConnectorPoint PointX="7.75" PointY="6.1449158928613183" />
+          <ConnectorPoint PointX="10.75" PointY="6.1449158928613183" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.SentMessages">
-          <ConnectorPoint PointX="7" PointY="7.8359993489583326" />
-          <ConnectorPoint PointX="7" PointY="8.8074446614583337" />
-          <ConnectorPoint PointX="5.75" PointY="8.8074446614583337" />
+          <ConnectorPoint PointX="6.25" PointY="7.7522318522135425" />
+          <ConnectorPoint PointX="5.75" PointY="7.7522318522135425" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupChildren">
           <ConnectorPoint PointX="11.281923076923077" PointY="7.3744921875" />

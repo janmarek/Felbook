@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 10/13/2010 23:36:00
--- Generated from EDMX file: C:\Users\Honza\documents\visual studio 2010\Projects\Felbook\Felbook\Models\FelbookModel.edmx
+-- Date Created: 10/20/2010 09:44:34
+-- Generated from EDMX file: C:\Users\Administrator\Documents\Felbook\Felbook\Models\FelbookModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [Felbook];
+USE [FelBookDB];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -17,119 +17,11 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_UserGroupMembership_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserGroupMembership] DROP CONSTRAINT [FK_UserGroupMembership_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserGroupMembership_Group]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserGroupMembership] DROP CONSTRAINT [FK_UserGroupMembership_Group];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupAdministration_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupAdministration] DROP CONSTRAINT [FK_GroupAdministration_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupAdministration_Group]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupAdministration] DROP CONSTRAINT [FK_GroupAdministration_Group];
-GO
-IF OBJECT_ID(N'[dbo].[FK_Followings_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Followings] DROP CONSTRAINT [FK_Followings_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_Followings_User1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Followings] DROP CONSTRAINT [FK_Followings_User1];
-GO
-IF OBJECT_ID(N'[dbo].[FK_MessageReaders_Message]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[MessageReaders] DROP CONSTRAINT [FK_MessageReaders_Message];
-GO
-IF OBJECT_ID(N'[dbo].[FK_MessageReaders_User]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[MessageReaders] DROP CONSTRAINT [FK_MessageReaders_User];
-GO
-IF OBJECT_ID(N'[dbo].[FK_MessageReplies]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[MessageSet] DROP CONSTRAINT [FK_MessageReplies];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationComment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[CommentSet] DROP CONSTRAINT [FK_StatusInformationComment];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationLinks_StatusInformation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusInformationLinks] DROP CONSTRAINT [FK_StatusInformationLinks_StatusInformation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationLinks_Link]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusInformationLinks] DROP CONSTRAINT [FK_StatusInformationLinks_Link];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationImages_StatusInformation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusInformationImages] DROP CONSTRAINT [FK_StatusInformationImages_StatusInformation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationImages_Image]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusInformationImages] DROP CONSTRAINT [FK_StatusInformationImages_Image];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationFiles_StatusInformation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusInformationFiles] DROP CONSTRAINT [FK_StatusInformationFiles_StatusInformation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_StatusInformationFiles_File]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusInformationFiles] DROP CONSTRAINT [FK_StatusInformationFiles_File];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupStatuses]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusSet] DROP CONSTRAINT [FK_GroupStatuses];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserStatuses]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StatusSet] DROP CONSTRAINT [FK_UserStatuses];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserGroupCreator]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupSet] DROP CONSTRAINT [FK_UserGroupCreator];
-GO
-IF OBJECT_ID(N'[dbo].[FK_SentMessages]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[MessageSet] DROP CONSTRAINT [FK_SentMessages];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupChildren]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupSet] DROP CONSTRAINT [FK_GroupChildren];
-GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[UserSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserSet];
-GO
-IF OBJECT_ID(N'[dbo].[GroupSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GroupSet];
-GO
-IF OBJECT_ID(N'[dbo].[MessageSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[MessageSet];
-GO
-IF OBJECT_ID(N'[dbo].[StatusSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[StatusSet];
-GO
-IF OBJECT_ID(N'[dbo].[LinkSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[LinkSet];
-GO
-IF OBJECT_ID(N'[dbo].[CommentSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[CommentSet];
-GO
-IF OBJECT_ID(N'[dbo].[FileSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FileSet];
-GO
-IF OBJECT_ID(N'[dbo].[ImageSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ImageSet];
-GO
-IF OBJECT_ID(N'[dbo].[UserGroupMembership]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserGroupMembership];
-GO
-IF OBJECT_ID(N'[dbo].[GroupAdministration]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GroupAdministration];
-GO
-IF OBJECT_ID(N'[dbo].[Followings]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Followings];
-GO
-IF OBJECT_ID(N'[dbo].[MessageReaders]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[MessageReaders];
-GO
-IF OBJECT_ID(N'[dbo].[StatusInformationLinks]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[StatusInformationLinks];
-GO
-IF OBJECT_ID(N'[dbo].[StatusInformationImages]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[StatusInformationImages];
-GO
-IF OBJECT_ID(N'[dbo].[StatusInformationFiles]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[StatusInformationFiles];
-GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -142,7 +34,9 @@ CREATE TABLE [dbo].[UserSet] (
     [Surname] nvarchar(max)  NOT NULL,
     [Created] datetime  NOT NULL,
     [LastLogged] datetime  NOT NULL,
-    [Mail] nvarchar(max)  NOT NULL
+    [Mail] nvarchar(max)  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [PasswordHash] nvarchar(max)  NOT NULL
 );
 GO
 

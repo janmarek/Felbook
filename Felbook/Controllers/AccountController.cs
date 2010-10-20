@@ -22,7 +22,14 @@ namespace Felbook.Controllers
 		protected override void Initialize(RequestContext requestContext)
 		{
 			if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-			if (MembershipService == null) { MembershipService = new AccountMembershipService(); }
+			if (MembershipService == null) { 
+                
+                //MembershipService = new AccountMembershipService(); 
+                FelBookDBEntities db = new FelBookDBEntities(
+                    "metadata=\"C:\\Users\\Administrator\\Documents\\Felbook\\Felbook\\obj\\Debug\\edmxResourcesToEmbed\\Models\";provider=System.Data.SqlClient;provider connection string=\"Data Source=VIRTUAL-WIN2008\\SQLEXPRESS;Initial Catalog=FelBookDB;Integrated Security=True\"");
+                MembershipService = new FelbookAccountMembershipService(db);
+            
+            }
 
 			base.Initialize(requestContext);
 		}
