@@ -15,14 +15,12 @@ namespace Felbook.Tests.Models
     public class FelbookAccountModelTest
     {
 
-        private static string connString = "metadata=\"C:\\Users\\Administrator\\Documents\\Felbook\\Felbook\\obj\\Debug\\edmxResourcesToEmbed\\Models\";provider=System.Data.SqlClient;provider connection string=\"Data Source=VIRTUAL-WIN2008\\SQLEXPRESS;Initial Catalog=FelBookDB;Integrated Security=True\"";
-
         #region ValidateUserTests
         [TestMethod]
         public void ValidateUserTest1()
         {
 
-            FelBookDBEntities db = new FelBookDBEntities(connString);
+            FelBookDBEntities db = new FelBookDBEntities();
             IMembershipService MembershipService = new FelbookAccountMembershipService(db);
 
             #region usernameTests
@@ -80,7 +78,7 @@ namespace Felbook.Tests.Models
         public void ValidateUserTest2()
         {
 
-            FelBookDBEntities db = new FelBookDBEntities(connString);
+            FelBookDBEntities db = new FelBookDBEntities();
             IMembershipService MembershipService = new FelbookAccountMembershipService(db);
             bool result;
                         
@@ -116,7 +114,7 @@ namespace Felbook.Tests.Models
         public void CreateUserTest1()
         {
 
-            FelBookDBEntities db = new FelBookDBEntities(connString);
+            FelBookDBEntities db = new FelBookDBEntities();
             IMembershipService MembershipService = new FelbookAccountMembershipService(db);
 
             #region usernameTests
@@ -197,7 +195,7 @@ namespace Felbook.Tests.Models
         public void CreateUserTest2()
         {
 
-            FelBookDBEntities db = new FelBookDBEntities(connString);
+            FelBookDBEntities db = new FelBookDBEntities();
             IMembershipService MembershipService = new FelbookAccountMembershipService(db);
             MembershipCreateStatus result;
 
@@ -232,7 +230,7 @@ namespace Felbook.Tests.Models
         [TestMethod]
         public void ChangePasswordTest1()
         {
-            FelBookDBEntities db = new FelBookDBEntities(connString);
+            FelBookDBEntities db = new FelBookDBEntities();
             IMembershipService MembershipService = new FelbookAccountMembershipService(db);
 
             #region usernameTests
@@ -309,7 +307,7 @@ namespace Felbook.Tests.Models
         public void ChangePasswordTest2()
         {
 
-            FelBookDBEntities db = new FelBookDBEntities(connString);
+            FelBookDBEntities db = new FelBookDBEntities();
             IMembershipService MembershipService = new FelbookAccountMembershipService(db);
             bool result;
 

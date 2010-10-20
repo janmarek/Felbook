@@ -25,8 +25,7 @@ namespace Felbook.Controllers
 			if (MembershipService == null) { 
                 
                 //MembershipService = new AccountMembershipService(); 
-                FelBookDBEntities db = new FelBookDBEntities(
-                    "metadata=\"C:\\Users\\Administrator\\Documents\\Felbook\\Felbook\\obj\\Debug\\edmxResourcesToEmbed\\Models\";provider=System.Data.SqlClient;provider connection string=\"Data Source=VIRTUAL-WIN2008\\SQLEXPRESS;Initial Catalog=FelBookDB;Integrated Security=True\"");
+                FelBookDBEntities db = new FelBookDBEntities();
                 MembershipService = new FelbookAccountMembershipService(db);
             
             }
