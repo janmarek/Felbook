@@ -11,10 +11,8 @@ namespace Felbook.Controllers
 	{
 		public ActionResult Index()
 		{
-			Felbook.Models.FelbookDataContext db = new Models.FelbookDataContext();
-
-            ViewData["Message"] = db.Informations.Single(i => i.InfoAboutUser == 10 ).getContent();
-
+            Felbook.Models.FelBookDBEntities db = new Models.FelBookDBEntities();
+            ViewData["Message"] = db.UserSet.Single(i => i.Id == 1).Name.ToString();          
             return View();
 		}
 

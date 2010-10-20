@@ -934,17 +934,16 @@
           <ConnectorPoint PointX="7.2284615384615378" PointY="3.875" />
           <ConnectorPoint PointX="7.2284615384615378" PointY="4.125" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="FelBookDBModel.Message" Width="1.5" PointX="4.25" PointY="7.625" Height="2.3648893229166656" />
+        <EntityTypeShape EntityType="FelBookDBModel.Message" Width="1.5" PointX="3.625" PointY="7" Height="2.0853483072916656" />
         <AssociationConnector Association="FelBookDBModel.MessageReaders">
-          <ConnectorPoint PointX="5" PointY="7.625" />
-          <ConnectorPoint PointX="5" PointY="5.8749995000000013" />
-          <ConnectorPoint PointX="6.25" PointY="5.8749995000000013" />
+          <ConnectorPoint PointX="5.125" PointY="7.1803898111979159" />
+          <ConnectorPoint PointX="6.25" PointY="7.1803898111979159" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.MessageReplies">
-          <ConnectorPoint PointX="4.7819230769230767" PointY="9.9898893229166656" />
-          <ConnectorPoint PointX="4.7819230769230767" PointY="10.239889322916666" />
-          <ConnectorPoint PointX="5.2284615384615378" PointY="10.239889322916666" />
-          <ConnectorPoint PointX="5.2284615384615378" PointY="9.9898893229166656" />
+          <ConnectorPoint PointX="4.1569230769230767" PointY="9.0853483072916656" />
+          <ConnectorPoint PointX="4.1569230769230767" PointY="9.3353483072916674" />
+          <ConnectorPoint PointX="4.6034615384615378" PointY="9.3353483072916674" />
+          <ConnectorPoint PointX="4.6034615384615378" PointY="9.0853483072916656" />
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.Status" Width="1.5" PointX="8.375" PointY="6.625" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.625" Height="1.4033821614583335" />
@@ -982,9 +981,8 @@
           <ConnectorPoint PointX="10.75" PointY="6.2090171428645649" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.SentMessages">
-          <ConnectorPoint PointX="7" PointY="7.8359993489583326" />
-          <ConnectorPoint PointX="7" PointY="8.8074446614583337" />
-          <ConnectorPoint PointX="5.75" PointY="8.8074446614583337" />
+          <ConnectorPoint PointX="6.25" PointY="7.0276949055989579" />
+          <ConnectorPoint PointX="5.125" PointY="7.0276949055989579" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupChildren">
           <ConnectorPoint PointX="11.281923076923077" PointY="7.3744921875" />

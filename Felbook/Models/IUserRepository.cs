@@ -9,16 +9,16 @@ namespace Felbook.Models
     {
         IQueryable<Message> GetIncomingMessages(User usr); //zprávy uživatele - příchozí
         IQueryable<Message> GetOutcomingMessages(User usr); //zprávy uživatele - odchozí
-        IQueryable<User> GetFriends(User usr); //přátelé uživatele
-        IQueryable<User> GetCommonFriends(User usrFirst, User usrSecond); //společní přátelé
+        IQueryable<User> GetFollowers(User usr); //přátelé uživatele
+        IQueryable<User> GetCommonFollowers(User usrFirst, User usrSecond); //společní followeři
 
-        void SendMessage(Message msg, User usr); //poslat zprávu uživately
+        bool IsUserInGroup(User usr, Group grp);
+        void SendMessage(Message msg); //poslat zprávu uživately
         void Add(User usr); 
         void Delete(User usr); 
         void Save();
-        void JoinToGroup(User usr, Group grp, string TypeOfMem); //přidání do skupiny
+        void JoinToGroup(User usr, Group grp); //přidání do skupiny
         void LeaveGroup(User usr, Group grp); //odchod ze skupiny
-        void MakeFriendship(User usrFirst, User usrSecond, string type); //vytvoření přátelství mezi dvěma uživately
-        void SetRights(User usr, int parInfoID, Right rights); //nastavení práv na nějakou jedinečnou informaci  
+        void FollowUser(User user, User follower); //vytvoření něco jako přátelství
     }
 }

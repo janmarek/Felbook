@@ -1,19 +1,32 @@
 ﻿using System;
 using System.Linq;
+using Felbook.Models;
+using System.Collections.Generic;
 
 namespace Felbook.Models
 {
 
     public class UserRepository : IUserRepository
     {
-        // --- Proměnné ----------------------
         #region Proměnné
-        FelbookDataContext db = new FelbookDataContext();
+        private FelBookDBEntities db = new FelBookDBEntities();       
         #endregion
 
-
-        // --- Metody ----------------------
         #region Metody
+
+        public void addEntity() { 
+            
+        }
+
+        /// <summary>
+        /// Vrátí true/false podle toho jeslti je uživatel ve skupině
+        /// </summary>
+        /// <param name="usr">Uživatel</param>
+        /// <param name="grp">Skupina</param>
+        /// <returns>true nebo false podle toho jestli v té skupině je nebo není</returns>
+        public bool IsUserInGroup(User usr, Group grp) {
+            return grp.Users.Contains(usr);
+        }
 
         /// <summary>
         /// Vrátí veškeré zprávy které jsou odchozí danému uživateli
@@ -22,9 +35,7 @@ namespace Felbook.Models
         /// <returns>Vrací recordset těch odchozích zpráv</returns>
         public IQueryable<Message> GetOutcomingMessages(User usr)
         {
-            return from messages in db.Messages
-                   where messages.FromUser == usr.UserID
-                   select messages;
+            return usr.SentMessages.AsQueryable();
         }
         
         /// <summary>
@@ -34,27 +45,18 @@ namespace Felbook.Models
         /// <returns>Vrácí řádky kde každý řádek je Message</returns>
         public IQueryable<Message> GetIncomingMessages(User usr)
         {
-            return from recMessages in db.RecieverLists
-                   where recMessages.UserID == usr.UserID
-                   join i in db.Messages 
-                   on recMessages.MessageID equals i.MessageID
-                   select i;
+            return from recMessages in db.MessageSet
+                   where recMessages.Users.Contains(usr)
+                   select recMessages;
         }
         
         /// <summary>
-        /// Odeslání zprávy
+        /// Odeslání zprávy uživately/uživatelům
         /// </summary>
-        /// <param name="msg">Ta zpráva která se vůbec posílá</param>
-        /// <param name="usr">Uživatel kterému se zpráva posílá</param>
-        public void SendMessage(Message msg, User usr)
+        /// <param name="msg">Zpráva která bude poslána</param>
+        public void SendMessage(Message msg)
         {
-            db.Messages.InsertOnSubmit(msg);
-            db.RecieverLists.InsertOnSubmit(
-            new RecieverList //uloží se nový anonymní ReceiverList
-            { //parametry má předáné z msg a destUserId
-                MessageID = msg.MessageID,
-                UserID = usr.UserID
-            });
+            db.AddToMessageSet(msg);
         }
 
         /// <summary>
@@ -63,14 +65,10 @@ namespace Felbook.Models
         /// <param name="usrFirst">První uživatel</param>
         /// <param name="usrSecond">Další uživatel který má společné přátelé s tím prvním</param>
         /// <returns>Množina společných uživatelů</returns>
-        public IQueryable<User> GetCommonFriends(User usrFirst, User usrSecond)
+        public IQueryable<User> GetCommonFollowers(User usrFirst, User usrSecond)
         {
-            //Poznámka: tady si taky nejsem úplně jistej jestli to půjde, bude to potřeba otestovat
-            return from users in db.Users
-                   from friendship in db.Friendships
-                   where (users.UserID == friendship.UserWhoHas && friendship.WithWhichUser == usrSecond.UserID) ||
-                   (users.UserID == usrSecond.UserID && friendship.UserWhoHas == users.UserID && friendship.WithWhichUser == usrFirst.UserID)
-                   select users;
+            // Intersect je průnik dvou množin
+            return usrFirst.Followers.Intersect(usrSecond.Followers).AsQueryable();
         }
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace Felbook.Models
         /// <param name="usr">Daný uživatel který se vytvoří</param>
         public void Add(User usr)
         {
-            db.Users.InsertOnSubmit(usr);
+            db.AddToUserSet(usr);
         }
         
         /// <summary>
@@ -88,10 +86,7 @@ namespace Felbook.Models
         /// <param name="usr">Daný uživatel ke smazání</param>
         public void Delete(User usr)
         {
-            db.RecieverLists.DeleteAllOnSubmit(usr.RecieverLists); //smaže veškeré zprávy uživatele
-            db.Rights.DeleteAllOnSubmit(usr.Rights); //smaže veškerá práva týkající se uživatele
-            db.Friendships.DeleteAllOnSubmit(usr.Friendships); //smaže veškerá přátelství s uživately
-            db.MembershipInGroups.DeleteAllOnSubmit(usr.MembershipInGroups); //smaže uživatelovy členství ve skupinách
+            db.DeleteObject(usr);
         }
 
         /// <summary>
@@ -99,60 +94,30 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="usr">Uživatel</param>
         /// <param name="grp">Skupina</param>
-        /// <param name="TypeOfMem">Typ členství - zatím jako string možná později vymyslíme něco jiného</param>
-        public void JoinToGroup(User usr, Group grp, string TypeOfMem)
+        public void JoinToGroup(User usr, Group grp)
         {
-            //Pro přehlednost udělaná proměnná jako jeden záznam v MembershipInGroup
-            MembershipInGroup memInGrp = new MembershipInGroup{
-                GroupID = grp.GroupID,
-                TypeOfMembership = TypeOfMem,
-                UserID = usr.UserID
-            };
-            //nyní se ta proměnná uloží do entity
-            db.MembershipInGroups.InsertOnSubmit(memInGrp);
+            grp.Users.Add(usr);
         }
 
         /// <summary>
         /// Odebere daného uživatele ze skupiny
         /// </summary>
-        /// <param name="usr">Uživatel</param>
-        /// <param name="grp">Skupina</param>
+        /// <param name="usr">Uživatel který se bude mazat</param>
+        /// <param name="grp">Skupina ze které se bude mazat</param>
         public void LeaveGroup(User usr, Group grp)
         {
-            db.MembershipInGroups.DeleteAllOnSubmit(from membership in db.MembershipInGroups
-                                                 where (membership.GroupID == grp.GroupID)
-                                                 && (membership.UserID == usr.UserID)
-                                                 select membership);
+            grp.Users.Remove(usr);
         }
         
-        /// <summary>
-        /// Nastaví práva na informace o nějaké skupině
-        /// </summary>
-        /// <param name="usr">Uživatel</param>
-        /// <param name="parInfoID">ID infa o skupině</param>
-        /// <param name="rights">Práva, tam u kterých stačí předat parametry Modify, Read, Delete</param>
-        public void SetRights(User usr, int parInfoID, Right rights){
-            Right newRight = new Right{
-                UserID = usr.UserID,
-                InfoID = parInfoID,
-                CanModify = rights.CanModify,
-                CanRead = rights.CanDelete,
-                CanDelete = rights.CanDelete
-            };
-            db.Rights.InsertOnSubmit(newRight);
-        }
 
         /// <summary>
         /// Získá recordset přátel daného usera
         /// </summary>
         /// <param name="usr">Uživatel</param>
         /// <returns></returns>
-        public IQueryable<User> GetFriends(User usr)
-        { 
-            return from users in db.Users
-                   join i in db.Friendships
-                   on users.UserID equals i.UserWhoHas
-                   select users;
+        public IQueryable<User> GetFollowers(User usr)
+        {
+            return usr.Followers.AsQueryable();
         }
 
         /// <summary>
@@ -161,21 +126,17 @@ namespace Felbook.Models
         /// <param name="usrFirst">První uživatel</param>
         /// <param name="usrSecond">Druhý uživatel</param>
         /// <param name="type">Typ přátelství - zatím jako string</param>
-        public void MakeFriendship(User usrFirst, User usrSecond, string type)
+        public void FollowUser(User user, User follower)
         {
-            db.Friendships.InsertOnSubmit(new Friendship{ 
-                UserWhoHas = usrFirst.UserID, 
-                WithWhichUser = usrSecond.UserID, 
-                TypeOfFriendship= type
-            });
+            user.Followers.Add(follower);
         }
 
         /// <summary>
-        /// Potvrdí se změny do DB - prostě commit
+        /// Uloží se změny do DB - prostě commit
         /// </summary>
         public void Save()
         {
-            db.SubmitChanges();
+            db.SaveChanges();
         }
         #endregion
 

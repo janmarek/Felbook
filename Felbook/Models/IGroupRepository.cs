@@ -7,15 +7,12 @@ namespace Felbook.Models
 {
     public interface IGroupRepository
     {
-        bool IsInGroup(User usr, Group grp);
-        IQueryable<User> GetUsers(Group grp);
-        IQueryable<Information> GetInformations(Group grp);
-        void AddInformation(Group grp, Information info);
         
-        //void DeleteInformation(Information info); //zatím nevím protože nevím jak mazat rekurzivně
-        void SetInformation(int idInformation, Information newInfo);
+        IQueryable<User> GetUsers(Group grp);        
         void Add(Group grp);
-        //void Delete(Group grp); //zatím nevím protože nevím jak mazat rekurzivně
+        void Delete(Group grp); //zatím ještě nefunguje pořádně
+        void AddSubGroup(Group parent, Group child); //přidání podskupiny do skupiny
+        Group SearchById(int id); //najde skupinu podle ID
 
         void Save();
     }
