@@ -22,7 +22,13 @@ namespace Felbook.Controllers
 		protected override void Initialize(RequestContext requestContext)
 		{
 			if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-			if (MembershipService == null) { MembershipService = new AccountMembershipService(); }
+			if (MembershipService == null) { 
+                
+                //MembershipService = new AccountMembershipService(); 
+                FelBookDBEntities db = new FelBookDBEntities();
+                MembershipService = new FelbookAccountMembershipService(db);
+            
+            }
 
 			base.Initialize(requestContext);
 		}

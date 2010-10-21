@@ -1,0 +1,6 @@
+Felbook.suo
+Felbook/bin/*
+Felbook/obj/*
+Felbook.Tests/bin/*
+Felbook.Tests/obj/*
+TestResults

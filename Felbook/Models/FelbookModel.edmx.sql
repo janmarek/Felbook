@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 10/13/2010 23:36:00
+-- Date Created: 10/20/2010 16:35:53
 -- Generated from EDMX file: C:\Users\Honza\documents\visual studio 2010\Projects\Felbook\Felbook\Models\FelbookModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [Felbook];
+USE [FelBookDB];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -142,7 +142,9 @@ CREATE TABLE [dbo].[UserSet] (
     [Surname] nvarchar(max)  NOT NULL,
     [Created] datetime  NOT NULL,
     [LastLogged] datetime  NOT NULL,
-    [Mail] nvarchar(max)  NOT NULL
+    [Mail] nvarchar(max)  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [PasswordHash] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -152,7 +154,7 @@ CREATE TABLE [dbo].[GroupSet] (
     [Name] nvarchar(max)  NOT NULL,
     [Description] nvarchar(max)  NOT NULL,
     [Creator_Id] int  NULL,
-    [Children_Id] int  NULL
+    [Parent_Id] int  NULL
 );
 GO
 
@@ -171,7 +173,7 @@ CREATE TABLE [dbo].[StatusSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Text] nvarchar(max)  NOT NULL,
     [Created] datetime  NOT NULL,
-    [Group_Id] int  NOT NULL,
+    [Group_Id] int  NULL,
     [User_Id] int  NOT NULL
 );
 GO
@@ -600,10 +602,10 @@ ON [dbo].[MessageSet]
     ([Sender_Id]);
 GO
 
--- Creating foreign key on [Children_Id] in table 'GroupSet'
+-- Creating foreign key on [Parent_Id] in table 'GroupSet'
 ALTER TABLE [dbo].[GroupSet]
 ADD CONSTRAINT [FK_GroupChildren]
-    FOREIGN KEY ([Children_Id])
+    FOREIGN KEY ([Parent_Id])
     REFERENCES [dbo].[GroupSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -611,7 +613,7 @@ ADD CONSTRAINT [FK_GroupChildren]
 -- Creating non-clustered index for FOREIGN KEY 'FK_GroupChildren'
 CREATE INDEX [IX_FK_GroupChildren]
 ON [dbo].[GroupSet]
-    ([Children_Id]);
+    ([Parent_Id]);
 GO
 
 -- --------------------------------------------------

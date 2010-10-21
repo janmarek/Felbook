@@ -27,11 +27,11 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationLinks", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Link", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Link))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationImages", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Image", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Image))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationFiles", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.File))]
-[assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupStatuses", "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Group), "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupStatuses", "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Group), "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "UserStatuses", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.User), "Status", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "UserGroupCreator", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.User), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "SentMessages", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.User), "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message))]
-[assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupChildren", "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Group), "Group1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupChildren", "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group), "Group1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Group))]
 
 #endregion
 
@@ -718,17 +718,33 @@ namespace Felbook.Models
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "GroupChildren", "Group1")]
-        public EntityCollection<Group> Parent
+        public Group Parent
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Group>("FelBookDBModel.GroupChildren", "Group1");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group1").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group1").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Group> ParentReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group1");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Group>("FelBookDBModel.GroupChildren", "Group1", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group1", value);
                 }
             }
         }
@@ -740,33 +756,17 @@ namespace Felbook.Models
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "GroupChildren", "Group")]
-        public Group Children
+        public EntityCollection<Group> Children
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Group> ChildrenReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Group>("FelBookDBModel.GroupChildren", "Group");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Group>("FelBookDBModel.GroupChildren", "Group", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Group>("FelBookDBModel.GroupChildren", "Group", value);
                 }
             }
         }
@@ -1485,7 +1485,9 @@ namespace Felbook.Models
         /// <param name="created">Initial value of the Created property.</param>
         /// <param name="lastLogged">Initial value of the LastLogged property.</param>
         /// <param name="mail">Initial value of the Mail property.</param>
-        public static User CreateUser(global::System.Int32 id, global::System.String name, global::System.String surname, global::System.DateTime created, global::System.DateTime lastLogged, global::System.String mail)
+        /// <param name="username">Initial value of the Username property.</param>
+        /// <param name="passwordHash">Initial value of the PasswordHash property.</param>
+        public static User CreateUser(global::System.Int32 id, global::System.String name, global::System.String surname, global::System.DateTime created, global::System.DateTime lastLogged, global::System.String mail, global::System.String username, global::System.String passwordHash)
         {
             User user = new User();
             user.Id = id;
@@ -1494,6 +1496,8 @@ namespace Felbook.Models
             user.Created = created;
             user.LastLogged = lastLogged;
             user.Mail = mail;
+            user.Username = username;
+            user.PasswordHash = passwordHash;
             return user;
         }
 
@@ -1646,6 +1650,54 @@ namespace Felbook.Models
         private global::System.String _Mail;
         partial void OnMailChanging(global::System.String value);
         partial void OnMailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Username
+        {
+            get
+            {
+                return _Username;
+            }
+            set
+            {
+                OnUsernameChanging(value);
+                ReportPropertyChanging("Username");
+                _Username = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Username");
+                OnUsernameChanged();
+            }
+        }
+        private global::System.String _Username;
+        partial void OnUsernameChanging(global::System.String value);
+        partial void OnUsernameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String PasswordHash
+        {
+            get
+            {
+                return _PasswordHash;
+            }
+            set
+            {
+                OnPasswordHashChanging(value);
+                ReportPropertyChanging("PasswordHash");
+                _PasswordHash = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("PasswordHash");
+                OnPasswordHashChanged();
+            }
+        }
+        private global::System.String _PasswordHash;
+        partial void OnPasswordHashChanging(global::System.String value);
+        partial void OnPasswordHashChanged();
 
         #endregion
     
