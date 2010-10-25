@@ -354,7 +354,7 @@ namespace Felbook.Tests.Controllers
 			}
 		}
 
-		private class MockMembershipService : IMembershipService
+		private class MockMembershipService : IFelbookMembershipService
 		{
 			public int MinPasswordLength
 			{
@@ -365,6 +365,11 @@ namespace Felbook.Tests.Controllers
 			{
 				return (userName == "someUser" && password == "goodPassword");
 			}
+
+            public MembershipCreateStatus CreateUser(RegisterModel model)
+            {
+                return CreateUser(model.UserName, model.Password, model.Email);
+            }
 
 			public MembershipCreateStatus CreateUser(string userName, string password, string email)
 			{

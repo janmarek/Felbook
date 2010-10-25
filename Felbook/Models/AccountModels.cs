@@ -51,24 +51,66 @@ namespace Felbook.Models
 	public class RegisterModel
 	{
 		[Required]
-		[DisplayName("User name")]
+		[DisplayName("User name *")]
 		public string UserName { get; set; }
 
-		[Required]
-		[DataType(DataType.EmailAddress)]
-		[DisplayName("Email address")]
-		public string Email { get; set; }
+        [Required]
+        [DisplayName("Name *")]
+        public string Name { get; set; }
 
+        [Required]
+        [DisplayName("Surname *")]
+        public string Surname { get; set; }
+
+        [DisplayName("Title (not working yet)")]
+        public string Title { get; set; }
+
+        [DisplayName("Title after name (not working yet)")]
+        public string TitleAfter { get; set; }
+
+        /************************************/
+        
 		[Required]
 		[ValidatePasswordLength]
 		[DataType(DataType.Password)]
-		[DisplayName("Password")]
+		[DisplayName("Password *")]
 		public string Password { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
-		[DisplayName("Confirm password")]
+		[DisplayName("Confirm password *")]
 		public string ConfirmPassword { get; set; }
+
+        /************************************/
+
+        [DisplayName("Faculty (not working yet)")]
+        public string Faculty { get; set; }
+
+        [DisplayName("Role (not working yet)")]
+        public string Role { get; set; }
+
+        [DisplayName("Study programme (not working yet)")]
+        public string StudyProgramme { get; set; }
+
+        [DisplayName("Specialization (not working yet)")]
+        public string Specialization { get; set; }
+
+        /************************************/
+
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [DisplayName("Email address *")]
+        public string Email { get; set; }
+
+        [DisplayName("ICQ (not working yet)")]
+        public string ICQ { get; set; }
+
+        [DisplayName("School email address (not working yet)")]
+        public string SchoolEmail { get; set; }
+
+        [DisplayName("Phone (not working yet)")]
+        public string Phone { get; set; }
+
 	}
 	#endregion
 

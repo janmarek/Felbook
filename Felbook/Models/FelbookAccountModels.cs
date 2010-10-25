@@ -31,7 +31,15 @@ using System.Text;
 
 namespace Felbook.Models
 {
-    public class FelbookAccountMembershipService : IMembershipService
+
+    public interface IFelbookMembershipService : IMembershipService
+    {
+
+        MembershipCreateStatus CreateUser(RegisterModel model);
+
+    }
+    
+    public class FelbookAccountMembershipService : IFelbookMembershipService
     {
 
         #region Variables
@@ -82,6 +90,38 @@ namespace Felbook.Models
             {
                 return false;
             }
+            
+        }
+
+        public MembershipCreateStatus CreateUser(RegisterModel model)
+        {
+            
+            string userName = model.UserName;
+            string password = model.Password;
+            string email = model.Email;
+            
+            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
+            if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
+
+            if (DBEntities.UserSet.Count(u => u.Username == userName) > 0)
+            {
+                return MembershipCreateStatus.DuplicateUserName;
+            }
+
+            User newUser = new User();
+            newUser.Username = userName;
+            newUser.PasswordHash = CalculateSHA1WithSalt(password, userName);
+            newUser.Mail = email;
+            newUser.Name = model.Name;
+            newUser.Surname = model.Surname;
+            newUser.Created = DateTime.Now;
+            newUser.LastLogged = DateTime.Now;
+
+            DBEntities.UserSet.AddObject(newUser);
+            DBEntities.SaveChanges();
+
+            return MembershipCreateStatus.Success;
             
         }
 

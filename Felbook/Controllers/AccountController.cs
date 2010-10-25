@@ -17,7 +17,7 @@ namespace Felbook.Controllers
 	{
 
 		public IFormsAuthenticationService FormsService { get; set; }
-		public IMembershipService MembershipService { get; set; }
+		public IFelbookMembershipService MembershipService { get; set; }
 
 		protected override void Initialize(RequestContext requestContext)
 		{
@@ -88,7 +88,8 @@ namespace Felbook.Controllers
 		{
 			if (ModelState.IsValid) {
 				// Attempt to register the user
-				MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
+				//MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
+                MembershipCreateStatus createStatus = MembershipService.CreateUser(model);
 
 				if (createStatus == MembershipCreateStatus.Success) {
 					FormsService.SignIn(model.UserName, false /* createPersistentCookie */);

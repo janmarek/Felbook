@@ -8,6 +8,6 @@
 	<% if (Request.IsAuthenticated) { %>
 		<%: Html.ActionLink("My profile", "Index", "Profile", new {username = User.Identity.Name}, null)	%>
 	<% } else { %>
-		<p>Nejste přihlášen.</p>
+		<p>You are not logged in!</p>
 	<% } %>
 </asp:Content>

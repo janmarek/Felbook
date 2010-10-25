@@ -342,3 +342,19 @@ div#title
 {
     width: 6em;
 }
+
+/* Styly pro registrační formulář
+----------------------------------------------------------*/
+
+.leftRegister
+{
+    width: 45%;
+    display: inline-block;
+}
+
+.rightRegister
+{
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+}   
