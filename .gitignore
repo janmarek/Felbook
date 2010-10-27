@@ -2,6 +2,8 @@ Felbook.suo
 Felbook.sln
 Felbook/bin/*
 Felbook/obj/*
+Felbook/App_Data/*
+Felbook/Web_Data/status_images/*
 Felbook/Felbook.csproj
 Felbook/Felbook.csproj.user
 Felbook/Web.config
