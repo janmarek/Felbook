@@ -624,7 +624,7 @@
         </Association>
         <Association Name="MessageReplies">
           <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="0..1" />
-          <End Type="FelBookDBModel.Message" Role="Message1" Multiplicity="*" />
+          <End Type="FelBookDBModel.Message" Role="Message1" Multiplicity="0..1" />
         </Association>
         <EntityType Name="Status">
           <Key>
@@ -955,7 +955,7 @@
         <EntityTypeShape EntityType="FelBookDBModel.Status" Width="1.5" PointX="8.375" PointY="6.625" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.625" Height="1.4033821614583335" />
         <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="9.625" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="FelBookDBModel.File" Width="1.5" PointX="12.5" PointY="9.625" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="FelBookDBModel.File" Width="1.5" PointX="12.5" PointY="9.625" Height="1.4479589843749992" />
         <EntityTypeShape EntityType="FelBookDBModel.Image" Width="1.5" PointX="10.75" PointY="9.625" Height="1.5956835937500031" />
         <AssociationConnector Association="FelBookDBModel.StatusInformationComment">
           <ConnectorPoint PointX="8.375" PointY="9.1821907552083335" />
@@ -971,8 +971,8 @@
           <ConnectorPoint PointX="10.75" PointY="11.155782877604167" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationFiles">
-          <ConnectorPoint PointX="9.875" PointY="8.4033414713541674" />
-          <ConnectorPoint PointX="13.25" PointY="8.4033414713541674" />
+          <ConnectorPoint PointX="9.875" PointY="8.16404296875" />
+          <ConnectorPoint PointX="13.25" PointY="8.16404296875" />
           <ConnectorPoint PointX="13.25" PointY="9.625" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupStatuses">

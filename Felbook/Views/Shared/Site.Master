@@ -22,10 +22,11 @@
             <div id="menucontainer">
             
                 <ul id="menu">              
+                    <li><%: Html.ActionLink("TestData", "TestData", "Home")%></li>
                     <li><%: Html.ActionLink("Home", "Index", "Home")%></li>
                     <li><%: Html.ActionLink("About", "About", "Home")%></li>
                     <li><% if (Request.IsAuthenticated)   { %>
-		                <%: Html.ActionLink("Mail-box", "Index", "Message", new { username = Page.User.Identity.Name }, null)%>
+		            <%: Html.ActionLink("Mail-box", "Index", "Message", new { username = Page.User.Identity.Name }, null)%>
 	                <% } %></li> 
                 </ul>
             

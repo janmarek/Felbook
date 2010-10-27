@@ -22,7 +22,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupAdministration", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "Followings", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReaders", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
-[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReplies", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReplies", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationComment", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Status), "Comment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Comment))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationLinks", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Link", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Link))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationImages", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Image", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Image))]
@@ -1098,17 +1098,33 @@ namespace Felbook.Models
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageReplies", "Message1")]
-        public EntityCollection<Message> FirstMessage
+        public Message FirstMessage
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("FelBookDBModel.MessageReplies", "Message1");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageReplies", "Message1").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageReplies", "Message1").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Message> FirstMessageReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageReplies", "Message1");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.MessageReplies", "Message1", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Message>("FelBookDBModel.MessageReplies", "Message1", value);
                 }
             }
         }

@@ -7,46 +7,51 @@ using Felbook.Models;
 
 namespace Felbook.Controllers
 {
-	[HandleError]
-	public class HomeController : Controller
-	{
-		public ActionResult Index()
-		{               
+    [HandleError]
+    public class HomeController : Controller
+    {
+        public ActionResult Index()
+        {
             return View();
-		}
+        }
 
-		public ActionResult About()
-		{
-			return View();
-		}
+        public ActionResult About()
+        {
+            return View();
+        }
 
-        public ActionResult TestData() {
+        public ActionResult TestData()
+        {
             generateTestData();
             return View();
         }
 
-        private void generateTestData() { 
+        private void generateTestData()
+        {
             #region Insert test data
-          
+
             FelBookDBEntities db = new FelBookDBEntities();
 
             #region Vymazání všech tabulek a resetování ID
-            
-            //vymazání tabulek
-            db.ExecuteStoreCommand("DELETE FROM StatusSet");
-            db.ExecuteStoreCommand("DELETE FROM CommentSet");
-            db.ExecuteStoreCommand("DELETE FROM FileSet");
+
+            //vymazání tabulek které spojují
+            db.ExecuteStoreCommand("DELETE FROM StatusInformationFiles");
+            db.ExecuteStoreCommand("DELETE FROM StatusInformationImages");
+            db.ExecuteStoreCommand("DELETE FROM StatusInformationLinks");
             db.ExecuteStoreCommand("DELETE FROM Followings");
             db.ExecuteStoreCommand("DELETE FROM GroupAdministration");
-            db.ExecuteStoreCommand("DELETE FROM GroupSet");
-            db.ExecuteStoreCommand("DELETE FROM ImageSet");
-            db.ExecuteStoreCommand("DELETE FROM LinkSet");
             db.ExecuteStoreCommand("DELETE FROM MessageReaders");
-            db.ExecuteStoreCommand("DELETE FROM MessageSet");
-            db.ExecuteStoreCommand("DELETE FROM StatusInformationFiles");
-            db.ExecuteStoreCommand("DELETE FROM StatusInformationLinks");          
             db.ExecuteStoreCommand("DELETE FROM UserGroupMembership");
+
+            //vymazání tabulek které obsahují informace
+            db.ExecuteStoreCommand("DELETE FROM ImageSet");
+            db.ExecuteStoreCommand("DELETE FROM FileSet");
+            db.ExecuteStoreCommand("DELETE FROM LinkSet");
+            db.ExecuteStoreCommand("DELETE FROM StatusSet");
+            db.ExecuteStoreCommand("DELETE FROM MessageSet");
+            db.ExecuteStoreCommand("DELETE FROM GroupSet");
             db.ExecuteStoreCommand("DELETE FROM UserSet");
+            db.ExecuteStoreCommand("DELETE FROM CommentSet");
 
             //resetování ID -> je spuštěno pouze na tabulky které mají klíč typu UNIQUE, INCREMENT=YES
             db.ExecuteStoreCommand("DBCC CHECKIDENT (CommentSet, RESEED, 0)");
@@ -57,32 +62,29 @@ namespace Felbook.Controllers
             db.ExecuteStoreCommand("DBCC CHECKIDENT (MessageSet, RESEED, 0)");
             db.ExecuteStoreCommand("DBCC CHECKIDENT (StatusSet, RESEED, 0)");
             db.ExecuteStoreCommand("DBCC CHECKIDENT (UserSet, RESEED, 0)");
-            
+
 
             #endregion
 
             #region naplnění UserSet
-            
+
             User usr1 = new User();
-            usr1.Name = "Karel";
-            usr1.Surname = "Novak";
+            usr1.Name = "Jakub";
+            usr1.Surname = "Novák";
             usr1.Created = new DateTime(2008, 3, 1, 7, 0, 0);
             usr1.LastLogged = DateTime.Now;
-            usr1.Mail = "karel@novak.cz";
-            usr1.PasswordHash = "asfad";
-            usr1.Username = "karel";
-
-            #endregion
+            usr1.Mail = "jakub@novak.cz";
+            usr1.PasswordHash = "0EBDDD353A5B84CBB468320F58D520EAE40D3B9D"; //heslo je 123456
+            usr1.Username = "novakjakub";
 
             User usr2 = new User();
-            usr2.Name = "Filip";
-            usr2.Surname = "Nový";
+            usr2.Name = "Jan";
+            usr2.Surname = "Novák";
             usr2.Created = new DateTime(2009, 9, 10, 10, 0, 0);
             usr2.LastLogged = new DateTime(2010, 10, 10, 10, 0, 0);
-            usr2.Mail = "filip@novy.cz";
-            usr2.PasswordHash = "asfad";
-            usr2.Username = "filip";
-
+            usr2.Mail = "jan@novak.cz";
+            usr2.PasswordHash = "6B7026866BF008F41A6FDE8335952E846F828B93"; //heslo je 123456
+            usr2.Username = "novakjan";
 
             User usr3 = new User();
             usr3.Name = "Bedřich";
@@ -92,9 +94,7 @@ namespace Felbook.Controllers
             usr3.Mail = "bedrich@cerveny.cz";
             usr3.PasswordHash = "asfad";
             usr3.Username = "bedrich";
-            
 
-            
             User usr4 = new User();
             usr4.Id = 4;
             usr4.Name = "Ondřej";
@@ -104,8 +104,7 @@ namespace Felbook.Controllers
             usr4.Mail = "ondrej@zeleny.cz";
             usr4.PasswordHash = "asfad";
             usr4.Username = "ondrej";
-            
-            
+
             User usr5 = new User();
             usr5.Id = 5;
             usr5.Name = "Jiří";
@@ -115,24 +114,23 @@ namespace Felbook.Controllers
             usr5.Mail = "jiri@mach.cz";
             usr5.PasswordHash = "asfad";
             usr5.Username = "jiri";
-
-
+            
             db.AddToUserSet(usr1);
             db.AddToUserSet(usr2);
             db.AddToUserSet(usr3);
             db.AddToUserSet(usr4);
             db.AddToUserSet(usr5);
-            
+
             #endregion
-            
+
             #region naplnění MessageSet
-            
+
             Message msg1 = new Message();
             msg1.Sender = usr1;
             msg1.Text = "Ahoj jak se máš?";
             msg1.Users.Add(usr2);
             msg1.Created = new DateTime(2010, 10, 11, 12, 5, 7);
-            
+
             Message msg2 = new Message();
             msg2.Sender = usr1;
             msg2.Users.Add(usr2);
@@ -141,24 +139,21 @@ namespace Felbook.Controllers
             msg2.Users.Add(usr5);
             msg2.Text = "Nezapomeňte dodělat domácí úkol.";
             msg2.Created = new DateTime(2009, 3, 5, 8, 1, 2);
-            
-            
+
             Message msg3 = new Message();
             msg3.Sender = usr3;
             msg3.Users.Add(usr1);
-            msg3.FirstMessage.Add(msg2);
+            msg3.FirstMessage = msg2;
             msg3.Text = "Už jsem ten úkol odevzdal.";
             msg3.Created = new DateTime(2007, 12, 11, 10, 4, 4);
 
-            
             Message msg4 = new Message();
             msg4.Sender = usr3;
             msg4.Users.Add(usr1);
-            msg3.FirstMessage.Add(msg2);
+            msg3.FirstMessage = msg2;
             msg4.Text = "Taky už jsem ho udělal a díky za ty materiály, zejtra vás zvu na pivo.";
             msg4.Created = new DateTime(2010, 12, 8, 10, 2, 2);
 
-            
             Message msg5 = new Message();
             msg5.Sender = usr5;
             msg5.Users.Add(usr4);
@@ -170,9 +165,9 @@ namespace Felbook.Controllers
             db.AddToMessageSet(msg3);
             db.AddToMessageSet(msg4);
             db.AddToMessageSet(msg5);
-      
+
             #endregion
-           
+
             #region naplnění GroupSet
             Group grp1 = new Group();
             Group grp2 = new Group();
@@ -185,12 +180,12 @@ namespace Felbook.Controllers
             grp1.Creator = usr2;
             grp1.Children.Add(grp2);
             grp1.Children.Add(grp3);
-          
+
             grp2.Name = "Asie";
             grp2.Description = "Řídíme asii";
             grp2.Parent = grp1;
             grp2.Creator = usr1;
-            
+
             grp3.Name = "Evropa";
             grp3.Description = "Řídíme Evropu";
             grp3.Parent = grp2;
@@ -202,9 +197,9 @@ namespace Felbook.Controllers
 
             grp5.Name = "Slunce";
             grp5.Description = "Jsme úplně jiná planeta";
-            
+
             #endregion
-            
+
             #region naplnění StatusSet a zároveň CommentSet
             Status st1 = new Status();
             st1.Text = "Dneska jsem udělal maturitu";
@@ -234,7 +229,6 @@ namespace Felbook.Controllers
             st5.Group = grp4;
             st5.Created = new DateTime(2010, 2, 4, 7, 1, 2);
 
-
             //TOTO nejde zatím nevím proč :(
             /* 
              Comment cmt1 = new Comment();
@@ -251,11 +245,11 @@ namespace Felbook.Controllers
             db.AddToStatusSet(st4);
             db.AddToStatusSet(st5);
 
-
-            
             db.SaveChanges();
 
-            #endregion            
+            #endregion
+
+            #endregion
         }
-	}
+    }
 }
