@@ -6,15 +6,17 @@
 
 <asp:Content ID="testData" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Test Data</h2>
-    <p>
-        Vygenerovali se testovací data 
-    </p>
-    <p>
-        Je možné se přihlásit na dva uživatelé:
-        <li>login: novakjan</li>
-        <li>heslo: 123456</li>
-        <br />
-        <li>login: novakjakub</li>
-        <li>heslo: 123456</li>
-    </p>
+    <p>Vygenerovaly se testovací data.</p>
+    
+	<p>Je možné se přihlásit na dva uživatele.</p>
+
+	<ul>
+		<li>login: novakjan</li>
+		<li>heslo: 123456</li>
+	</ul>
+
+    <ul>
+		<li>login: novakjakub</li>
+		<li>heslo: 123456</li>
+	</ul>
 </asp:Content>

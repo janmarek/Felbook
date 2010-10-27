@@ -8,10 +8,32 @@ namespace Felbook.Models
     public class GroupService : IGroupService
     {
         #region Proměnné
-        private FelBookDBEntities db = new FelBookDBEntities();
+        private FelBookDBEntities db;
         #endregion
 
-        #region Metody
+		#region Konstruktor
+
+		public GroupService(FelBookDBEntities DBEntities)
+		{
+			db = DBEntities;
+		}
+
+		#endregion
+
+		#region Metody
+
+		/// <summary>
+		/// Vrátí skupiny ve kterých se v názvech objevuje daný řetězec
+		/// </summary>
+		/// <param name="str">Řetězec pomocí kterého hledáme</param>
+		/// <returns>recordset skupin</returns>
+		public IQueryable<Group> SearchGroups(string str)
+		{
+			return from groups in db.GroupSet
+				   where groups.Name.Contains(str) ||
+				   groups.Description.Contains(str)
+				   select groups;
+		}
 
         /// <summary>
         /// Vrátí uživatelé dané skupiny
@@ -29,13 +51,11 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="idParrentGroup">ID groupy do které budu přidávat podgrupu</param>
         /// <param name="child">nová podgrupa</param>
-        public void AddSubGroup(int idParrentGroup, Group child) {
-            //vytáhnu si grupu podle ID
-            Group grp = SearchById(idParrentGroup);
+        public void AddSubGroup(Group group, Group child) {
             //přidám dítě do nadgrupy
-            grp.Children.Add(child);
+			group.Children.Add(child);
             //podgrupě nastavím rodiče jako nadgrupu
-            child.Parent = grp;
+			child.Parent = group;
             //přidám podgrupu mezi ostatní grupy
             db.AddToGroupSet(child);
         }

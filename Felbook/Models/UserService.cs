@@ -9,10 +9,31 @@ namespace Felbook.Models
     {
 
         #region Proměnné
-        private FelBookDBEntities db = new FelBookDBEntities();
+        private FelBookDBEntities db;
         #endregion
 
-        #region Metody
+		#region Konstruktor
+
+		public UserService(FelBookDBEntities DBEntities)
+		{
+			db = DBEntities;
+		}
+		
+		#endregion
+
+		#region Metody
+
+		/// <summary>
+		/// Vrátí uživatelé ve kterých se objevuje daný řetězec
+		/// </summary>
+		/// <param name="str">Řetězec pomocí kterého hledáme</param>
+		/// <returns>recordset uživatelů</returns>
+		public IQueryable<User> SearchUsers(string str)
+		{
+			return from users in db.UserSet
+				   where users.Name.Contains(str) || users.Surname.Contains(str) || users.Username.Contains(str)
+				   select users;
+		}
 
         /// <summary>
         /// Vrátí true/false podle toho jeslti je uživatel ve skupině
@@ -46,15 +67,6 @@ namespace Felbook.Models
                    where recMessages.Users.Contains(usr)
                    select recMessages;
         }
-        
-        /// <summary>
-        /// Odeslání zprávy uživately/uživatelům
-        /// </summary>
-        /// <param name="msg">Zpráva která bude poslána</param>
-        public void SendMessage(Message msg)
-        {
-            db.AddToMessageSet(msg);
-        }
 
         /// <summary>
         /// Vrátí společné přátelé dvou uživatelů
@@ -75,6 +87,7 @@ namespace Felbook.Models
         public void Add(User usr)
         {
             db.AddToUserSet(usr);
+			db.SaveChanges();
         }
 
         /// <summary>
@@ -84,6 +97,7 @@ namespace Felbook.Models
         public void Delete(User usr)
         {
             db.DeleteObject(usr);
+			db.SaveChanges();
         }
 
         /// <summary>
@@ -91,9 +105,10 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="usr">Uživatel</param>
         /// <param name="grp">Skupina</param>
-        public void JoinToGroup(User usr, Group grp)
+        public void JoinGroup(User usr, Group grp)
         {
             grp.Users.Add(usr);
+			db.SaveChanges();
         }
 
         /// <summary>
@@ -104,6 +119,7 @@ namespace Felbook.Models
         public void LeaveGroup(User usr, Group grp)
         {
             grp.Users.Remove(usr);
+			db.SaveChanges();
         }
 
 
@@ -126,6 +142,7 @@ namespace Felbook.Models
         public void FollowUser(User user, User follower)
         {
             user.Followers.Add(follower);
+			db.SaveChanges();
         }
 
         /// <summary>
@@ -133,7 +150,7 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="id">ID uživatele</param>
         /// <returns>Vrátí daného uživatele podle ID</returns>
-        public User SearchById(int id) {
+        public User GetById(int id) {
             return db.UserSet.Single(u => u.Id == id);
         }
 
@@ -142,7 +159,7 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="name">Jméno</param>
         /// <returns>Uživatel</returns>
-        public User SearchByUserName(string userName) {
+        public User GetByUsername(string userName) {
             return db.UserSet.Single(u => u.Username == userName);
         }
 
@@ -152,16 +169,9 @@ namespace Felbook.Models
         /// <param name="user">Uživatel</param>
         /// <param name="st">Status</param>
         public void AddStatus(User user, Status st) {
-            User usr = SearchByUserName(user.Username);
+            User usr = GetByUsername(user.Username);
             usr.Statuses.Add(st);
-        }
-
-        /// <summary>
-        /// Uloží se změny do DB - prostě commit
-        /// </summary>
-        public void Save()
-        {
-            db.SaveChanges();
+			db.SaveChanges();
         }
         #endregion
     }
