@@ -28,7 +28,8 @@ namespace Felbook.Controllers
 
         public ActionResult Index(string username)
         {
-            User user = DbEntities.UserSet.Single(u => u.Username == username);
+            UserService userSer = new UserService();
+            User user = userSer.SearchByUserName(username);
             return View(user);
         }
 
