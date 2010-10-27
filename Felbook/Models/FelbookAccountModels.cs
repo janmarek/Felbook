@@ -74,16 +74,7 @@ namespace Felbook.Models
             {
                 User user = DBEntities.UserSet.Single(u => u.Username == userName);
 
-                string hash = CalculateSHA1WithSalt(password, userName);
-
-                if (user.PasswordHash == hash)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                } 
+				return user.CheckPassword(password);
 
             }
             catch (InvalidOperationException)
@@ -111,7 +102,7 @@ namespace Felbook.Models
 
             User newUser = new User();
             newUser.Username = userName;
-            newUser.PasswordHash = CalculateSHA1WithSalt(password, userName);
+			newUser.ChangePassword(password);
             newUser.Mail = email;
             newUser.Name = model.Name;
             newUser.Surname = model.Surname;
@@ -139,7 +130,7 @@ namespace Felbook.Models
 
             User newUser = new User();
             newUser.Username = userName;
-            newUser.PasswordHash = CalculateSHA1WithSalt(password, userName);
+			newUser.ChangePassword(password);
             newUser.Mail = email;
             newUser.Name = "";
             newUser.Surname = "";
@@ -164,11 +155,9 @@ namespace Felbook.Models
             {
                 User user = DBEntities.UserSet.Single(u => u.Username == userName);
 
-                string hash = CalculateSHA1WithSalt(oldPassword, userName);
-
-                if (user.PasswordHash == hash)
+                if (user.CheckPassword(oldPassword))
                 {
-                    user.PasswordHash = CalculateSHA1WithSalt(newPassword, userName);
+                    user.ChangePassword(newPassword);
                     DBEntities.SaveChanges();
                     return true;
                 }
@@ -183,15 +172,6 @@ namespace Felbook.Models
                 return false;
             }
 
-        }
-
-        public static string CalculateSHA1WithSalt(string text, string salt)
-        {
-            byte[] buffer = Encoding.UTF8.GetBytes(text + salt);
-            SHA1CryptoServiceProvider cryptoTransformSHA1 = new SHA1CryptoServiceProvider();
-            string hash = BitConverter.ToString(cryptoTransformSHA1.ComputeHash(buffer)).Replace("-", "");
-
-            return hash;
         }
 
         #endregion

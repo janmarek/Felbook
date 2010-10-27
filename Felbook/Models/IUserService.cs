@@ -12,17 +12,15 @@ namespace Felbook.Models
         IQueryable<User> GetFollowers(User usr); //přátelé uživatele
         IQueryable<User> GetCommonFollowers(User usrFirst, User usrSecond); //společní followeři
 
-        User SearchById(int id); //najde užiatele podle ID
-        User SearchByUserName(string name); //najde uživatele podle jména
+        User GetById(int id); //najde užiatele podle ID
+        User GetByUsername(string name); //najde uživatele podle jména
 
         bool IsUserInGroup(User usr, Group grp);
-        void SendMessage(Message msg); //poslat zprávu uživately
         void Add(User usr);
         void Delete(User usr);
-        void JoinToGroup(User usr, Group grp); //přidání do skupiny
+        void JoinGroup(User usr, Group grp); //přidání do skupiny
         void LeaveGroup(User usr, Group grp); //odchod ze skupiny
         void FollowUser(User user, User follower); //vytvoření něco jako přátelství
         void AddStatus(User user, Status st); //přidá status k uživateli
-        void Save();
     }
 }
