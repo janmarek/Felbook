@@ -1,6 +1,16 @@
 Felbook.suo
+Felbook.sln
 Felbook/bin/*
 Felbook/obj/*
+Felbook/Felbook.csproj
+Felbook/Felbook.csproj.user
+Felbook/Web.config
+Felbook/Web.Debug.config
+Felbook/Web.Release.config
+Felbook/ClassDiagram1.cd
+Felbook/Models/FelbookModel.edmx.sql
 Felbook.Tests/bin/*
 Felbook.Tests/obj/*
+Felbook.Tests/App.config
+Felbook.Tests/Felbook.Tests.csproj
 TestResults
