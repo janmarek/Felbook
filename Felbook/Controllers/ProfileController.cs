@@ -14,13 +14,13 @@ namespace Felbook.Controllers
 {
     public class ProfileController : Controller
     {
-        public FelBookDBEntities DbEntities { get; set; }
+        public Model Model { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
-            if (DbEntities == null)
+            if (Model == null)
             {
-                DbEntities = new FelBookDBEntities();
+				Model = new Model();
             }
 
             base.Initialize(requestContext);
@@ -28,7 +28,7 @@ namespace Felbook.Controllers
 
         public ActionResult Index(string username)
         {
-            User user = DbEntities.UserSet.Single(u => u.Username == username);
+            User user = Model.UserService.GetByUsername(username);
             return View(user);
         }
 
@@ -41,8 +41,7 @@ namespace Felbook.Controllers
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
         public ActionResult AddStatus(FormCollection collection)
         {
-            UserService userSer = new UserService(); //používám z modelu UserService
-            User actualUser = userSer.SearchByUserName(User.Identity.Name);
+            User actualUser = Model.UserService.GetByUsername(User.Identity.Name);
             int userId = actualUser.Id; //vytáhnu si ID usera pro vytvoření složky
             Status status = new Status();
             status.Text = collection["status"];
@@ -123,7 +122,7 @@ namespace Felbook.Controllers
 
 
 
-            userSer.AddStatus(actualUser, status); //uloží se status i s obrázkem
+            Model.UserService.AddStatus(actualUser, status); //uloží se status i s obrázkem
 
             if (!ModelState.IsValid)
             {
@@ -131,7 +130,6 @@ namespace Felbook.Controllers
             }
             else
             {
-                userSer.Save();
                 return RedirectToAction("Index", new { username = User.Identity.Name });
             }
         }

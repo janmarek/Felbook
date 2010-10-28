@@ -74,17 +74,17 @@ namespace Felbook.Controllers
             usr1.Created = new DateTime(2008, 3, 1, 7, 0, 0);
             usr1.LastLogged = DateTime.Now;
             usr1.Mail = "jakub@novak.cz";
-            usr1.PasswordHash = "0EBDDD353A5B84CBB468320F58D520EAE40D3B9D"; //heslo je 123456
             usr1.Username = "novakjakub";
+			usr1.ChangePassword("123456");
 
             User usr2 = new User();
             usr2.Name = "Jan";
             usr2.Surname = "Novák";
             usr2.Created = new DateTime(2009, 9, 10, 10, 0, 0);
             usr2.LastLogged = new DateTime(2010, 10, 10, 10, 0, 0);
-            usr2.Mail = "jan@novak.cz";
-            usr2.PasswordHash = "6B7026866BF008F41A6FDE8335952E846F828B93"; //heslo je 123456
+			usr2.Mail = "jan@novak.cz";
             usr2.Username = "novakjan";
+			usr1.ChangePassword("123456");
 
             User usr3 = new User();
             usr3.Name = "Bedřich";
@@ -92,8 +92,8 @@ namespace Felbook.Controllers
             usr3.Created = new DateTime(2007, 4, 8, 11, 5, 4);
             usr3.LastLogged = new DateTime(2008, 7, 8, 9, 4, 3);
             usr3.Mail = "bedrich@cerveny.cz";
-            usr3.PasswordHash = "asfad";
             usr3.Username = "bedrich";
+            usr3.ChangePassword("asfad");
 
             User usr4 = new User();
             usr4.Id = 4;
@@ -102,8 +102,8 @@ namespace Felbook.Controllers
             usr4.Created = new DateTime(2004, 2, 2, 8, 8, 5);
             usr4.LastLogged = new DateTime(2006, 7, 8, 9, 4, 3);
             usr4.Mail = "ondrej@zeleny.cz";
-            usr4.PasswordHash = "asfad";
             usr4.Username = "ondrej";
+            usr4.ChangePassword("asfad");
 
             User usr5 = new User();
             usr5.Id = 5;
@@ -112,8 +112,8 @@ namespace Felbook.Controllers
             usr5.Created = new DateTime(2007, 5, 1, 5, 1, 5);
             usr5.LastLogged = new DateTime(2010, 8, 9, 12, 5, 7);
             usr5.Mail = "jiri@mach.cz";
-            usr5.PasswordHash = "asfad";
             usr5.Username = "jiri";
+            usr5.ChangePassword("asfad");
             
             db.AddToUserSet(usr1);
             db.AddToUserSet(usr2);
