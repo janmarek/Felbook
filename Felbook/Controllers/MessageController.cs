@@ -10,13 +10,19 @@ namespace Felbook.Controllers
 {
     public class MessageController : Controller
     {
-        public FelBookDBEntities DbEntities { get; set; }
+        public ISystemService service { get; set; }
+        public IMessageModel model { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
-            if (DbEntities == null)
+            if (service == null)
             {
-                DbEntities = new FelBookDBEntities();
+                service = new SystemService();
+            }
+
+            if (model == null)
+            {
+                model = new MessageModel();
             }
 
             base.Initialize(requestContext);
@@ -26,7 +32,8 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                User user = DbEntities.UserSet.Single(u => u.Username == username);
+                //User user = DbEntities.UserSet.Single(u => u.Username == username);
+                User user = service.SearchUsers(username).Single();
                 return View(user);
             }
             else
@@ -40,9 +47,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                User user = DbEntities.UserSet.Single(u => u.Username == username);
-                var msg = DbEntities.MessageSet.Where(m => m.Sender.Id == user.Id).ToList();
-                return View(msg);
+                return View(model.getMessagesSentByUser(username));
             }
             else
             {
@@ -55,7 +60,8 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                User user = DbEntities.UserSet.Single(u => u.Username == username);
+                //User user = DbEntities.UserSet.Single(u => u.Username == username);
+                User user = service.SearchUsers(username).Single();
                 return View(user);
             }
             else
@@ -66,9 +72,26 @@ namespace Felbook.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
-        public ActionResult AddStatus(FormCollection collection)
+        public ActionResult SendMessage(FormCollection collection)
         {
-            return RedirectToAction("Index", new { username = User.Identity.Name });
+            try
+            {
+                //List<string> listOfRecievers = new List<string>();
+                string recievers = collection["To"];
+                string[] separators = new string[1];
+                separators[0] = " ";
+                List<string> listOfRecievers = recievers.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                //listOfRecievers.Add(collection["To"]);
+                model.sendMessageToUsers(User.Identity.Name, listOfRecievers, collection["text"]);
+                return RedirectToAction("Sent", new { username = User.Identity.Name });
+            }
+            catch (InvalidOperationException)
+            {
+                ModelState.AddModelError("", "User does not exist!");
+                return View(collection);
+            }
+            
         }
 
     }

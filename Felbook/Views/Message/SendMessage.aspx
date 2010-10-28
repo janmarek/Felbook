@@ -6,22 +6,21 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Mail-box (<%= Model.Name %> <%= Model.Surname %>)</h2>
+    <h2>Mail-box (<%= Page.User.Identity.Name%>)</h2>
 
     <h3>
     <%: Html.ActionLink("Recieved messages", "Index", "Message", new { username = Page.User.Identity.Name }, null)%>,
     <%: Html.ActionLink("Sent messages", "Sent", "message", new { username = Page.User.Identity.Name }, null)%>,
     Send message
     </h3>
-
-    
+        
 	<% using (Html.BeginForm("SendMessage", "Message")) { %>
-		<%: Html.ValidationSummary() %>
 		<%: Html.AntiForgeryToken() %>
         <h3>Reciervers:</h3>
 		<%: Html.TextBox("To") %> <br />
-        <h3>Text</h3> <br />
-        <%: Html.TextBox("Text") %> <br />
+        <%: Html.ValidationSummary() %>
+        <h3>Text</h3>
+        <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
 		<input type="submit" value="Send" />
 	<% } %>
 
