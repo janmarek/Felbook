@@ -13,7 +13,7 @@ namespace Felbook.Models
         IQueryable<User> GetCommonFollowers(User usrFirst, User usrSecond); //společní followeři
 
         User GetById(int id); //najde užiatele podle ID
-        User GetByUsername(string name); //najde uživatele podle jména
+        User FindByUsername(string name); //najde uživatele podle jména
 
         bool IsUserInGroup(User usr, Group grp);
         void Add(User usr);
