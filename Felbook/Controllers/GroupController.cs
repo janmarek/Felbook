@@ -184,6 +184,32 @@ namespace Felbook.Controllers
 
 		#endregion
 
+		#region edit group
+
+		public ActionResult Edit(int id)
+		{
+			return View(Model.GroupService.FindById(id));
+		}
+
+
+		[HttpPost, ValidateAntiForgeryToken]
+		public ActionResult Edit(int id, FormCollection collection)
+		{
+			var group = Model.GroupService.FindById(id);
+
+			TryUpdateModel(group);
+
+			if (ModelState.IsValid)
+			{
+				Model.GroupService.Edit(group);
+				return RedirectToAction("Detail", new { id = group.Id });
+			}
+
+			return View(group);
+		}
+
+		#endregion
+
 		#endregion
 
 	}

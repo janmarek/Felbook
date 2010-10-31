@@ -23,7 +23,6 @@
         </div>
             
         <p>
-			<%= Html.HiddenFor(model => model.Id) %>
             <input type="submit" value="OK">
         </p>
     </fieldset>

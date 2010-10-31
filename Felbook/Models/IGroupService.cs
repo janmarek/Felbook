@@ -9,5 +9,6 @@ namespace Felbook.Models
 		System.Linq.IQueryable<User> GetUsers(Group grp);
 		Group FindById(int id);
 		System.Linq.IQueryable<Group> SearchGroups(string str);
+		void Edit(Group group);
 	}
 }

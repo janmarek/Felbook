@@ -114,6 +114,17 @@ namespace Felbook.Models
         public Group FindById(int id) {
             return db.GroupSet.Single(g => g.Id == id);
         }
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="group"></param>
+		public void Edit(Group group)
+		{
+			db.SaveChanges();
+		}
+	
         #endregion
-    }
+	}
 }

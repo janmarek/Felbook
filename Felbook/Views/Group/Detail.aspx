@@ -31,7 +31,12 @@
 		{ %>
 		<%: Html.ActionLink("Leave group", "Leave", new { id = Model.Group.Id })%>
 		<% } %> |
-		<%: Html.ActionLink("Add subgroup", "CreateSubGroup", new { id = Model.Group.Id })%></p>
+		<%: Html.ActionLink("Add subgroup", "CreateSubGroup", new { id = Model.Group.Id })%>
+		<% if (Model.Group.IsAdminedBy(Model.CurrentUser))
+		{ %>
+		| <%= Html.ActionLink("Edit group", "Edit", new { id = Model.Group.Id })%>
+		<% } else {%> neni pravda <%} %>
+		</p>
 	<% } %>
 
 	<div class="tabs">
