@@ -164,25 +164,37 @@ namespace Felbook.Models
 			grp1.Children.Add(grp3);
 			grp1.Users.Add(usr1);
 			grp1.Users.Add(usr2);
+			grp1.Users.Add(usr3);
+			grp1.Users.Add(usr4);
+			grp1.Users.Add(usr5);
 			usr1.JoinedGroups.Add(grp1);
 			usr2.JoinedGroups.Add(grp2);
+			grp1.Administrators.Add(usr1);
+			grp1.Administrators.Add(usr2);
 
 			grp2.Name = "Asie";
 			grp2.Description = "Řídíme asii";
 			grp2.Parent = grp1;
 			grp2.Creator = usr1;
+			grp2.Administrators.Add(usr1);
 
 			grp3.Name = "Evropa";
 			grp3.Description = "Řídíme Evropu";
 			grp3.Parent = grp2;
 			grp3.Children.Add(grp4);
+			grp3.Creator = usr1;
+			grp3.Administrators.Add(usr1);
 
 			grp4.Name = "Česká republika";
 			grp4.Description = "Řídíme Českou republiku";
 			grp4.Parent = grp3;
+			grp4.Creator = usr1;
+			grp4.Administrators.Add(usr1);
 
 			grp5.Name = "Slunce";
 			grp5.Description = "Jsme úplně jiná planeta";
+			grp5.Creator = usr1;
+			grp5.Administrators.Add(usr1);
 
 			#endregion
 

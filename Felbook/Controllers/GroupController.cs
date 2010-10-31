@@ -32,7 +32,17 @@ namespace Felbook.Controllers
     public class GroupController : Controller
 	{
 		#region properties
+
 		public Model Model { get; set; }
+
+		public User CurrentUser
+		{
+			get
+			{
+				return Model.UserService.FindByUsername(User.Identity.Name);
+			}
+		}
+
 		#endregion
 
 		#region init
@@ -53,6 +63,9 @@ namespace Felbook.Controllers
 
 		#endregion
 
+		#region actions
+
+		#region find
 
 		/// <summary>
 		/// Najít skupinu
@@ -72,7 +85,10 @@ namespace Felbook.Controllers
             return View(viewModel);
         }
 
+		#endregion
 
+		#region detail + join + leave
+		
 		/// <summary>
 		/// Zobrazit skupinu
 		/// </summary>
@@ -81,7 +97,7 @@ namespace Felbook.Controllers
 		public ActionResult Detail(int id)
 		{
 			return View(new GroupViewModel {
-				CurrentUser = Model.UserService.FindByUsername(User.Identity.Name),
+				CurrentUser = CurrentUser,
 				Group = Model.GroupService.FindById(id),
 			});
 		}
@@ -94,9 +110,8 @@ namespace Felbook.Controllers
 		/// <returns></returns>
 		public ActionResult Join(int id)
 		{
-			var currentUser = Model.UserService.FindByUsername(User.Identity.Name);
 			var group = Model.GroupService.FindById(id);
-			Model.UserService.JoinGroup(currentUser, group);
+			Model.UserService.JoinGroup(CurrentUser, group);
 			return RedirectToAction("Detail", new { id = id });
 		}
 
@@ -108,13 +123,68 @@ namespace Felbook.Controllers
 		/// <returns></returns>
 		public ActionResult Leave(int id)
 		{
-			var currentUser = Model.UserService.FindByUsername(User.Identity.Name);
 			var group = Model.GroupService.FindById(id);
-			Model.UserService.LeaveGroup(currentUser, group);
+			Model.UserService.LeaveGroup(CurrentUser, group);
 			return RedirectToAction("Detail", new { id = id });
 		}
 
-		
+		#endregion
 
-    }
+		#region create
+
+		/// <summary>
+		/// Vytvořit skupinu
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Create()
+		{
+			return View();
+		}
+
+
+		/// <summary>
+		/// Vytvořit skupinu, zpracování formuláře
+		/// </summary>
+		/// <param name="group">skupina s daty naplněnými z formuláře</param>
+		/// <returns></returns>
+		[HttpPost, ValidateAntiForgeryToken]
+		public ActionResult Create(Group group)
+		{
+			if (ModelState.IsValid)
+			{
+				Model.GroupService.Add(CurrentUser, group);
+				return RedirectToAction("Detail", new { id = group.Id });
+			}
+
+			return View();
+		}
+
+		#endregion
+
+		#region create subgroup
+
+		public ActionResult CreateSubGroup(int id)
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult CreateSubGroup(int id, Group group)
+		{
+			var parent = Model.GroupService.FindById(id);
+			
+			if (ModelState.IsValid)
+			{
+				Model.GroupService.AddSubGroup(CurrentUser, parent, group);
+				return RedirectToAction("Detail", new { id = group.Id });
+			}
+			
+			return View();
+		}
+
+		#endregion
+
+		#endregion
+
+	}
 }

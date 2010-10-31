@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Felbook.Models
 {
+	[MetadataType(typeof(GroupMetadata))]
 	public partial class Group
 	{
 		/// <summary>
@@ -25,6 +28,16 @@ namespace Felbook.Models
 
 				return list;
 			}
+		}
+
+
+		/// <summary>
+		/// Má alespoň jednoho rodiče
+		/// </summary>
+		/// <returns></returns>
+		public bool HasParent()
+		{
+			return Parent != null;
 		}
 
 
@@ -61,5 +74,16 @@ namespace Felbook.Models
 			return Creator == user;
 		}
 
+	}
+
+	public class GroupMetadata
+	{
+		[Required(ErrorMessage="Group name is required.")]
+		[DisplayName("Name")]
+		public string Name { set; get; }
+
+		[Required(ErrorMessage="Description is required.")]
+		[DisplayName("Description")]
+		public string Description { set; get; }
 	}
 }

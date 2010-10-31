@@ -49,34 +49,33 @@ namespace Felbook.Models
         /// <summary>
         /// Přidání nové podgrupy k dané nadgrupě
         /// </summary>
-        /// <param name="idParrentGroup">ID groupy do které budu přidávat podgrupu</param>
+		/// <param name="user">Zakladatel skupiny</param>
+		/// <param name="group">ID groupy do které budu přidávat podgrupu</param>
         /// <param name="child">nová podgrupa</param>
-        public void AddSubGroup(Group group, Group child) {
-            //přidám dítě do nadgrupy
-			group.Children.Add(child);
-            //podgrupě nastavím rodiče jako nadgrupu
+        public void AddSubGroup(User user, Group group, Group child) {
 			child.Parent = group;
-            //přidám podgrupu mezi ostatní grupy
-            db.AddToGroupSet(child);
-			db.SaveChanges();
+			group.Children.Add(child);
+			Add(user, child);
         }
 
         /// <summary>
         /// Přidání nové skupiny
         /// </summary>
-        /// <param name="grp">skupina</param>
-        public void Add(Group grp)
+        /// <param name="group">skupina</param>
+		/// <param name="user">uživatel, který vytváří skupinu</param>
+        public void Add(User user, Group group)
         {
-            db.AddToGroupSet(grp);
+			user.CreatedGroups.Add(group);
+			user.AdminedGroups.Add(group);
+			user.JoinedGroups.Add(group);
+
+			group.Administrators.Add(user);
+			group.Creator = user;
+			group.Users.Add(user);
+
+            db.AddToGroupSet(group);
 			db.SaveChanges();
         }
-
-        //dodělám až se opraví model je tam chyba u Group
-        /*void AddSubGroup(Group parent, Group child) {
-            parent.Children = child;
-            child.Parent = parent;
-            db.AddToGroupSet(child);
-        }*/
 
         /// <summary>
         /// Vymazání skupiny, ještě nefunguje zcela správně

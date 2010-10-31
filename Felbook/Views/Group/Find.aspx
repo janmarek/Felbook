@@ -4,6 +4,9 @@
 	Find group
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<h2>Create new group</h2>
+	<p><%: Html.ActionLink("Create group", "Create") %></p>
+
 	<h2>Find group</h2>
 	<% using (Html.BeginForm())
 	{ %>
@@ -12,7 +15,7 @@
 		<p>
 			Part of name or description:
 			<%: Html.TextBox("search", Model.SearchText) %>
-			<input type="submit" value="Hledat"></p>
+			<input type="submit" value="Find"></p>
 	</fieldset>
 	<% } %>
 

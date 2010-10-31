@@ -31,7 +31,7 @@
 		{ %>
 		<%: Html.ActionLink("Leave group", "Leave", new { id = Model.Group.Id })%>
 		<% } %> |
-		<%: Html.ActionLink("Add subgroup", "AddSubgroup", new { id = Model.Group.Id })%></p>
+		<%: Html.ActionLink("Add subgroup", "CreateSubGroup", new { id = Model.Group.Id })%></p>
 	<% } %>
 
 	<div class="tabs">
@@ -52,7 +52,31 @@
 		</div>
 
 		<div id="info">
+			<h3>Description</h3>
 			<p><%: Model.Group.Description%></p>
+			<% if (Model.Group.HasParent())
+			{ %>
+			<h3>Parent groups</h3>
+			<ul>
+				<% foreach (var group in Model.Group.Parents) { %>
+				<li><%: Html.ActionLink(group.Name, "Detail", new {id = group.Id}) %></li>
+				<% } %>
+			</ul>
+			<% } %>
+			<h3>Admins</h3>
+			<ul>
+			<% foreach (var admin in Model.Group.Administrators)
+			{ %>
+			<li><%: Html.ActionLink(admin.FullName, "Index", new {username = admin.Username}) %></li>
+			<% } %>
+			</ul>
+			<% if (Model.Group.Creator != null)
+			{ %>
+			<h3>Creator</h3>
+			<ul>
+			<li><%: Html.ActionLink(Model.Group.Creator.FullName, "Index", new { username = Model.Group.Creator.Username })%></li>
+			</ul>
+			<% } %>
 		</div>
 
 		<div id="subgroups">

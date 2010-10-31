@@ -14,7 +14,7 @@ namespace Felbook.Tests
 	[TestClass]
 	public class GroupTest
 	{
-		private FelBookDBEntities db = new FelBookDBEntities();
+		// private FelBookDBEntities db = new FelBookDBEntities();
 
 		#region Additional test attributes
 
