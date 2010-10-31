@@ -28,11 +28,11 @@ namespace Felbook.Controllers
             base.Initialize(requestContext);
         }
 
-        public ActionResult Index(string username)
+        public ActionResult Index()
         {
-            if ((User != null) && (username == User.Identity.Name))
+            if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(model.UserService.FindByUsername(username));
+                return View(model.UserService.GetByUsername(User.Identity.Name));
             }
             else
             {
@@ -41,11 +41,11 @@ namespace Felbook.Controllers
             }
         }
 
-        public ActionResult Sent(string username)
+        public ActionResult Sent()
         {
-            if ((User != null) && (username == User.Identity.Name))
+            if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(msgModel.getMessagesSentByUser(username));
+                return View(msgModel.GetMessagesSentByUser(User.Identity.Name));
             }
             else
             {
@@ -54,11 +54,24 @@ namespace Felbook.Controllers
             }
         }
 
-        public ActionResult SendMessage(string username)
+        public ActionResult SendMessage()
         {
-            if ((User != null) && (username == User.Identity.Name))
+            if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(model.UserService.FindByUsername(username));
+                return View(model.UserService.GetByUsername(User.Identity.Name));
+            }
+            else
+            {
+                //return View("NotAuthorized");
+                return View("Error");
+            }
+        }
+
+        public ActionResult ReplyMessage(int msgID)
+        {
+            if ((User != null) && (Request.IsAuthenticated) /*&& (msgID != null)*/)
+            {
+                return View(msgModel.GetMessageById(msgID));
             }
             else
             {
@@ -78,8 +91,8 @@ namespace Felbook.Controllers
                 
                 List<string> listOfRecievers = recievers.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                msgModel.sendMessageToUsers(User.Identity.Name, listOfRecievers, collection["text"]);
-                return RedirectToAction("Sent", new { username = User.Identity.Name });
+                msgModel.SendMessageToUsers(User.Identity.Name, listOfRecievers, int.Parse(collection["PrevMessageID"]), collection["text"]);
+                return RedirectToAction("Sent");
             }
             catch (InvalidOperationException)
             {
@@ -89,6 +102,7 @@ namespace Felbook.Controllers
             
         }
 
+        
     }
 }
 
