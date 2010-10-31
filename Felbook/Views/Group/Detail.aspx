@@ -35,7 +35,7 @@
 		<% if (Model.Group.IsAdminedBy(Model.CurrentUser))
 		{ %>
 		| <%= Html.ActionLink("Edit group", "Edit", new { id = Model.Group.Id })%>
-		<% }
+		<% } %>
 		</p>
 	<% } %>
 
