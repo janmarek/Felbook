@@ -21,10 +21,11 @@
             
             <div id="menucontainer">
             
-                <ul id="menu">     
+                <ul id="menu">
+					<li><%: Html.ActionLink("Groups", "Find", "Group") %></li>
 					<% if (Request.IsAuthenticated) { %>
 					<li><%: Html.ActionLink("My profile", "Index", "Profile", new { username = Page.User.Identity.Name }, null)%></li>
-		            <li><%: Html.ActionLink("Mail-box", "Index", "Message")%></li>
+		            <li><%: Html.ActionLink("Messages", "Index", "Message")%></li>
 	                <% } %>
                     <li><%: Html.ActionLink("TestData", "TestData", "Home")%></li>
                 </ul>
