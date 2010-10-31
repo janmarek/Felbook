@@ -58,6 +58,7 @@ namespace Felbook.Models
 			child.Parent = group;
             //přidám podgrupu mezi ostatní grupy
             db.AddToGroupSet(child);
+			db.SaveChanges();
         }
 
         /// <summary>
@@ -67,6 +68,7 @@ namespace Felbook.Models
         public void Add(Group grp)
         {
             db.AddToGroupSet(grp);
+			db.SaveChanges();
         }
 
         //dodělám až se opraví model je tam chyba u Group
@@ -100,6 +102,8 @@ namespace Felbook.Models
             foreach(Group gDel in groupForDel){
                 db.GroupSet.DeleteObject(gDel);
             }
+
+			db.SaveChanges();
             
         }
 
@@ -108,17 +112,8 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="id">Id které hledáme</param>
         /// <returns></returns>
-        public Group SearchById(int id) {
+        public Group FindById(int id) {
             return db.GroupSet.Single(g => g.Id == id);
-        }
-
-
-        /// <summary>
-        /// Potvrdí se změny do DB - prostě commit
-        /// </summary>
-        public void Save()
-        {
-            db.SaveChanges();
         }
         #endregion
     }

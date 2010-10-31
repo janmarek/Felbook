@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Felbook.Models
 {
-    public interface IGroupService
-    {
-        IQueryable<User> GetUsers(Group grp);
-        void Add(Group grp); //přidání nové skupiny
-        void Delete(Group grp); //zatím ještě nefunguje pořádně
-        void AddSubGroup(Group group, Group child); //přidání podskupiny do skupiny
-        Group SearchById(int id); //najde skupinu podle ID
-    }
+	public interface IGroupService
+	{
+		void Add(Group grp);
+		void AddSubGroup(Group group, Group child);
+		void Delete(Group grp);
+		System.Linq.IQueryable<User> GetUsers(Group grp);
+		Group FindById(int id);
+		System.Linq.IQueryable<Group> SearchGroups(string str);
+	}
 }

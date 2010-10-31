@@ -9,6 +9,22 @@ namespace Felbook.Models
 {
 	public partial class User
 	{
+		/// <summary>
+		/// Jméno a příjmení
+		/// </summary>
+		public string FullName
+		{
+			get
+			{
+				return Name + " " + Surname;
+			}
+		}
+
+		/// <summary>
+		/// Získat osolený hash hesla
+		/// </summary>
+		/// <param name="password">heslo</param>
+		/// <returns></returns>
 		private string CalculateHash(string password)
 		{
 			byte[] buffer = Encoding.UTF8.GetBytes(password + Username);
