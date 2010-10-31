@@ -84,7 +84,7 @@ namespace Felbook.Controllers
             usr2.LastLogged = new DateTime(2010, 10, 10, 10, 0, 0);
 			usr2.Mail = "jan@novak.cz";
             usr2.Username = "novakjan";
-			usr1.ChangePassword("123456");
+			usr2.ChangePassword("123456");
 
             User usr3 = new User();
             usr3.Name = "Bedřich";
@@ -120,7 +120,7 @@ namespace Felbook.Controllers
             db.AddToUserSet(usr3);
             db.AddToUserSet(usr4);
             db.AddToUserSet(usr5);
-
+            
             #endregion
 
             #region naplnění MessageSet

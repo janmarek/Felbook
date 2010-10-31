@@ -10,19 +10,19 @@ namespace Felbook.Controllers
 {
     public class MessageController : Controller
     {
-        public ISystemService service { get; set; }
-        public IMessageModel model { get; set; }
+        private Model model { get; set; }
+        private IMessageModel msgModel { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
-            if (service == null)
-            {
-                service = new SystemService();
-            }
-
             if (model == null)
             {
-                model = new MessageModel();
+                model = new Model();
+            }
+
+            if (msgModel == null)
+            {
+                msgModel = new MessageModel();
             }
 
             base.Initialize(requestContext);
@@ -32,9 +32,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                //User user = DbEntities.UserSet.Single(u => u.Username == username);
-                User user = service.SearchUsers(username).Single();
-                return View(user);
+                return View(model.UserService.GetByUsername(username));
             }
             else
             {
@@ -47,7 +45,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                return View(model.getMessagesSentByUser(username));
+                return View(msgModel.getMessagesSentByUser(username));
             }
             else
             {
@@ -60,9 +58,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                //User user = DbEntities.UserSet.Single(u => u.Username == username);
-                User user = service.SearchUsers(username).Single();
-                return View(user);
+                return View(model.UserService.GetByUsername(username));
             }
             else
             {
@@ -76,14 +72,13 @@ namespace Felbook.Controllers
         {
             try
             {
-                //List<string> listOfRecievers = new List<string>();
                 string recievers = collection["To"];
                 string[] separators = new string[1];
                 separators[0] = " ";
+                
                 List<string> listOfRecievers = recievers.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                //listOfRecievers.Add(collection["To"]);
-                model.sendMessageToUsers(User.Identity.Name, listOfRecievers, collection["text"]);
+                msgModel.sendMessageToUsers(User.Identity.Name, listOfRecievers, collection["text"]);
                 return RedirectToAction("Sent", new { username = User.Identity.Name });
             }
             catch (InvalidOperationException)
