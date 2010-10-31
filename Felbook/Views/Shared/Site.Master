@@ -24,7 +24,7 @@
                 <ul id="menu">     
 					<% if (Request.IsAuthenticated) { %>
 					<li><%: Html.ActionLink("My profile", "Index", "Profile", new { username = Page.User.Identity.Name }, null)%></li>
-		            <li><%: Html.ActionLink("Mail-box", "Index", "Message", new { username = Page.User.Identity.Name }, null)%></li>
+		            <li><%: Html.ActionLink("Mail-box", "Index", "Message")%></li>
 	                <% } %>
                     <li><%: Html.ActionLink("TestData", "TestData", "Home")%></li>
                 </ul>

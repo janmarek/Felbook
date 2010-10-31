@@ -70,29 +70,14 @@ namespace Felbook.Tests
 
 
         /// <summary>
-        ///A test for DbEntities
-        ///</summary>
-        [TestMethod()]
-        public void DbEntitiesTest()
-        {
-            MessageController target = new MessageController();
-            FelBookDBEntities expected = new FelBookDBEntities();
-            FelBookDBEntities actual;
-            target.DbEntities = expected;
-            actual = target.DbEntities;
-            Assert.AreEqual(expected, actual);
-           
-        }
-
-        /// <summary>
         ///A test for Index
         ///</summary>
         [TestMethod()]
         public void IndexTest()
         {
             MessageController target = new MessageController();
-            string username = " ";
-            ViewResult actual = target.Index(username) as ViewResult;
+            //string username = " ";
+            ViewResult actual = target.Index() as ViewResult;
             Assert.IsNotNull(actual);
             // TODO - tenhle test trochu vylepšit
         }

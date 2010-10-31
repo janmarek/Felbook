@@ -6,12 +6,12 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Mail-box (<%= Page.User.Identity.Name%>)</h2>
+    <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
      
     <h3>
-    <%: Html.ActionLink("Recieved messages", "Index", "Message", new { username = Page.User.Identity.Name }, null)%>,
+    <%: Html.ActionLink("Recieved messages", "Index", "Message")%>,
     Sent messages,
-    <%: Html.ActionLink("Send message", "SendMessage", "Message", new { username = Page.User.Identity.Name }, null)%>
+    <%: Html.ActionLink("Send message", "SendMessage", "Message")%>
     </h3>
 
     <% foreach (var message in Model) { %>
