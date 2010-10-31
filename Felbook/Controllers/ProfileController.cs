@@ -13,10 +13,16 @@ using System.Management.Instrumentation;
 namespace Felbook.Controllers
 {
     public class ProfileController : Controller
-    {
-        public Model Model { get; set; }
+	{
+		#region properties
+		
+		public Model Model { get; set; }
 
-        protected override void Initialize(RequestContext requestContext)
+		#endregion
+
+		#region init
+		
+		protected override void Initialize(RequestContext requestContext)
         {
             if (Model == null)
             {
@@ -26,9 +32,11 @@ namespace Felbook.Controllers
             base.Initialize(requestContext);
         }
 
+		#endregion
+
         public ActionResult Index(string username)
         {
-            User user = Model.UserService.GetByUsername(username);
+            User user = Model.UserService.FindByUsername(username);
             return View(user);
         }
 
@@ -38,10 +46,10 @@ namespace Felbook.Controllers
         }
 
 
-        [AcceptVerbs(HttpVerbs.Post), HttpPost]
+        [AcceptVerbs(HttpVerbs.Post), HttpPost, ValidateAntiForgeryToken]
         public ActionResult AddStatus(FormCollection collection)
         {
-            User actualUser = Model.UserService.GetByUsername(User.Identity.Name);
+            User actualUser = Model.UserService.FindByUsername(User.Identity.Name);
             int userId = actualUser.Id; //vytáhnu si ID usera pro vytvoření složky
             Status status = new Status();
             status.Text = collection["status"];

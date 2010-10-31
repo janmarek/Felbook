@@ -32,7 +32,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                return View(model.UserService.GetByUsername(username));
+                return View(model.UserService.FindByUsername(username));
             }
             else
             {
@@ -58,7 +58,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (username == User.Identity.Name))
             {
-                return View(model.UserService.GetByUsername(username));
+                return View(model.UserService.FindByUsername(username));
             }
             else
             {

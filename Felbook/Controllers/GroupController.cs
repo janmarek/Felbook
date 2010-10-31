@@ -16,6 +16,13 @@ namespace Felbook.Models
 
 		public IQueryable<Group> Groups { get; set; }
 	}
+
+	public class GroupViewModel
+	{
+		public User CurrentUser { get; set; }
+
+		public Group Group { get; set; }
+	}
 }
 
 #endregion
@@ -46,10 +53,11 @@ namespace Felbook.Controllers
 
 		#endregion
 
+
 		/// <summary>
-		/// Find group action
+		/// Najít skupinu
 		/// </summary>
-		/// <param name="search">search string</param>
+		/// <param name="search">hledaný text</param>
 		/// <returns>view</returns>
         public ActionResult Find(string search)
         {
@@ -65,10 +73,45 @@ namespace Felbook.Controllers
         }
 
 
+		/// <summary>
+		/// Zobrazit skupinu
+		/// </summary>
+		/// <param name="id">id</param>
+		/// <returns></returns>
 		public ActionResult Detail(int id)
 		{
+			return View(new GroupViewModel {
+				CurrentUser = Model.UserService.FindByUsername(User.Identity.Name),
+				Group = Model.GroupService.FindById(id),
+			});
+		}
+
+
+		/// <summary>
+		/// Přidat se ke skupině
+		/// </summary>
+		/// <param name="id">id</param>
+		/// <returns></returns>
+		public ActionResult Join(int id)
+		{
+			var currentUser = Model.UserService.FindByUsername(User.Identity.Name);
 			var group = Model.GroupService.FindById(id);
-			return View(group);
+			Model.UserService.JoinGroup(currentUser, group);
+			return RedirectToAction("Detail", new { id = id });
+		}
+
+
+		/// <summary>
+		/// Odejít ze skupiny
+		/// </summary>
+		/// <param name="id">id</param>
+		/// <returns></returns>
+		public ActionResult Leave(int id)
+		{
+			var currentUser = Model.UserService.FindByUsername(User.Identity.Name);
+			var group = Model.GroupService.FindById(id);
+			Model.UserService.LeaveGroup(currentUser, group);
+			return RedirectToAction("Detail", new { id = id });
 		}
 
 		
