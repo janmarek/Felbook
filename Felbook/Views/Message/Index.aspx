@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-   <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
+    <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
 
     <h3>
         Recieved messages,
@@ -19,11 +19,11 @@
         <p>
             <b><%= String.Format("{0:g}", message.Created)%></b> from
             <%= message.Sender.Username%>
+            <%: Html.ActionLink("Reply >>", "ReplyMessage", "Message", new { msgid = message.Id.ToString() }, null)%>
         </p>
         <p>
             <%= message.Text%>
         </p>
-        <%: Html.ActionLink("Reply >>", "ReplyMessage", "Message", new { msgid = message.Id.ToString() }, null)%>
     </div>
     <% } %>
 </asp:Content>

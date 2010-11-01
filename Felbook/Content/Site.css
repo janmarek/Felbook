@@ -357,4 +357,14 @@ div#title
     width: 45%;
     display: inline-block;
     vertical-align: top;
-}   
+} 
+
+/* Styly pro zprávy
+----------------------------------------------------------*/  
+.message
+{
+    border: 1px solid #7f7f7f;
+    padding: 5px;
+    margin: 5px;
+}
+

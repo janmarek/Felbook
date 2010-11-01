@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Reply Message (<%= Model.Id%>) </h2>
+    <h2>Reply Message</h2>
     
     <% using (Html.BeginForm("SendMessage", "Message")) { %>
 		<%: Html.AntiForgeryToken() %>

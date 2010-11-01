@@ -20,7 +20,7 @@ namespace Felbook.Models
     public class MessageModel : IMessageModel
     {
 
-        public FelBookDBEntities DbEntities { get; set; }
+        private FelBookDBEntities DbEntities { get; set; }
 
         public MessageModel()
         {
