@@ -6,17 +6,18 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Mail-box (<%= Page.User.Identity.Name%>)</h2>
+    <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
 
     <h3>
-    <%: Html.ActionLink("Recieved messages", "Index", "Message", new { username = Page.User.Identity.Name }, null)%>,
-    <%: Html.ActionLink("Sent messages", "Sent", "message", new { username = Page.User.Identity.Name }, null)%>,
+    <%: Html.ActionLink("Recieved messages", "Index", "Message")%>,
+    <%: Html.ActionLink("Sent messages", "Sent", "Message")%>,
     Send message
     </h3>
         
 	<% using (Html.BeginForm("SendMessage", "Message")) { %>
 		<%: Html.AntiForgeryToken() %>
-        <h3>Reciervers:</h3>
+        <h3>Reciervers (separator is space):</h3>
+        <%: Html.Hidden("PrevMessageID", (object)0)%>
 		<%: Html.TextBox("To") %> <br />
         <%: Html.ValidationSummary() %>
         <h3>Text</h3>

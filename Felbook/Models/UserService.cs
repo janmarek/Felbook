@@ -107,6 +107,7 @@ namespace Felbook.Models
         /// <param name="grp">Skupina</param>
         public void JoinGroup(User usr, Group grp)
         {
+			usr.JoinedGroups.Add(grp);
             grp.Users.Add(usr);
 			db.SaveChanges();
         }
@@ -118,6 +119,7 @@ namespace Felbook.Models
         /// <param name="grp">Skupina ze které se bude mazat</param>
         public void LeaveGroup(User usr, Group grp)
         {
+			usr.JoinedGroups.Remove(grp);
             grp.Users.Remove(usr);
 			db.SaveChanges();
         }
@@ -159,7 +161,7 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="name">Jméno</param>
         /// <returns>Uživatel</returns>
-        public User GetByUsername(string userName) {
+        public User FindByUsername(string userName) {
             return db.UserSet.Single(u => u.Username == userName);
         }
 
@@ -169,7 +171,7 @@ namespace Felbook.Models
         /// <param name="user">Uživatel</param>
         /// <param name="st">Status</param>
         public void AddStatus(User user, Status st) {
-            User usr = GetByUsername(user.Username);
+            User usr = FindByUsername(user.Username);
             usr.Statuses.Add(st);
 			db.SaveChanges();
         }

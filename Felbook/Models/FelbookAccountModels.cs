@@ -113,7 +113,7 @@ namespace Felbook.Models
             DBEntities.SaveChanges();
 
             return MembershipCreateStatus.Success;
-            
+            // TODO spojit tyto dvě metody
         }
 
         public MembershipCreateStatus CreateUser(string userName, string password, string email)

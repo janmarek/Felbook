@@ -10,31 +10,29 @@ namespace Felbook.Controllers
 {
     public class MessageController : Controller
     {
-        public ISystemService service { get; set; }
-        public IMessageModel model { get; set; }
+        private Model model { get; set; }
+        private IMessageModel msgModel { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
-            if (service == null)
-            {
-                service = new SystemService();
-            }
-
             if (model == null)
             {
-                model = new MessageModel();
+                model = new Model();
+            }
+
+            if (msgModel == null)
+            {
+                msgModel = new MessageModel();
             }
 
             base.Initialize(requestContext);
         }
 
-        public ActionResult Index(string username)
+        public ActionResult Index()
         {
-            if ((User != null) && (username == User.Identity.Name))
+            if ((User != null) && (Request.IsAuthenticated))
             {
-                //User user = DbEntities.UserSet.Single(u => u.Username == username);
-                User user = service.SearchUsers(username).Single();
-                return View(user);
+                return View(model.UserService.FindByUsername(User.Identity.Name));
             }
             else
             {
@@ -43,11 +41,11 @@ namespace Felbook.Controllers
             }
         }
 
-        public ActionResult Sent(string username)
+        public ActionResult Sent()
         {
-            if ((User != null) && (username == User.Identity.Name))
+            if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(model.getMessagesSentByUser(username));
+                return View(msgModel.GetMessagesSentByUser(User.Identity.Name));
             }
             else
             {
@@ -56,13 +54,24 @@ namespace Felbook.Controllers
             }
         }
 
-        public ActionResult SendMessage(string username)
+        public ActionResult SendMessage()
         {
-            if ((User != null) && (username == User.Identity.Name))
+            if ((User != null) && (Request.IsAuthenticated))
             {
-                //User user = DbEntities.UserSet.Single(u => u.Username == username);
-                User user = service.SearchUsers(username).Single();
-                return View(user);
+                return View(model.UserService.FindByUsername(User.Identity.Name));
+            }
+            else
+            {
+                //return View("NotAuthorized");
+                return View("Error");
+            }
+        }
+
+        public ActionResult ReplyMessage(int msgID)
+        {
+            if ((User != null) && (Request.IsAuthenticated) /*&& (msgID != null)*/)
+            {
+                return View(msgModel.GetMessageById(msgID));
             }
             else
             {
@@ -76,15 +85,14 @@ namespace Felbook.Controllers
         {
             try
             {
-                //List<string> listOfRecievers = new List<string>();
                 string recievers = collection["To"];
                 string[] separators = new string[1];
                 separators[0] = " ";
+                
                 List<string> listOfRecievers = recievers.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                //listOfRecievers.Add(collection["To"]);
-                model.sendMessageToUsers(User.Identity.Name, listOfRecievers, collection["text"]);
-                return RedirectToAction("Sent", new { username = User.Identity.Name });
+                msgModel.SendMessageToUsers(User.Identity.Name, listOfRecievers, int.Parse(collection["PrevMessageID"]), collection["text"]);
+                return RedirectToAction("Sent");
             }
             catch (InvalidOperationException)
             {
@@ -94,6 +102,7 @@ namespace Felbook.Controllers
             
         }
 
+        
     }
 }
 
