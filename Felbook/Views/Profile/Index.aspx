@@ -57,8 +57,10 @@
 	<% foreach (var status in Model.Statuses.OrderByDescending(status => status.Id)) //seřadí sestupně podle ID statusu
     { %>
 	<p><b><%= String.Format("{0:g}", status.Created) %></b> - <%= status.Text %></p>
+        
+        
         <% foreach (var img in status.Images) { %>
-        <p><img src="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" alt="<%= String.Format("{0:g}", img.Description) %>" title="<%= String.Format("{0:g}", img.Description) %>" width="60" height="80" /></p>
+        <a href="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" rel="lightbox"><%= String.Format("{0:g}", img.Description) %></a>    
         <% } %>
         
         <% if(status.Links.Count > 0) { //pokud jsou ve statusu linky tak se zobrazí %>

@@ -35,7 +35,7 @@ namespace Felbook.Controllers
 
         public ActionResult Index(string username)
         {
-            User user = Model.UserService.GetByUsername(username);
+            User user = Model.UserService.FindByUsername(username);
             return View(user);
         }
 
@@ -115,7 +115,7 @@ namespace Felbook.Controllers
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
         public ActionResult AddStatus(FormCollection collection)
         {
-            User actualUser = Model.UserService.GetByUsername(User.Identity.Name);
+            User actualUser = Model.UserService.FindByUsername(User.Identity.Name);
             int userId = actualUser.Id; //vytáhnu si ID usera pro vytvoření složky
             Status status = new Status();
             status.Text = collection["status"];
@@ -212,13 +212,11 @@ namespace Felbook.Controllers
             else //pokud je model validní tak uloží user linky, uploaduje a uloží obrázky a uloží samotný status k uživately
             {
                 //upload linků ke statusu
-                if (Session["links"]!="")
+                if (Session["links"]!=null)
                 {  
                     List<string> userLinks = Session["links"].ToString().Split(linkDelimiter).ToList();
                     for (int i = 0; i < (userLinks.Count - 1); i++)
                     {
-                        //count-2 protože poslední link je "" kvůli linkDelimiteru který je na konci stringu
-                        // link-1(linkDelimiter)link-2(linkDelimiter).....link-n(linkDelimiter) -> delimiter je i na konci
                         Felbook.Models.Link newLink = new Felbook.Models.Link();
                         newLink.URL = userLinks.ElementAt(i);
                         status.Links.Add(newLink);
