@@ -14,22 +14,28 @@ namespace Felbook.Controllers
 {
     public class ProfileController : Controller
     {
-        public FelBookDBEntities DbEntities { get; set; }
+        #region Proměnné
+        /// <summary>
+        /// Znak podle kterého se budou dělit strinq linků do pole
+        /// </summary>
+        private char linkDelimiter = '°';
+        #endregion
+
+        public Model Model { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
-            if (DbEntities == null)
+            if (Model == null)
             {
-                DbEntities = new FelBookDBEntities();
+                Model = new Model();
             }
 
             base.Initialize(requestContext);
-        }
+        } 
 
         public ActionResult Index(string username)
         {
-            UserService userSer = new UserService();
-            User user = userSer.SearchByUserName(username);
+            User user = Model.UserService.GetByUsername(username);
             return View(user);
         }
 
@@ -38,45 +44,151 @@ namespace Felbook.Controllers
             return false;
         }
 
+        
+
+        // AJAX: /Profile/GetContent/
+        /// <summary>
+        /// Tato metoda řeší parsování a kontrolování zadaných linků od uživatele
+        /// </summary>
+        /// <param name="collection">Kolekce hodnot z formuláře</param>
+        /// <returns>Vrátí obsah který se uloží 
+        /// do DIV elementu ve formuláři, a po odeslání formuláře se z SESSION 
+        /// uloží linky do databáze</returns>
+        [AcceptVerbs(HttpVerbs.Post), HttpPost]
+        public ActionResult SetLinksContent(FormCollection collection)  
+        {
+            string returnVal=String.Empty; //výsledný řetězec který metoda vrací
+            if (ValidLink(collection["newLink"]) != String.Empty)
+            {
+                Session["links"] += collection["newLink"] + linkDelimiter;
+            }
+            else 
+            {
+                returnVal += collection["newLink"] + " is not valid link.";
+            }
+            List<string> returnList = new List<string>();
+
+            try
+            {
+                returnList = Session["links"].ToString().Split(linkDelimiter).ToList<string>();
+            }
+            catch (Exception e) {
+                returnVal += e.Message;
+            }           
+            returnVal += "<ul>";
+            for (int i = 0; i < (returnList.Count-1); i++) {
+                returnVal += "<li>" + returnList.ElementAt(i).ToString() + "</li>";
+            }
+            returnVal += "</ul>";
+            return Content(returnVal);  
+        }
+
+        /// <summary>
+        /// Metoda pro validaci jestli daný link je validní a jestli již neni v Session s linky
+        /// </summary>
+        /// <param name="str">Link který validujeme</param>
+        /// <returns>Vrátí stríng který reprezentuje link</returns>
+        private string ValidLink(string link) {          
+            //tady bude testování jestli daný link existuje skusí se to nějakou připojovací metodou přes webclienta
+            List<string> linkList = new List<string>();
+            /*if (String.IsNullOrEmpty(Session["links"].ToString())==false)
+            {
+                linkList = Session["links"].ToString().Split(linkDelimiter).ToList<string>();
+            }
+            //ověřuje se jestli daný link již existuje
+            foreach(string link in linkList){
+                if (link.Contains(str)) {
+                    return String.Empty;
+                }
+            }*/
+            //String ahoj = Session["links"].ToString();
+            
+            if (true)
+            {
+                return link;           
+            }
+            /*else {
+                return String.Empty;
+            }*/
+        }
 
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
         public ActionResult AddStatus(FormCollection collection)
         {
-            UserService userSer = new UserService(); //používám z modelu UserService
-            User actualUser = userSer.SearchByUserName(User.Identity.Name);
+            User actualUser = Model.UserService.GetByUsername(User.Identity.Name);
             int userId = actualUser.Id; //vytáhnu si ID usera pro vytvoření složky
             Status status = new Status();
             status.Text = collection["status"];
             status.Created = DateTime.Now;
+            
+            //representace souborů k uploadu
+            List<HttpPostedFileBase> filesToSave = new List<HttpPostedFileBase>();
+            //cesty kam se budou soubory ukládat
+            List<string> filesPathsToSave = new List<string>();
 
-
-            HttpPostedFileBase file = Request.Files["picture"];
-            //ověření jestli je to obrázek
-            if (file.ContentType == "image/jpeg" && (file.FileName.ToLower().EndsWith(".jpg") || file.FileName.ToLower().EndsWith(".jpeg"))
-                || file.ContentType == "image/gif" && file.FileName.ToLower().EndsWith(".gif")
-                || file.ContentType == "image/png" && file.FileName.ToLower().EndsWith(".png")
-                )
+            int fileOrder = 1; //fileOrder je proměnná určující pořadí obrázku
+            while (Request.Files["picture" + fileOrder].ContentLength > 0)
             {
+                HttpPostedFileBase file = Request.Files["picture" + fileOrder];
+                //ověření jestli je to obrázek
                 if (file.ContentLength > 0)
                 {
-                    string pathDir = "../Web_Data/status_images/";
-                    string filePath = Path.Combine(HttpContext.Server.MapPath(pathDir + userId), Path.GetFileName(file.FileName));
-                    string dirPath = Path.GetDirectoryName(filePath);
-
-                    if (System.IO.File.Exists(filePath) == true)
+                    if (file.ContentType == "image/jpeg" && (file.FileName.ToLower().EndsWith(".jpg") || file.FileName.ToLower().EndsWith(".jpeg"))
+                        || file.ContentType == "image/gif" && file.FileName.ToLower().EndsWith(".gif")
+                        || file.ContentType == "image/png" && file.FileName.ToLower().EndsWith(".png")
+                        )
                     {
-                        ModelState.AddModelError("picture", "This file " + file.FileName + " is already exist.");
-                    }
+                        string pathDir = "../Web_Data/status_images/";
+                        string filePath = Path.Combine(HttpContext.Server.MapPath(pathDir + userId), Path.GetFileName(file.FileName));
+                        string dirPath = Path.GetDirectoryName(filePath);
 
-                    if (Directory.Exists(dirPath) == false)
-                    {
-                        try
+                        if (System.IO.File.Exists(filePath) == true)
                         {
-                            //pokusíme se vytvořit adresář
-                            Directory.CreateDirectory(dirPath);
+                            ModelState.AddModelError("picture", "This file " + file.FileName + " is already exist.");
                         }
-                        //jednotlivě odchytávám chyby
+
+                        if (Directory.Exists(dirPath) == false)
+                        {
+                            try
+                            {
+                                //pokusíme se vytvořit adresář
+                                Directory.CreateDirectory(dirPath);
+                            }
+                            //jednotlivě odchytávám chyby
+                            catch (UnauthorizedAccessException)
+                            {
+                                ModelState.AddModelError("picture", "You have not permission to save picture");
+                            }
+                            catch (Exception)
+                            {
+                                ModelState.AddModelError("picture", "Some uknown error");
+                            }
+                        }
+
+                        //ukládám soubor zase s odchytavanim chyb
+                        try
+                        {         
+                            //ke statusu se postupně ukládají informace ohledně uploadu
+                            //jestli se opravdu uploadujou obrázky se rozhodne na konci metody
+                            Felbook.Models.Image newImg = new Felbook.Models.Image();
+                            if (String.IsNullOrEmpty(collection["description" + fileOrder]))
+                            {
+                                newImg.Description = "no comment"; //pokud uživatel nevyplnil description
+                            }
+                            else
+                            {
+                                newImg.Description = collection["description" + fileOrder];
+                            }
+                            newImg.FileName = file.FileName;
+                            status.Images.Add(newImg);
+                            filesToSave.Add(file);
+                            filesPathsToSave.Add(filePath);
+                        }
                         catch (UnauthorizedAccessException)
+                        {
+                            ModelState.AddModelError("picture", "You have not permission to save picture");
+                        }
+                        catch (DirectoryNotFoundException)
                         {
                             ModelState.AddModelError("picture", "You have not permission to save picture");
                         }
@@ -85,54 +197,42 @@ namespace Felbook.Controllers
                             ModelState.AddModelError("picture", "Some uknown error");
                         }
                     }
-
-                    //ukládám soubor zase s odchytavanim chyb
-                    try
+                    else
                     {
-                        file.SaveAs(filePath);
-                        Felbook.Models.Image newImg = new Felbook.Models.Image();
-                        if (String.IsNullOrEmpty(collection["description"]))
-                        {
-                            newImg.Description = "no comment"; //pokud uživatel nevyplnil description
-                        }
-                        else
-                        {
-                            newImg.Description = collection["description"];
-                        }
-                        newImg.FileName = file.FileName;
-                        status.Images.Add(newImg);
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        ModelState.AddModelError("picture", "You have not permission to save picture");
-                    }
-                    catch (DirectoryNotFoundException)
-                    {
-                        ModelState.AddModelError("picture", "You have not permission to save picture");
-                    }
-                    catch (Exception)
-                    {
-                        ModelState.AddModelError("picture", "Some uknown error");
+                        ModelState.AddModelError("picture", "This file " + file.FileName + " is not image.");
                     }
                 }
+                fileOrder++; //inkrementace pro načtení dalšího uploadvatelného obrázku
             }
-            else
-            {
-                ModelState.AddModelError("picture", "This file " + file.FileName + " is not image.");
-            }
-
-
-
-
-            userSer.AddStatus(actualUser, status); //uloží se status i s obrázkem
-
-            if (!ModelState.IsValid)
+              
+            if (!ModelState.IsValid) //pokud model není validní tak se nic neuloží a pouze se ukážou chyby pomocí View[]
             {
                 return View("Index", actualUser);
             }
-            else
+            else //pokud je model validní tak uloží user linky, uploaduje a uloží obrázky a uloží samotný status k uživately
             {
-                userSer.Save();
+                //upload linků ke statusu
+                if (Session["links"]!="")
+                {  
+                    List<string> userLinks = Session["links"].ToString().Split(linkDelimiter).ToList();
+                    for (int i = 0; i < (userLinks.Count - 1); i++)
+                    {
+                        //count-2 protože poslední link je "" kvůli linkDelimiteru který je na konci stringu
+                        // link-1(linkDelimiter)link-2(linkDelimiter).....link-n(linkDelimiter) -> delimiter je i na konci
+                        Felbook.Models.Link newLink = new Felbook.Models.Link();
+                        newLink.URL = userLinks.ElementAt(i);
+                        status.Links.Add(newLink);
+                    }
+                    Session["links"] = null; //vymaže session
+                }
+                //nyní upload obrázku ke statusu
+                int filePointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k souboru
+                foreach (HttpPostedFileBase file in filesToSave)
+                { //projdou ve vsechny soubory a uploadujou se
+                    file.SaveAs(filesPathsToSave.ElementAt(filePointer));
+                    filePointer++;
+                }
+                Model.UserService.AddStatus(actualUser, status); //uloží se status i s obrázkem
                 return RedirectToAction("Index", new { username = User.Identity.Name });
             }
         }

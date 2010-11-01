@@ -75,7 +75,8 @@ namespace Felbook.Controllers
             usr1.LastLogged = DateTime.Now;
             usr1.Mail = "jakub@novak.cz";
             usr1.Username = "novakjakub";
-			usr1.ChangePassword("123456");
+            usr1.PasswordHash = "0EBDDD353A5B84CBB468320F58D520EAE40D3B9D";
+            //usr1.ChangePassword("123456");
 
             User usr2 = new User();
             usr2.Name = "Jan";
@@ -84,7 +85,8 @@ namespace Felbook.Controllers
             usr2.LastLogged = new DateTime(2010, 10, 10, 10, 0, 0);
 			usr2.Mail = "jan@novak.cz";
             usr2.Username = "novakjan";
-			usr1.ChangePassword("123456");
+            usr2.PasswordHash = "6B7026866BF008F41A6FDE8335952E846F828B93";
+            //usr2.ChangePassword("123456");
 
             User usr3 = new User();
             usr3.Name = "Bedřich";
@@ -93,7 +95,8 @@ namespace Felbook.Controllers
             usr3.LastLogged = new DateTime(2008, 7, 8, 9, 4, 3);
             usr3.Mail = "bedrich@cerveny.cz";
             usr3.Username = "bedrich";
-            usr3.ChangePassword("asfad");
+            usr3.PasswordHash = "asdf";
+            //usr3.ChangePassword("asfad");
 
             User usr4 = new User();
             usr4.Id = 4;
@@ -103,7 +106,8 @@ namespace Felbook.Controllers
             usr4.LastLogged = new DateTime(2006, 7, 8, 9, 4, 3);
             usr4.Mail = "ondrej@zeleny.cz";
             usr4.Username = "ondrej";
-            usr4.ChangePassword("asfad");
+            usr4.PasswordHash = "asdf";
+            //usr4.ChangePassword("asfad");
 
             User usr5 = new User();
             usr5.Id = 5;
@@ -113,7 +117,8 @@ namespace Felbook.Controllers
             usr5.LastLogged = new DateTime(2010, 8, 9, 12, 5, 7);
             usr5.Mail = "jiri@mach.cz";
             usr5.Username = "jiri";
-            usr5.ChangePassword("asfad");
+            usr5.PasswordHash = "asdf";
+            //usr5.ChangePassword("asfad");
             
             db.AddToUserSet(usr1);
             db.AddToUserSet(usr2);
@@ -246,6 +251,8 @@ namespace Felbook.Controllers
             db.AddToStatusSet(st5);
 
             db.SaveChanges();
+
+            //db.SaveChanges();
 
             #endregion
 
