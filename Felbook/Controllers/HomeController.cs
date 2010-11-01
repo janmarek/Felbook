@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Felbook.Models;
 
 namespace Felbook.Controllers
 {
@@ -21,7 +22,7 @@ namespace Felbook.Controllers
 
         public ActionResult TestData()
         {
-			Felbook.Models.TestData.Insert();
+            Felbook.Models.TestData.Insert();
             return View();
         }
     }

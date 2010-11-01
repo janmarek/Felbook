@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Felbook.Models.User>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	Profile
+    Profile
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -9,36 +9,69 @@
 	<ul>
 		<li>E-mail: <%= Model.Mail %></li>
 	</ul>
-
 	<h3>Add status</h3>
-	   
-    <%: Html.ValidationSummary("Please correct the errors and try again.") %>
+    <% Session["links"]=null; //vymazání session s linky kvůli ajaxovému přidávání linků %>
+    <%: Html.ValidationSummary("There were some errors:") %>
     <% using (Html.BeginForm("AddStatus", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
        { %>	
 		<%: Html.AntiForgeryToken() %>
-		<p>
-        <%: Html.TextBox("status") %>
-        </p>
-        <p>
-        <label for="Picture">Picture:</label>
-        <input type="file" id="picture" name="picture" />
-		<%=Html.ValidationMessage("picture", "*")%>
-        </p>
-        <p>
-        <%: Html.Label("Description:") %>
-        <br />
-        <%: Html.TextArea("description", new { rows = "4", cols = "20" })%>
-        </p>
-        <input type="submit" value="Send" />
-	<% } %>
-
-	<h3>My statuses</h3>
-	<% foreach (var status in Model.Statuses) { %>
-	<p><b><%= String.Format("{0:g}", status.Created) %></b> - <%= status.Text %></p>
-        <% foreach (var img in status.Images) { %>
-        <p><img src="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" alt="<%= String.Format("{0:g}", img.Description) %>" title="<%= String.Format("{0:g}", img.Description) %>" width="60" height="80" /></p>
+		<table id="fileInput">
+            <tr>
+                <td>
+                    <%: Html.Label("Status text:") %>
+                </td>
+                <td>
+                    <%: Html.TextArea("status", new { rows = "4", cols = "20" })%>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Picture:
+                </th>
+                <th>
+                    Description:
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="file" id="picture1" name="picture1" onchange="addFile()" />
+                </td>
+                <td>
+                    <textarea id="description1" name="description1" rows="4" cols="20">
+                    </textarea>                    
+                </td>
+            </tr>   
+        </table>
+        <input type="submit" value="Add new status" />
         <% } %>
-	<% } %>
+        <h3>Links:</h3>
+        <% Ajax.BeginForm("SetLinksContent", "Profile", new AjaxOptions { UpdateTargetId = "links" });
+         { %>         
+            <%= Html.TextBox("newLink") %>
+            <input type="submit" value="Add Link" onclick="clearTextLink()" />
+         <%  } %>
+        <div id="links">
+        </div>
+        <hr />
+        <h3>My statuses</h3>
+	<% foreach (var status in Model.Statuses.OrderByDescending(status => status.Id)) //seřadí sestupně podle ID statusu
+    { %>
+	<p><b><%= String.Format("{0:g}", status.Created) %></b> - <%= status.Text %></p>
+        
+        
+        <% foreach (var img in status.Images) { %>
+        <a href="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" rel="lightbox"><%= String.Format("{0:g}", img.Description) %></a>    
+        <% } %>
+        
+        <% if(status.Links.Count > 0) { //pokud jsou ve statusu linky tak se zobrazí %>
+        <p>
+        <span>Links:</span>
+        <% foreach (var link in status.Links) { %>
+	        <a href="<%= String.Format("{0:g}", link.URL) %>"><%= String.Format("{0:g}", link.URL) %></a>,
+        <% } %>
+        </p>
+        <% } %>
+    <% } %>
 
 </asp:Content>
 

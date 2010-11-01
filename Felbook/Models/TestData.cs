@@ -17,13 +17,13 @@ namespace Felbook.Models
 			#region Vymazání všech tabulek a resetování ID
 
 			//vymazání tabulek které spojují
-			db.ExecuteStoreCommand("DELETE FROM StatusInformationFiles");
-			db.ExecuteStoreCommand("DELETE FROM StatusInformationImages");
-			db.ExecuteStoreCommand("DELETE FROM StatusInformationLinks");
-			db.ExecuteStoreCommand("DELETE FROM Followings");
-			db.ExecuteStoreCommand("DELETE FROM GroupAdministration");
-			db.ExecuteStoreCommand("DELETE FROM MessageReaders");
-			db.ExecuteStoreCommand("DELETE FROM UserGroupMembership");
+            db.ExecuteStoreCommand("DELETE FROM StatusInformationFiles");
+            db.ExecuteStoreCommand("DELETE FROM StatusInformationImages");
+            db.ExecuteStoreCommand("DELETE FROM StatusInformationLinks");
+            db.ExecuteStoreCommand("DELETE FROM Followings");
+            db.ExecuteStoreCommand("DELETE FROM GroupAdministration");
+            db.ExecuteStoreCommand("DELETE FROM MessageReaders");
+            db.ExecuteStoreCommand("DELETE FROM UserGroupMembership");
 
 			//vymazání tabulek které obsahují informace
 			db.ExecuteStoreCommand("DELETE FROM ImageSet");
