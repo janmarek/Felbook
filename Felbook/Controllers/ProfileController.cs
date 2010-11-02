@@ -9,6 +9,11 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Management;
 using System.Management.Instrumentation;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+
 
 namespace Felbook.Controllers
 {
@@ -110,6 +115,40 @@ namespace Felbook.Controllers
             /*else {
                 return String.Empty;
             }*/
+        }
+
+        /// <summary>
+        /// Metoda která změní velikost obrázku a rovnou ho uploaduje
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        private void ImageResize(HttpPostedFileBase file, string filePath)
+        {
+         if (file != null && file.FileName != "")
+         {
+             int maxWidth = 800; //maximální šířka
+             int maxHeight = 600; //maximální výška
+
+            string strExtension = System.IO.Path.GetExtension(file.FileName);
+            if ((strExtension.ToUpper() == ".JPG") | (strExtension.ToUpper() == ".GIF") | (strExtension.ToUpper() == ".PNG"))
+            {
+             // změní velikost obrázku
+              System.Drawing.Image imageToBeResized = System.Drawing.Image.FromStream(file.InputStream);
+              int imageHeight = imageToBeResized.Height;
+              int imageWidth = imageToBeResized.Width;
+              imageHeight = (imageHeight * maxWidth) / imageWidth;
+              imageWidth = maxWidth;
+
+                      if (imageHeight > maxHeight)
+                        {
+                            imageWidth = (imageWidth * maxHeight) / imageHeight;
+                            imageHeight = maxHeight;
+                        }
+
+                        Bitmap bitmap = new Bitmap(imageToBeResized, imageWidth, imageHeight);
+                        bitmap.Save(filePath);        
+                    }
+                    }
         }
 
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
@@ -227,7 +266,8 @@ namespace Felbook.Controllers
                 int filePointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k souboru
                 foreach (HttpPostedFileBase file in filesToSave)
                 { //projdou ve vsechny soubory a uploadujou se
-                    file.SaveAs(filesPathsToSave.ElementAt(filePointer));
+                    //file.SaveAs(filesPathsToSave.ElementAt(filePointer));
+                    this.ImageResize(file, filesPathsToSave.ElementAt(filePointer));
                     filePointer++;
                 }
                 Model.UserService.AddStatus(actualUser, status); //uloží se status i s obrázkem

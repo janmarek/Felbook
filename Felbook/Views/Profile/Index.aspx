@@ -60,7 +60,7 @@
         
         
         <% foreach (var img in status.Images) { %>
-        <a href="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" rel="lightbox"><%= String.Format("{0:g}", img.Description) %></a>    
+        <a href="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" rel="lightbox"><img src="/Web_Data/status_images/<%= String.Format("{0:g}", status.User.Id + "/" + img.FileName) %>" title="<%= String.Format("{0:g}", img.Description) %>" alt="<%= String.Format("{0:g}", img.Description) %>" width="60" height="80" /></a>    
         <% } %>
         
         <% if(status.Links.Count > 0) { //pokud jsou ve statusu linky tak se zobrazí %>
