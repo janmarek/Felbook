@@ -614,7 +614,7 @@
           <Property Type="String" Name="Text" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="FelBookDBModel.MessageReaders" FromRole="Message" ToRole="User" />
           <NavigationProperty Name="FirstMessage" Relationship="FelBookDBModel.MessageReplies" FromRole="Message" ToRole="Message1" />
-          <NavigationProperty Name="Replies" Relationship="FelBookDBModel.MessageReplies" FromRole="Message1" ToRole="Message" />
+          <NavigationProperty Name="Replies" Relationship="FelBookDBModel.MessageReplies" FromRole="Message" ToRole="Message1" />
           <NavigationProperty Name="Sender" Relationship="FelBookDBModel.SentMessages" FromRole="Message" ToRole="User" />
           <Property Type="DateTime" Name="Created" Nullable="false" />
         </EntityType>
@@ -624,7 +624,7 @@
         </Association>
         <Association Name="MessageReplies">
           <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="0..1" />
-          <End Type="FelBookDBModel.Message" Role="Message1" Multiplicity="0..1" />
+          <End Type="FelBookDBModel.Message" Role="Message1" Multiplicity="*" />
         </Association>
         <EntityType Name="Status">
           <Key>
@@ -828,7 +828,7 @@
       <EndProperty Name="Message1">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
-      <Condition ColumnName="Replies_Id" IsNull="false" />
+            <Condition ColumnName="Replies_Id" IsNull="false" />
     </AssociationSetMapping>
     <AssociationSetMapping Name="StatusInformationComment" TypeName="FelBookDBModel.StatusInformationComment" StoreEntitySet="CommentSet">
       <EndProperty Name="StatusInformation">
