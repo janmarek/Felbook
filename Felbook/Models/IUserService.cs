@@ -16,7 +16,8 @@ namespace Felbook.Models
         User FindByUsername(string name); //najde uživatele podle jména
 
         bool IsUserInGroup(User usr, Group grp);
-        void Add(User usr);
+        void Add(User user);
+		void Edit(User user);
         void Delete(User usr);
         void JoinGroup(User usr, Group grp); //přidání do skupiny
         void LeaveGroup(User usr, Group grp); //odchod ze skupiny

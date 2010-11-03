@@ -28,6 +28,21 @@ namespace Felbook.Controllers
 
         public Model Model { get; set; }
 
+		public User CurrentUser
+		{
+			get
+			{
+				if (Request.IsAuthenticated)
+				{
+					return Model.UserService.FindByUsername(User.Identity.Name);
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
         protected override void Initialize(RequestContext requestContext)
         {
             if (Model == null)
@@ -43,6 +58,25 @@ namespace Felbook.Controllers
             User user = Model.UserService.FindByUsername(username);
             return View(user);
         }
+
+		public ActionResult Edit()
+		{
+			return View(CurrentUser);
+		}
+
+		[HttpPost, ValidateAntiForgeryToken]
+		public ActionResult Edit(FormCollection collection)
+		{
+			TryUpdateModel(CurrentUser);
+
+			if (ModelState.IsValid)
+			{
+				Model.UserService.Edit(CurrentUser);
+				return RedirectToAction("Index", new { username = CurrentUser.Username });
+			}
+
+			return View(CurrentUser);
+		}
 
         public bool ThumbnailCallback()
         {

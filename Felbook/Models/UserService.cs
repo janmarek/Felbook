@@ -175,6 +175,12 @@ namespace Felbook.Models
             usr.Statuses.Add(st);
 			db.SaveChanges();
         }
-        #endregion
-    }
+
+
+		public void Edit(User user)
+		{
+			db.SaveChanges();
+		}
+		#endregion
+	}
 }
