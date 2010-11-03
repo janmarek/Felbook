@@ -22,7 +22,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupAdministration", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "Followings", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReaders", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
-[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageFirstMessage", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationComment", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Status), "Comment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Comment))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationLinks", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Link", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Link))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationImages", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Image", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Image))]
@@ -32,7 +31,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "UserGroupCreator", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.User), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "SentMessages", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.User), "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupChildren", "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group), "Group1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Group))]
-[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReplies", "Replies", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageMessage", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), true)]
 
 #endregion
 
@@ -1065,6 +1064,30 @@ namespace Felbook.Models
         private global::System.DateTime _Created;
         partial void OnCreatedChanging(global::System.DateTime value);
         partial void OnCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> MessageId
+        {
+            get
+            {
+                return _MessageId;
+            }
+            set
+            {
+                OnMessageIdChanging(value);
+                ReportPropertyChanging("MessageId");
+                _MessageId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MessageId");
+                OnMessageIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _MessageId;
+        partial void OnMessageIdChanging(Nullable<global::System.Int32> value);
+        partial void OnMessageIdChanged();
 
         #endregion
     
@@ -1088,66 +1111,6 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("FelBookDBModel.MessageReaders", "User", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageFirstMessage", "Message1")]
-        public Message FirstMessage
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageFirstMessage", "Message1").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageFirstMessage", "Message1").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Message> FirstMessageReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageFirstMessage", "Message1");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Message>("FelBookDBModel.MessageFirstMessage", "Message1", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageReplies", "Message1")]
-        public EntityCollection<Message> Replies
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("FelBookDBModel.MessageReplies", "Message1");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.MessageReplies", "Message1", value);
                 }
             }
         }
@@ -1186,6 +1149,66 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("FelBookDBModel.SentMessages", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageMessage", "Message1")]
+        public EntityCollection<Message> Replies
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("FelBookDBModel.MessageMessage", "Message1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.MessageMessage", "Message1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageMessage", "Message")]
+        public Message ReplyTo
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageMessage", "Message").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageMessage", "Message").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Message> ReplyToReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Message>("FelBookDBModel.MessageMessage", "Message");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Message>("FelBookDBModel.MessageMessage", "Message", value);
                 }
             }
         }
