@@ -76,7 +76,6 @@ namespace Felbook.Tests
         public void IndexTest()
         {
             MessageController target = new MessageController();
-            //string username = " ";
             ViewResult actual = target.Index() as ViewResult;
             Assert.IsNotNull(actual);
             // TODO - tenhle test trochu vylepšit

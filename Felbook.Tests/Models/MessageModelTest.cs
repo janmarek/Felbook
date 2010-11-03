@@ -3,11 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Felbook.Tests
 {
-    
-    
+        
     /// <summary>
     ///This is a test class for MessageModelTest and is intended
     ///to contain all MessageModelTest Unit Tests
@@ -115,6 +115,7 @@ namespace Felbook.Tests
         [TestMethod()]
         public void GetMessagesSentByUserTest()
         {
+            
             FelBookDBEntities DbEntities = new FelBookDBEntities();
             MessageModel target = new MessageModel();
             User mockUser = User.CreateUser(0, "test", "test",
@@ -124,8 +125,32 @@ namespace Felbook.Tests
             string username = "test user";
             
             List<Message> actual = target.GetMessagesSentByUser(username);
-            Assert.IsTrue(actual.Count == 0);
+            Assert.AreEqual(actual.Count, 0);
 
+            Message msg1 = new Message();
+            msg1.Users.Add(mockUser);
+            msg1.Sender = mockUser;
+            msg1.Text = "text";
+            msg1.Created = DateTime.Now;
+            DbEntities.MessageSet.AddObject(msg1);
+            DbEntities.SaveChanges();
+
+            actual = target.GetMessagesSentByUser(username);
+            Assert.AreEqual(actual.Count, 1);
+
+            Message msg2 = new Message();
+            msg2.Users.Add(mockUser);
+            msg2.Sender = mockUser;
+            msg2.Text = "text";
+            msg2.Created = DateTime.Now;
+            DbEntities.MessageSet.AddObject(msg2);
+            DbEntities.SaveChanges();
+
+            actual = target.GetMessagesSentByUser(username);
+            Assert.AreEqual(actual.Count, 2);
+
+            DbEntities.MessageSet.DeleteObject(msg1);
+            DbEntities.MessageSet.DeleteObject(msg2);
             DbEntities.UserSet.DeleteObject(mockUser);
             DbEntities.SaveChanges();
             
@@ -134,16 +159,55 @@ namespace Felbook.Tests
         /// <summary>
         ///A test for SendMessageToUsers
         ///</summary>
-        //[TestMethod()]
+        [TestMethod()]
         public void SendMessageToUsersTest()
         {
-            MessageModel target = new MessageModel(); // TODO: Initialize to an appropriate value
-            string sender = string.Empty; // TODO: Initialize to an appropriate value
-            List<string> recievers = null; // TODO: Initialize to an appropriate value
-            int prevMessageID = 0; // TODO: Initialize to an appropriate value
-            string text = string.Empty; // TODO: Initialize to an appropriate value
+            FelBookDBEntities DbEntities = new FelBookDBEntities();
+            MessageModel target = new MessageModel();
+
+            User mockSender = User.CreateUser(0, "test", "test",
+                DateTime.Now, DateTime.Now, "mail", "sender", "");
+            DbEntities.UserSet.AddObject(mockSender);
+            User mockReciever = User.CreateUser(0, "test", "test",
+                DateTime.Now, DateTime.Now, "mail", "reciever", "");
+            DbEntities.UserSet.AddObject(mockReciever);
+            DbEntities.SaveChanges();
+            
+            
+            string sender = mockSender.Username; 
+            List<string> recievers = new List<string>();
+            recievers.Add(mockReciever.Username);
+            int prevMessageID = 0;
+            string text = "some text";
             target.SendMessageToUsers(sender, recievers, prevMessageID, text);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+
+            Message message1 = DbEntities.MessageSet.Single(m => m.Sender.Username == mockSender.Username);
+            Assert.AreEqual(sender, message1.Sender.Username);
+            Assert.IsTrue(message1.Users.Contains(mockReciever));
+            Assert.AreEqual(text, message1.Text);
+            Assert.IsNull(message1.FirstMessage);
+
+            
+            sender = mockReciever.Username;
+            recievers = new List<string>();
+            recievers.Add(mockSender.Username);
+            prevMessageID = message1.Id;
+            text = "some other text";
+            target.SendMessageToUsers(sender, recievers, prevMessageID, text);
+           
+            Message message2 = DbEntities.MessageSet.Single(m => m.Sender.Username == mockReciever.Username);
+            Assert.AreEqual(sender, message2.Sender.Username);
+            Assert.IsTrue(message2.Users.Contains(mockSender));
+            Assert.AreEqual(text, message2.Text);
+            Assert.AreEqual(message1, message2.FirstMessage);
+
+
+            DbEntities.MessageSet.DeleteObject(message2);
+            DbEntities.MessageSet.DeleteObject(message1);
+            DbEntities.UserSet.DeleteObject(mockReciever);
+            DbEntities.UserSet.DeleteObject(mockSender);
+            DbEntities.SaveChanges();
+            
         }
     }
 }

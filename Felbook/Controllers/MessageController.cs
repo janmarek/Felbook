@@ -10,8 +10,15 @@ namespace Felbook.Controllers
 {
     public class MessageController : Controller
     {
+
+        #region Properties
+
         private Model model { get; set; }
         private IMessageModel msgModel { get; set; }
+
+        #endregion
+
+        #region Init
 
         protected override void Initialize(RequestContext requestContext)
         {
@@ -27,6 +34,10 @@ namespace Felbook.Controllers
 
             base.Initialize(requestContext);
         }
+
+        #endregion
+
+        #region Actions
 
         public ActionResult Index()
         {
@@ -69,7 +80,7 @@ namespace Felbook.Controllers
 
         public ActionResult ReplyMessage(int msgID)
         {
-            if ((User != null) && (Request.IsAuthenticated) /*&& (msgID != null)*/)
+            if ((User != null) && (Request.IsAuthenticated))
             {
                 return View(msgModel.GetMessageById(msgID));
             }
@@ -99,10 +110,11 @@ namespace Felbook.Controllers
                 ModelState.AddModelError("", "User does not exist!");
                 return View(collection);
             }
-            
+
         }
 
-        
+        #endregion
+
     }
 }
 
