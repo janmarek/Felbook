@@ -10,13 +10,13 @@ namespace Felbook.Models
 
     public interface IMessageModel
     {
-        List<Message> GetMessagesSentByUser(string username);
-
+        
         void SendMessageToUsers(string sender, List<string> recievers, int prevMessageID, string text);
 
         Message GetMessageById(int ID);
+               
     }
-    
+
     public class MessageModel : IMessageModel
     {
 
@@ -40,12 +40,6 @@ namespace Felbook.Models
 
         #region Methods
 
-        public List<Message> GetMessagesSentByUser(string username)
-        {
-            User user = model.UserService.FindByUsername(username);
-            return DbEntities.MessageSet.Where(m => m.Sender.Id == user.Id).ToList();
-        }
-
         public void SendMessageToUsers(string sender, List<string> recievers, int prevMessageID ,string text)
         {
             Message msg = new Message();
@@ -68,7 +62,7 @@ namespace Felbook.Models
                 //msg.Users.Add(model.UserService.FindByUsername(reciever));
                 msg.Users.Add(DbEntities.UserSet.Single(u => u.Username == reciever));
             }
-            
+                              
             DbEntities.MessageSet.AddObject(msg);
             DbEntities.SaveChanges();
         }

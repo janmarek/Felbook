@@ -109,53 +109,7 @@ namespace Felbook.Tests
             DbEntities.SaveChanges();
         }
 
-        /// <summary>
-        ///A test for GetMessagesSentByUser
-        ///</summary>
-        [TestMethod()]
-        public void GetMessagesSentByUserTest()
-        {
-            
-            FelBookDBEntities DbEntities = new FelBookDBEntities();
-            MessageModel target = new MessageModel();
-            User mockUser = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "test user", "");
-            DbEntities.UserSet.AddObject(mockUser);
-            DbEntities.SaveChanges();
-            string username = "test user";
-            
-            List<Message> actual = target.GetMessagesSentByUser(username);
-            Assert.AreEqual(actual.Count, 0);
-
-            Message msg1 = new Message();
-            msg1.Users.Add(mockUser);
-            msg1.Sender = mockUser;
-            msg1.Text = "text";
-            msg1.Created = DateTime.Now;
-            DbEntities.MessageSet.AddObject(msg1);
-            DbEntities.SaveChanges();
-
-            actual = target.GetMessagesSentByUser(username);
-            Assert.AreEqual(actual.Count, 1);
-
-            Message msg2 = new Message();
-            msg2.Users.Add(mockUser);
-            msg2.Sender = mockUser;
-            msg2.Text = "text";
-            msg2.Created = DateTime.Now;
-            DbEntities.MessageSet.AddObject(msg2);
-            DbEntities.SaveChanges();
-
-            actual = target.GetMessagesSentByUser(username);
-            Assert.AreEqual(actual.Count, 2);
-
-            DbEntities.MessageSet.DeleteObject(msg1);
-            DbEntities.MessageSet.DeleteObject(msg2);
-            DbEntities.UserSet.DeleteObject(mockUser);
-            DbEntities.SaveChanges();
-            
-        }
-
+        
         /// <summary>
         ///A test for SendMessageToUsers
         ///</summary>

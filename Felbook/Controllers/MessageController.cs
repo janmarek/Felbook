@@ -43,6 +43,30 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (Request.IsAuthenticated))
             {
+
+                User user = model.UserService.FindByUsername(User.Identity.Name);
+                List<Message> msgRootList = new List<Message>();
+                List<Message> msgList = new List<Message>();
+
+                foreach (var message in user.Messages)
+                {
+                    if (message.FirstMessage == null)
+                    {
+                        msgRootList.Add(message);
+                    }
+                }
+
+                foreach (var message in user.SentMessages)
+                {
+                    if (message.FirstMessage == null)
+                    {
+                        msgRootList.Add(message);
+                    }
+                }
+                msgRootList.Sort();
+
+                CreateListForView(msgRootList, msgList);
+                
                 return View(model.UserService.FindByUsername(User.Identity.Name));
             }
             else
@@ -52,11 +76,26 @@ namespace Felbook.Controllers
             }
         }
 
+        private void CreateListForView(List<Message> inputList, List<Message> outputList)
+        {
+
+            foreach (var message in inputList)
+            {
+                outputList.Add(message);
+
+                if (message.Replies.Count != 0)
+                {
+                    CreateListForView(message.Replies.ToList(), outputList);
+                }
+
+            }
+        }
+        
         public ActionResult Sent()
         {
             if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(msgModel.GetMessagesSentByUser(User.Identity.Name));
+                return View(model.UserService.FindByUsername(User.Identity.Name));               
             }
             else
             {

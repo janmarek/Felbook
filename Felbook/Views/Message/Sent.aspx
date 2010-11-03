@@ -14,7 +14,7 @@
     <%: Html.ActionLink("Send message", "SendMessage", "Message")%>
     </h3>
 
-    <% foreach (var message in Model) { %>
+    <% foreach (var message in Model.SentMessages) { %>
     <div class="message">
         <p>
             <b><%= String.Format("{0:g}", message.Created)%></b> 
