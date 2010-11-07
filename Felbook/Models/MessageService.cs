@@ -11,7 +11,7 @@ namespace Felbook.Models
     public interface IMessageService
     {
 
-        void SendMessageToUsers(User sender, List<User> recievers, Message prevMessage, string text);
+        void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text);
 
         Message GetMessageById(int ID);
                
@@ -39,7 +39,7 @@ namespace Felbook.Models
 
         #region Methods
 
-        public void SendMessageToUsers(User sender, List<User> recievers, Message prevMessage, string text)
+        public void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text)
         {
             Message msg = new Message();
             msg.Created = DateTime.Now;
@@ -55,6 +55,7 @@ namespace Felbook.Models
             db.MessageSet.AddObject(msg);
             db.SaveChanges();
         }
+
 
         public Message GetMessageById(int ID)
         {

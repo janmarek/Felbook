@@ -12,7 +12,8 @@
 		<%: Html.AntiForgeryToken() %>
         <h3>Recierver:</h3>
         <%: Html.Hidden("PrevMessageID", (object)Model.Id)%>
-		<%: Html.Hidden("To", (object)Model.Sender.Username)%>
+		<%: Html.Hidden("ToUsers", (object)Model.Sender.Username)%>
+        <%: Html.Hidden("ToGroups", "")%>
         <%= Model.Sender.Username%>
         <h3>Original message</h3>
         <%= Model.Text%>

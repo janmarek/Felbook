@@ -18,7 +18,8 @@
 		<%: Html.AntiForgeryToken() %>
         <h3>Reciervers (separator is space):</h3>
         <%: Html.Hidden("PrevMessageID", (object)0)%>
-		<%: Html.TextBox("To") %> <br />
+		Users: <%: Html.TextBox("ToUsers") %> <br />
+        Groups: <%: Html.TextBox("ToGroups") %> <br />
         <%: Html.ValidationSummary() %>
         <h3>Text</h3>
         <%: Html.TextArea("Text", "", 15, 50, "") %> <br />

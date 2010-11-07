@@ -12,6 +12,8 @@ namespace Felbook.Models
 {
     public class MessageModelView
     {
+        public int ID { get; set; }
+        
         public DateTime Sent { get; set; }
         
         public bool Recieved { get; set; }
@@ -20,7 +22,7 @@ namespace Felbook.Models
 
         public string TextPreview { get; set; }
 
-        public int indent { get; set; }
+        public int Indent { get; set; }
     }
 }
 
@@ -59,9 +61,10 @@ namespace Felbook.Controllers
             {
 
                 User user = model.UserService.FindByUsername(User.Identity.Name);
+                
                 List<Message> msgRootList = new List<Message>();
-                List<Message> msgList = new List<Message>();
-
+                List<MessageModelView> msgList = new List<MessageModelView>();
+                
                 foreach (var message in user.Messages)
                 {
                     if (message.ReplyTo == null)
@@ -78,10 +81,9 @@ namespace Felbook.Controllers
                     }
                 }
                 msgRootList.Sort();
+                CreateListForView(msgRootList, msgList, 0);
 
-                CreateListForView(msgRootList, msgList);
-                
-                return View(model.UserService.FindByUsername(User.Identity.Name));
+                return View(msgList);
             }
             else
             {
@@ -90,16 +92,62 @@ namespace Felbook.Controllers
             }
         }
 
-        private void CreateListForView(List<Message> inputList, List<Message> outputList)
+        private void CreateListForView(List<Message> inputList, List<MessageModelView> outputList, int indent)
         {
 
             foreach (var message in inputList)
             {
-                outputList.Add(message);
+                MessageModelView messageView = new MessageModelView();
+                messageView.ID = message.Id;
+                messageView.Sent = message.Created;
+
+                if (message.Sender.Username == User.Identity.Name)
+                {
+                    messageView.Recieved = false;
+                    IEnumerator<User> iterator = message.Users.GetEnumerator();
+
+                    if (!iterator.MoveNext())
+                    {
+                        continue;  // žadný příjemce -> chybná zpráva 
+                    }
+
+                    messageView.SenderOrRecivers = iterator.Current.Username;
+
+                    while (iterator.MoveNext())
+                    {
+                        messageView.SenderOrRecivers += ", ";
+                        messageView.SenderOrRecivers += iterator.Current.Username;
+                    }
+                }
+                else
+                {
+
+                    if (!message.Users.Contains(model.UserService.FindByUsername(User.Identity.Name)))
+                    {
+                        continue; // pokud mi zpráva nepatří, tak ji zahodím
+                    }
+
+                    messageView.Recieved = true;
+                    messageView.SenderOrRecivers = message.Sender.Username;
+                }
+
+                if (message.Text.Length <= 50)
+                {
+                    messageView.TextPreview = message.Text;
+                }
+                else
+                {
+                    messageView.TextPreview = message.Text.Substring(0, 50);
+                    messageView.TextPreview += " ...";
+                }
+
+                messageView.Indent = indent;
+
+                outputList.Add(messageView);
 
                 if (message.Replies.Count != 0)
                 {
-                    CreateListForView(message.Replies.ToList(), outputList);
+                    CreateListForView(message.Replies.ToList(), outputList, indent + 20);
                 }
 
             }
@@ -153,18 +201,36 @@ namespace Felbook.Controllers
                 
                 char[] separators = new char[1];
                 separators[0] = ' ';
-                string[] parsedRecievers = collection["To"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                List<User> listOfRecievers = new List<User>();
+                ISet<User> setOfRecievers = new HashSet<User>();
+
+                string[] parsedRecievers = collection["ToUsers"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var reciever in parsedRecievers) 
                 {
-                    listOfRecievers.Add(model.UserService.FindByUsername(reciever));
+                    setOfRecievers.Add(model.UserService.FindByUsername(reciever));
+                }
+
+                string[] parsedGroups = collection["ToGroups"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var groupName in parsedGroups)
+                {
+                    Group group = model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
+                    foreach( var user in model.GroupService.GetUsers(group))
+                    {
+                        setOfRecievers.Add(user);
+                    }
+                }
+
+                if (setOfRecievers.Count == 0)
+                {
+                    ModelState.AddModelError("", "No user selected!");
+                    return View(collection);
                 }
 
                 Message prevMessage = model.MessageService.GetMessageById(int.Parse(collection["PrevMessageID"]));
 
-                model.MessageService.SendMessageToUsers(sender, listOfRecievers, prevMessage, collection["text"]);
-                return RedirectToAction("Sent");
+                model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, collection["text"]);
+                return RedirectToAction("Index");
             }
             catch (InvalidOperationException)
             {
