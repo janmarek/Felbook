@@ -71,7 +71,7 @@ namespace Felbook.Tests
         [TestMethod()]
         public void MessageModelConstructorTest()
         {
-            MessageModel target = new MessageModel();
+            MessageService target = new MessageService();
             Assert.IsNotNull(target);
         }
 
@@ -82,7 +82,7 @@ namespace Felbook.Tests
         public void GetMessageByIdTest()
         {
             FelBookDBEntities DbEntities = new FelBookDBEntities();
-            MessageModel target = new MessageModel();
+            MessageService target = new MessageService();
 
             int ID = 0; 
             Message expected = null; 
@@ -117,7 +117,7 @@ namespace Felbook.Tests
         public void SendMessageToUsersTest()
         {
             FelBookDBEntities DbEntities = new FelBookDBEntities();
-            MessageModel target = new MessageModel();
+            MessageService target = new MessageService();
 
             User mockSender = User.CreateUser(0, "test", "test",
                 DateTime.Now, DateTime.Now, "mail", "sender", "");

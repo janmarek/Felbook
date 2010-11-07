@@ -14,8 +14,7 @@ namespace Felbook.Controllers
         #region Properties
 
         private Model model { get; set; }
-        private IMessageModel msgModel { get; set; }
-
+        
         #endregion
 
         #region Init
@@ -25,11 +24,6 @@ namespace Felbook.Controllers
             if (model == null)
             {
                 model = new Model();
-            }
-
-            if (msgModel == null)
-            {
-                msgModel = new MessageModel();
             }
 
             base.Initialize(requestContext);
@@ -121,7 +115,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(msgModel.GetMessageById(msgID));
+                return View(model.MessageService.GetMessageById(msgID));
             }
             else
             {
@@ -141,7 +135,7 @@ namespace Felbook.Controllers
                 
                 List<string> listOfRecievers = recievers.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                msgModel.SendMessageToUsers(User.Identity.Name, listOfRecievers, int.Parse(collection["PrevMessageID"]), collection["text"]);
+                model.MessageService.SendMessageToUsers(User.Identity.Name, listOfRecievers, int.Parse(collection["PrevMessageID"]), collection["text"]);
                 return RedirectToAction("Sent");
             }
             catch (InvalidOperationException)

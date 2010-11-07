@@ -8,7 +8,7 @@ using System.Web.Routing;
 namespace Felbook.Models
 {
 
-    public interface IMessageModel
+    public interface IMessageService
     {
         
         void SendMessageToUsers(string sender, List<string> recievers, int prevMessageID, string text);
@@ -17,12 +17,12 @@ namespace Felbook.Models
                
     }
 
-    public class MessageModel : IMessageModel
+    public class MessageService : IMessageService
     {
 
         #region Properities
 
-        private FelBookDBEntities DbEntities { get; set; }
+        private FelBookDBEntities db { get; set; }
 
         private Model model { get; set; }
 
@@ -30,9 +30,9 @@ namespace Felbook.Models
 
         #region Construcotrs
 
-        public MessageModel()
+        public MessageService(FelBookDBEntities DBEntities)
         {
-            DbEntities = new FelBookDBEntities();
+            db = DBEntities;
             model = new Model();
         }
 
@@ -45,7 +45,7 @@ namespace Felbook.Models
             Message msg = new Message();
             msg.Created = DateTime.Now;
             //msg.Sender = model.UserService.FindByUsername(sender);
-            msg.Sender = DbEntities.UserSet.Single(u => u.Username == sender);
+            msg.Sender = db.UserSet.Single(u => u.Username == sender);
 
             if (prevMessageID == 0)
             {
@@ -60,18 +60,18 @@ namespace Felbook.Models
             foreach (var reciever in recievers)
             {
                 //msg.Users.Add(model.UserService.FindByUsername(reciever));
-                msg.Users.Add(DbEntities.UserSet.Single(u => u.Username == reciever));
+                msg.Users.Add(db.UserSet.Single(u => u.Username == reciever));
             }
                               
-            DbEntities.MessageSet.AddObject(msg);
-            DbEntities.SaveChanges();
+            db.MessageSet.AddObject(msg);
+            db.SaveChanges();
         }
 
         public Message GetMessageById(int ID)
         {
             try
             {
-                return DbEntities.MessageSet.Single(m => m.Id == ID);
+                return db.MessageSet.Single(m => m.Id == ID);
             }
             catch (InvalidOperationException)
             {

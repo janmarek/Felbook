@@ -28,7 +28,7 @@
     </div>
     <% } %>
  
-    <% int indent = 0;
+    <%--<% int indent = 0;
        string style;
        Felbook.Models.Message prevMessage = null;
        Stack<Felbook.Models.Message> messageStack = new Stack<Felbook.Models.Message>();
@@ -36,13 +36,13 @@
     foreach (Felbook.Models.Message message in Model.Messages)
     {
         
-        if (message.FirstMessage == prevMessage)
+        if (message.ReplyTo == prevMessage)
         {
             messageStack.Push(prevMessage);
             indent++;
         }
 
-        if (message.FirstMessage != messageStack.Peek())
+        if (message.ReplyTo != messageStack.Peek())
         {
             messageStack.Pop();
             indent--;
@@ -77,7 +77,7 @@
         <%
         prevMessage = message;
 
-    } %>
+    } %>--%>
 
     <%--<%
     class MessageViewer {

@@ -13,6 +13,8 @@ namespace Felbook.Models
 
 		private IUserService userService = null;
 
+        private IMessageService messageService = null;
+
 		#endregion
 
 		#region Properties
@@ -44,6 +46,19 @@ namespace Felbook.Models
 				return userService;
 			}
 		}
+
+        public IMessageService MessageService
+        {
+            get
+            {
+                if (messageService == null)
+                {
+                    messageService = new MessageService(DBEntities);
+                }
+
+                return messageService;
+            }
+        }
 
 		#endregion
 
