@@ -10,8 +10,8 @@ namespace Felbook.Models
 
     public interface IMessageService
     {
-        
-        void SendMessageToUsers(string sender, List<string> recievers, int prevMessageID, string text);
+
+        void SendMessageToUsers(User sender, List<User> recievers, Message prevMessage, string text);
 
         Message GetMessageById(int ID);
                
@@ -33,34 +33,23 @@ namespace Felbook.Models
         public MessageService(FelBookDBEntities DBEntities)
         {
             db = DBEntities;
-            model = new Model();
         }
 
         #endregion
 
         #region Methods
 
-        public void SendMessageToUsers(string sender, List<string> recievers, int prevMessageID ,string text)
+        public void SendMessageToUsers(User sender, List<User> recievers, Message prevMessage, string text)
         {
             Message msg = new Message();
             msg.Created = DateTime.Now;
-            //msg.Sender = model.UserService.FindByUsername(sender);
-            msg.Sender = db.UserSet.Single(u => u.Username == sender);
-
-            if (prevMessageID == 0)
-            {
-                msg.ReplyTo = null;
-            }
-            else
-            {
-				msg.ReplyTo = GetMessageById(prevMessageID);
-            }
-
+            msg.Sender = sender;
+            msg.ReplyTo = prevMessage;
             msg.Text = text;
+
             foreach (var reciever in recievers)
             {
-                //msg.Users.Add(model.UserService.FindByUsername(reciever));
-                msg.Users.Add(db.UserSet.Single(u => u.Username == reciever));
+                msg.Users.Add(reciever);
             }
                               
             db.MessageSet.AddObject(msg);

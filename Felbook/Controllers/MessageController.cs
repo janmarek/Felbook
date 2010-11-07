@@ -6,6 +6,26 @@ using System.Web.Mvc;
 using Felbook.Models;
 using System.Web.Routing;
 
+#region View models
+
+namespace Felbook.Models
+{
+    public class MessageModelView
+    {
+        public DateTime Sent { get; set; }
+        
+        public bool Recieved { get; set; }
+
+        public string SenderOrRecivers { get; set; }
+
+        public string TextPreview { get; set; }
+
+        public int indent { get; set; }
+    }
+}
+
+#endregion
+
 namespace Felbook.Controllers
 {
     public class MessageController : Controller
@@ -129,13 +149,21 @@ namespace Felbook.Controllers
         {
             try
             {
-                string recievers = collection["To"];
-                string[] separators = new string[1];
-                separators[0] = " ";
+                User sender = model.UserService.FindByUsername(User.Identity.Name);
                 
-                List<string> listOfRecievers = recievers.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
+                char[] separators = new char[1];
+                separators[0] = ' ';
+                string[] parsedRecievers = collection["To"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                List<User> listOfRecievers = new List<User>();
 
-                model.MessageService.SendMessageToUsers(User.Identity.Name, listOfRecievers, int.Parse(collection["PrevMessageID"]), collection["text"]);
+                foreach (var reciever in parsedRecievers) 
+                {
+                    listOfRecievers.Add(model.UserService.FindByUsername(reciever));
+                }
+
+                Message prevMessage = model.MessageService.GetMessageById(int.Parse(collection["PrevMessageID"]));
+
+                model.MessageService.SendMessageToUsers(sender, listOfRecievers, prevMessage, collection["text"]);
                 return RedirectToAction("Sent");
             }
             catch (InvalidOperationException)
