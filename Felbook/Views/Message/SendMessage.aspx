@@ -10,7 +10,7 @@
 
     <h3>
     <%: Html.ActionLink("Recieved messages", "Index", "Message")%>,
-    <%: Html.ActionLink("Sent messages", "Sent", "Message")%>,
+    <%--<%: Html.ActionLink("Sent messages", "Sent", "Message")%>,--%>
     Send message
     </h3>
         

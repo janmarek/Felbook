@@ -138,7 +138,7 @@ namespace Felbook.Controllers
                 else
                 {
                     messageView.TextPreview = message.Text.Substring(0, 50);
-                    messageView.TextPreview += " ...";
+                    messageView.TextPreview += "...";
                 }
 
                 messageView.Indent = indent;
@@ -152,20 +152,17 @@ namespace Felbook.Controllers
 
             }
         }
-        
-        public ActionResult Sent()
-        {
-            if ((User != null) && (Request.IsAuthenticated))
-            {
-                return View(model.UserService.FindByUsername(User.Identity.Name));               
-            }
-            else
-            {
-                //return View("NotAuthorized");
-                return View("Error");
-            }
-        }
 
+        /// <summary>
+        /// Zobrazit detaily zprávy
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns></returns>
+        public ActionResult Detail(int id)
+        {
+            return View(model.MessageService.GetMessageById(id));
+        }
+        
         public ActionResult SendMessage()
         {
             if ((User != null) && (Request.IsAuthenticated))

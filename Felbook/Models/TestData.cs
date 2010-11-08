@@ -132,7 +132,7 @@ namespace Felbook.Models
 			Message msg4 = new Message();
 			msg4.Sender = usr3;
 			msg4.Users.Add(usr1);
-			msg3.ReplyTo = msg2;
+			msg4.ReplyTo = msg2;
 			msg4.Text = "Taky už jsem ho udělal a díky za ty materiály, zejtra vás zvu na pivo.";
 			msg4.Created = new DateTime(2010, 12, 8, 10, 2, 2);
 

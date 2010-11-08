@@ -368,3 +368,8 @@ div#title
     margin: 5px;
 }
 
+.messageDetail
+{
+    border: 2px solid;
+}
+
