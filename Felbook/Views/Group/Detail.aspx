@@ -15,7 +15,11 @@
 	
 	<% if (Model.Group.Creator != null)
 	{ %>
-	<p>Creator: <%: Html.ActionLink(Model.Group.Creator.FullName, "Index", "Profile", new { username = Model.Group.Creator.Username }, null)%></p>
+	<p>
+		Creator:
+		<%: Html.ActionLink(Model.Group.Creator.FullName, "Index", "Profile", new { username = Model.Group.Creator.Username }, null) %>
+		<% Html.RenderPartial("FollowLink", new Felbook.Models.FollowLinkViewModel(Model.CurrentUser, Model.Group.Creator)); %>
+		</p>
 	<% } %>
 
 	<p><%: Model.Group.Description%></p>
@@ -59,6 +63,7 @@
 		<div id="info">
 			<h3>Description</h3>
 			<p><%: Model.Group.Description%></p>
+
 			<% if (Model.Group.HasParent())
 			{ %>
 			<h3>Parent groups</h3>
@@ -68,18 +73,18 @@
 				<% } %>
 			</ul>
 			<% } %>
+
 			<h3>Admins</h3>
-			<ul>
-			<% foreach (var admin in Model.Group.Administrators)
-			{ %>
-			<li><%: Html.ActionLink(admin.FullName, "Index", new {username = admin.Username}) %></li>
-			<% } %>
-			</ul>
+			<% Html.RenderPartial("UserList", new Felbook.Models.UserListViewModel(Model.CurrentUser, Model.Group.Administrators)); %>
+
 			<% if (Model.Group.Creator != null)
 			{ %>
 			<h3>Creator</h3>
 			<ul>
-			<li><%: Html.ActionLink(Model.Group.Creator.FullName, "Index", new { username = Model.Group.Creator.Username })%></li>
+			<li>
+				<%: Html.ActionLink(Model.Group.Creator.FullName, "Index", new { username = Model.Group.Creator.Username })%>
+				<% Html.RenderPartial("FollowLink", new Felbook.Models.FollowLinkViewModel(Model.CurrentUser, Model.Group.Creator)); %>
+			</li>
 			</ul>
 			<% } %>
 		</div>
@@ -94,12 +99,7 @@
 		</div>
 
 		<div id="members">
-			<ul>
-			<% foreach (var member in Model.Group.Users)
-			{ %>
-			<li><%: Html.ActionLink(member.FullName, "Index", new {username = member.Username}) %></li>
-			<% } %>
-			</ul>		
+			<% Html.RenderPartial("UserList", new Felbook.Models.UserListViewModel(Model.CurrentUser, Model.Group.Users)); %>
 		</div>
 	</div>
 

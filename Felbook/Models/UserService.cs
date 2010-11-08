@@ -140,7 +140,6 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="usrFirst">První uživatel</param>
         /// <param name="usrSecond">Druhý uživatel</param>
-        /// <param name="type">Typ přátelství - zatím jako string</param>
         public void FollowUser(User user, User follower)
         {
             user.Followers.Add(follower);
