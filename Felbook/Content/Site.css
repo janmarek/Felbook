@@ -365,11 +365,26 @@ div#title
 {
     border: 2px solid;
     padding: 5px;
-    margin: 5px;
+    margin: 10px 0px 10px 0px;
 }
 
 .messageDetail
 {
     border: 2px solid;
+}
+
+.recieved
+{
+    border-color: green
+}
+
+.sent 
+{
+    border-color: blue
+}
+
+.msgNavigation
+{
+    text-align: center;
 }
 

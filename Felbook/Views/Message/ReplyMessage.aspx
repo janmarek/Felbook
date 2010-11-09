@@ -8,18 +8,20 @@
 
     <h2>Reply Message</h2>
     
-    <% using (Html.BeginForm("SendMessage", "Message")) { %>
-		<%: Html.AntiForgeryToken() %>
-        <h3>Recierver:</h3>
-        <%: Html.Hidden("PrevMessageID", (object)Model.Id)%>
-		<%: Html.Hidden("ToUsers", (object)Model.Sender.Username)%>
-        <%: Html.Hidden("ToGroups", "")%>
-        <%= Model.Sender.Username%>
-        <h3>Original message</h3>
-        <%= Model.Text%>
-        <h3>Text</h3>
-        <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
-		<input type="submit" value="Send" />
-	<% } %>
+    <fieldset>
+        <% using (Html.BeginForm("SendMessage", "Message")) { %>
+		    <%: Html.AntiForgeryToken() %>
+            <h3>Recierver:</h3>
+            <%: Html.Hidden("PrevMessageID", (object)Model.Id)%>
+		    <%: Html.Hidden("ToUsers", (object)Model.Sender.Username)%>
+            <%: Html.Hidden("ToGroups", "")%>
+            <%= Model.Sender.Username%>
+            <h3>Original message</h3>
+            <%= Model.Text%>
+            <h3>Text</h3>
+            <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
+		    <input type="submit" value="Send" />
+	    <% } %>
+    </fieldset>
 
 </asp:Content>

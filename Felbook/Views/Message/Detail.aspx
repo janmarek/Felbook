@@ -9,35 +9,35 @@
     <h2>Message detail</h2>
 
     <%
-        string style;
+        string attributes = "class=\"messageDetail ";
         if (Model.Sender.Username != Page.User.Identity.Name)
         {
-            style = "style=\"border-color: green\"";
+            attributes += "recieved\"";
         }
         else
         {
-            style = "style=\"border-color: blue\"";
+            attributes += "sent\"";
         }
     %>
 
-    <fieldset class="messageDetail" <%=style %>>
+    <fieldset <%=attributes %>>
                 
-        <b>Sent at <%: String.Format("{0:g}", Model.Created) %></b><br />
-        <b>From: <%: Model.Sender.Username %></b><br />
-        <b>To:
+        <strong>Sent at <%: String.Format("{0:g}", Model.Created) %></strong><br />
+        <strong>From: <%: Model.Sender.Username %></strong><br />
+        <strong>To:
         <%  IEnumerator<Felbook.Models.User> iterator = Model.Users.GetEnumerator();
             if (iterator.MoveNext())
             { %><%: iterator.Current.Username %><% } while (iterator.MoveNext()) { %>, <%: iterator.Current.Username %><% } %>
-        </b><br />
+        </strong><br />
         <br />
 
         <% if (Model.ReplyTo != null)
            { %>
-            <b><%: Html.ActionLink("Reply to message:", "Detail", new { id = Model.ReplyTo.Id.ToString() })%></b>
+            <strong><%: Html.ActionLink("Reply to message:", "Detail", new { id = Model.ReplyTo.Id.ToString() })%></strong>
             <p><%: Model.ReplyTo.Text %></p>
         <% } %>
 
-        <b>Text:</b>
+        <strong>Text:</strong>
         <p><%: Model.Text %></p>
        
     </fieldset>
