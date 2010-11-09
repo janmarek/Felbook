@@ -107,7 +107,7 @@ namespace Felbook.Models
 
 			#region naplnění MessageSet
 
-			/*Message msg1 = new Message();
+			Message msg1 = new Message();
 			msg1.Sender = usr1;
 			msg1.Text = "Ahoj jak se máš?";
 			msg1.Users.Add(usr2);
@@ -146,7 +146,7 @@ namespace Felbook.Models
 			db.AddToMessageSet(msg2);
 			db.AddToMessageSet(msg3);
 			db.AddToMessageSet(msg4);
-			db.AddToMessageSet(msg5);*/
+			db.AddToMessageSet(msg5);
 
 			#endregion
 

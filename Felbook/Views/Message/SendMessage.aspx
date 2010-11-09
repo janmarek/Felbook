@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	SendMessage
+	Send Message
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -10,14 +10,13 @@
 
     <h3>
     <%: Html.ActionLink("Messages", "Index", "Message", new { page = 1.ToString() }, null)%>, 
-    <%--<%: Html.ActionLink("Sent messages", "Sent", "Message")%>,--%>
     Send message
     </h3>
     
     <fieldset>    
 	    <% using (Html.BeginForm("SendMessage", "Message")) { %>
 		    <%: Html.AntiForgeryToken() %>
-            <h3>Reciervers (separator is space):</h3>
+            <h3>Reciervers (separator is semicolon):</h3>
             <%: Html.Hidden("PrevMessageID", (object)0)%>
 		    Users: <%: Html.TextBox("ToUsers") %> <br />
             Groups: <%: Html.TextBox("ToGroups") %> <br />
@@ -27,5 +26,33 @@
 		    <input type="submit" value="Send" />
 	    <% } %>
     </fieldset>
+
+    <script type="text/javascript">
+        $(function () {
+            var availableTags = [
+			"novakjakub",
+            "novakjan",
+            "bedrich",
+            "ondrej",
+            "jiri"
+		];
+            $("#ToUsers").autocomplete({
+                source: availableTags
+            });
+        });
+
+        $(function () {
+            var availableTags = [
+			"Svět",
+            "Asie",
+            "Evropa",
+            "Česká republika",
+            "Slunce"
+		];
+            $("#ToGroups").autocomplete({
+                source: availableTags
+            });
+        });
+	</script>
 
 </asp:Content>

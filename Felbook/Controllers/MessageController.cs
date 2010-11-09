@@ -245,8 +245,10 @@ namespace Felbook.Controllers
             {
                 User sender = model.UserService.FindByUsername(User.Identity.Name);
                 
-                char[] separators = new char[1];
-                separators[0] = ' ';
+                string[] separators = new string[1];
+                //separators[0] = ";";
+                separators[0] = "; ";
+                //separators[2] = " ;";
                 ISet<User> setOfRecievers = new HashSet<User>();
 
                 string[] parsedRecievers = collection["ToUsers"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
