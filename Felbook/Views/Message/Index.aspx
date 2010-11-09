@@ -9,7 +9,7 @@
     <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
 
     <h3>
-        Recieved messages,
+        Messages,
         <%: Html.ActionLink("Send message", "SendMessage", "Message") %>
     </h3>
 
@@ -21,7 +21,7 @@
 
         <div id="msg">--%>
 
-            <% foreach (var message in Model)
+            <% foreach (var message in Model.MessageList)
                {
                    string style = "style=\"position: relative; left: " + message.Indent + "px; ";
 

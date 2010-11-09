@@ -24,6 +24,15 @@ namespace Felbook.Models
 
         public int Indent { get; set; }
     }
+
+    public class MessageListView
+    {
+        public List<MessageModelView> MessageList { get; set; }
+
+        public int LastPage { get; set; }
+
+        public int ActualPage { get; set; }
+    }
 }
 
 #endregion
@@ -55,8 +64,14 @@ namespace Felbook.Controllers
 
         #region Actions
 
-        public ActionResult Index()
+        /// <summary>
+        /// Zobrazit zprávy seznam zpráv
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index(int page)
         {
+            //int pageNumber = 1;
+            
             if ((User != null) && (Request.IsAuthenticated))
             {
 
@@ -64,6 +79,7 @@ namespace Felbook.Controllers
                 
                 List<Message> msgRootList = new List<Message>();
                 List<MessageModelView> msgList = new List<MessageModelView>();
+                List<MessageModelView> pageList;
                 
                 foreach (var message in user.Messages)
                 {
@@ -83,7 +99,31 @@ namespace Felbook.Controllers
                 msgRootList.Sort();
                 CreateListForView(msgRootList, msgList, 0);
 
-                return View(msgList);
+                if (msgList.Count < (10 * page))
+                {
+                    int countOfMessages = msgList.Count - (10 * page) + 10;
+
+                    if (countOfMessages > 0)
+                    {
+                        pageList = msgList.GetRange(10 * (page - 1), countOfMessages);
+                    }
+                    else
+                    {
+                        //return View("NotExist");
+                        return View("Error");
+                    }
+                }
+                else
+                {
+                    pageList = msgList.GetRange(10 * (page - 1), 10);
+                }
+
+                return View(new MessageListView
+                {
+                    MessageList = pageList,
+                    LastPage = msgList.Count / 10,
+                    ActualPage = page
+                });
             }
             else
             {
@@ -162,7 +202,11 @@ namespace Felbook.Controllers
         {
             return View(model.MessageService.GetMessageById(id));
         }
-        
+
+        /// <summary>
+        /// Poslat zprávu
+        /// </summary>
+        /// <returns></returns>
         public ActionResult SendMessage()
         {
             if ((User != null) && (Request.IsAuthenticated))
@@ -176,6 +220,11 @@ namespace Felbook.Controllers
             }
         }
 
+        /// <summary>
+        /// Odpovědět na zprávu
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns></returns>
         public ActionResult ReplyMessage(int msgID)
         {
             if ((User != null) && (Request.IsAuthenticated))
@@ -227,7 +276,7 @@ namespace Felbook.Controllers
                 Message prevMessage = model.MessageService.GetMessageById(int.Parse(collection["PrevMessageID"]));
 
                 model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, collection["text"]);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { page = 1.ToString() });
             }
             catch (InvalidOperationException)
             {

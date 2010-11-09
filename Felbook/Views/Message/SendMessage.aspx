@@ -9,7 +9,7 @@
     <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
 
     <h3>
-    <%: Html.ActionLink("Recieved messages", "Index", "Message")%>,
+    <%: Html.ActionLink("Messages", "Index", "Message", new { page = 1.ToString() }, null)%>, 
     <%--<%: Html.ActionLink("Sent messages", "Sent", "Message")%>,--%>
     Send message
     </h3>

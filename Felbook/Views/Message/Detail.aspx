@@ -43,7 +43,7 @@
     </fieldset>
 
     <p>
-         <%: Html.ActionLink("Back to List", "Index") %> 
+         <%: Html.ActionLink("Back to List", "Index", "Message", new { page = 1.ToString() }, null)%> 
          <% if (Model.Sender.Username != Page.User.Identity.Name)
             { %>
          | <%: Html.ActionLink("Reply message", "ReplyMessage", "Message", new { msgid = Model.Id.ToString() }, null)%>
