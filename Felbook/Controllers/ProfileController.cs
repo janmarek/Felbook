@@ -12,6 +12,7 @@ using System.Management.Instrumentation;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Text.RegularExpressions;
 
 
 
@@ -23,7 +24,6 @@ namespace Felbook.Controllers
         /// <summary>
         /// Znak podle kterého se budou dělit strinq linků do pole
         /// </summary>
-        private char linkDelimiter = '°';
         #endregion
 
         public Model Model { get; set; }
@@ -92,63 +92,32 @@ namespace Felbook.Controllers
         /// <param name="collection">Kolekce hodnot z formuláře</param>
         /// <returns>Vrátí obsah který se uloží 
         /// do DIV elementu ve formuláři, a po odeslání formuláře se z SESSION 
-        /// uloží linky do databáze</returns>
-        [AcceptVerbs(HttpVerbs.Post), HttpPost]
+        /// vrátí JSON hodnotu do javascriptu clienta</returns>
+        [HttpPost]
         public ActionResult SetLinksContent(FormCollection collection)  
         {
-            string returnVal=String.Empty; //výsledný řetězec který metoda vrací
-            if (ValidLink(collection["newLink"]) != String.Empty)
-            {
-                Session["links"] += collection["newLink"] + linkDelimiter;
+            string link = collection["newLink"];
+            link = link.TrimEnd();
+            link = link.TrimStart();
+            if (link.Trim().Equals(String.Empty)) {
+                return Json("null");
             }
-            else 
-            {
-                returnVal += collection["newLink"] + " is not valid link.";
-            }
-            List<string> returnList = new List<string>();
 
-            try
+            if (link.StartsWith("http://") == false && link.StartsWith("https://") == false && link.StartsWith("ftp://") == false) 
             {
-                returnList = Session["links"].ToString().Split(linkDelimiter).ToList<string>();
+                link = "http://" + link;
             }
-            catch (Exception e) {
-                returnVal += e.Message;
-            }           
-            returnVal += "<ul>";
-            for (int i = 0; i < (returnList.Count-1); i++) {
-                returnVal += "<li>" + returnList.ElementAt(i).ToString() + "</li>";
-            }
-            returnVal += "</ul>";
-            return Content(returnVal);  
-        }
-
-        /// <summary>
-        /// Metoda pro validaci jestli daný link je validní a jestli již neni v Session s linky
-        /// </summary>
-        /// <param name="str">Link který validujeme</param>
-        /// <returns>Vrátí stríng který reprezentuje link</returns>
-        private string ValidLink(string link) {          
-            //tady bude testování jestli daný link existuje skusí se to nějakou připojovací metodou přes webclienta
-            List<string> linkList = new List<string>();
-            /*if (String.IsNullOrEmpty(Session["links"].ToString())==false)
-            {
-                linkList = Session["links"].ToString().Split(linkDelimiter).ToList<string>();
-            }
-            //ověřuje se jestli daný link již existuje
-            foreach(string link in linkList){
-                if (link.Contains(str)) {
-                    return String.Empty;
-                }
-            }*/
-            //String ahoj = Session["links"].ToString();
             
-            if (true)
+            string pattern = @"^(http|https|ftp)\://+[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*[^\.\,\)\(\s]$";
+            Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            if (reg.IsMatch(link) && link.Split('.').Length > 1 && link.Length > 4 && link.Contains(',') == false)
             {
-                return link;           
+
+                return Json(link);            
             }
-            /*else {
-                return String.Empty;
-            }*/
+            else {
+                return Json("error");
+            }
         }
 
         /// <summary>
@@ -194,18 +163,26 @@ namespace Felbook.Controllers
             status.Text = collection["status"];
             status.Created = DateTime.Now;
             
+            string [] links = null;
+            if (collection["link"] != null) {
+                links = collection["link"].Split(',');
+            }         
+
             //representace souborů k uploadu
             List<HttpPostedFileBase> filesToSave = new List<HttpPostedFileBase>();
             //cesty kam se budou soubory ukládat
             List<string> filesPathsToSave = new List<string>();
 
-            int fileOrder = 1; //fileOrder je proměnná určující pořadí obrázku
-            while (Request.Files["picture" + fileOrder].ContentLength > 0)
+            int pictureOrder = 1; //pictureOrder je proměnná určující pořadí obrázku
+            //int fileOrder = 1; //fileOrder je proměnná určující pořadí obrázku
+            while (Request.Files.Count >= pictureOrder /*&& Request.Files["picture" + fileOrder].ContentLength > 0*/)
             {
-                HttpPostedFileBase file = Request.Files["picture" + fileOrder];
-                //ověření jestli je to obrázek
-                if (file.ContentLength > 0)
+                HttpPostedFileBase file = null;
+                if (/*Request.Files["picture" + pictureOrder] != null && */Request.Files["picture" + pictureOrder].ContentLength > 0)
                 {
+                    file = Request.Files["picture" + pictureOrder];               
+                    
+                    //ověření jestli je to obrázek
                     if (file.ContentType == "image/jpeg" && (file.FileName.ToLower().EndsWith(".jpg") || file.FileName.ToLower().EndsWith(".jpeg"))
                         || file.ContentType == "image/gif" && file.FileName.ToLower().EndsWith(".gif")
                         || file.ContentType == "image/png" && file.FileName.ToLower().EndsWith(".png")
@@ -244,13 +221,13 @@ namespace Felbook.Controllers
                             //ke statusu se postupně ukládají informace ohledně uploadu
                             //jestli se opravdu uploadujou obrázky se rozhodne na konci metody
                             Felbook.Models.Image newImg = new Felbook.Models.Image();
-                            if (String.IsNullOrEmpty(collection["description" + fileOrder]))
+                            if (String.IsNullOrEmpty(collection["description" + pictureOrder]))
                             {
                                 newImg.Description = "no comment"; //pokud uživatel nevyplnil description
                             }
                             else
                             {
-                                newImg.Description = collection["description" + fileOrder];
+                                newImg.Description = collection["description" + pictureOrder];
                             }
                             newImg.FileName = file.FileName;
                             status.Images.Add(newImg);
@@ -275,7 +252,7 @@ namespace Felbook.Controllers
                         ModelState.AddModelError("picture", "This file " + file.FileName + " is not image.");
                     }
                 }
-                fileOrder++; //inkrementace pro načtení dalšího uploadvatelného obrázku
+                pictureOrder++; //inkrementace pro načtení dalšího uploadvatelného obrázku
             }
               
             if (!ModelState.IsValid) //pokud model není validní tak se nic neuloží a pouze se ukážou chyby pomocí View[]
@@ -284,23 +261,19 @@ namespace Felbook.Controllers
             }
             else //pokud je model validní tak uloží user linky, uploaduje a uloží obrázky a uloží samotný status k uživately
             {
-                //upload linků ke statusu
-                if (Session["links"]!=null)
-                {  
-                    List<string> userLinks = Session["links"].ToString().Split(linkDelimiter).ToList();
-                    for (int i = 0; i < (userLinks.Count - 1); i++)
+                //upload linků                    
+                if (links != null) { 
+                foreach(string link in links)
                     {
                         Felbook.Models.Link newLink = new Felbook.Models.Link();
-                        newLink.URL = userLinks.ElementAt(i);
+                        newLink.URL = link;
                         status.Links.Add(newLink);
                     }
-                    Session["links"] = null; //vymaže session
                 }
                 //nyní upload obrázku ke statusu
                 int filePointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k souboru
                 foreach (HttpPostedFileBase file in filesToSave)
                 { //projdou ve vsechny soubory a uploadujou se
-                    //file.SaveAs(filesPathsToSave.ElementAt(filePointer));
                     this.ImageResize(file, filesPathsToSave.ElementAt(filePointer));
                     filePointer++;
                 }

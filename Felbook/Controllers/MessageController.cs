@@ -50,7 +50,7 @@ namespace Felbook.Controllers
 
                 foreach (var message in user.Messages)
                 {
-                    if (message.FirstMessage == null)
+                    if (message.ReplyTo == null)
                     {
                         msgRootList.Add(message);
                     }
@@ -58,7 +58,7 @@ namespace Felbook.Controllers
 
                 foreach (var message in user.SentMessages)
                 {
-                    if (message.FirstMessage == null)
+                    if (message.ReplyTo == null)
                     {
                         msgRootList.Add(message);
                     }

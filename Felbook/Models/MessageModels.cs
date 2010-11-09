@@ -49,11 +49,11 @@ namespace Felbook.Models
 
             if (prevMessageID == 0)
             {
-                msg.FirstMessage = null;
+                msg.ReplyTo = null;
             }
             else
             {
-                msg.FirstMessage = GetMessageById(prevMessageID);
+                msg.ReplyTo = GetMessageById(prevMessageID);
             }
 
             msg.Text = text;

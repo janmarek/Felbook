@@ -36,13 +36,13 @@
     foreach (Felbook.Models.Message message in Model.Messages)
     {
         
-        if (message.FirstMessage == prevMessage)
+        if (message.ReplyTo == prevMessage)
         {
             messageStack.Push(prevMessage);
             indent++;
         }
 
-        if (message.FirstMessage != messageStack.Peek())
+        if (message.ReplyTo != messageStack.Peek())
         {
             messageStack.Pop();
             indent--;
