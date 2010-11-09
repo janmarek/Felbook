@@ -121,7 +121,7 @@ namespace Felbook.Controllers
                 return View(new MessageListView
                 {
                     MessageList = pageList,
-                    LastPage = msgList.Count / 10,
+                    LastPage = msgList.Count <= 10 ? 1 : (msgList.Count - 1) / 10 + 1,
                     ActualPage = page
                 });
             }

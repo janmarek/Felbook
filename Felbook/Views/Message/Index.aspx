@@ -61,6 +61,24 @@
 
             <% } %>
 
+            <% if (Model.ActualPage == 1)
+               { %>
+               <<
+            <% }
+               else
+               { %>
+                <%: Html.ActionLink("<<", "Index", "Message", new { page = (Model.ActualPage - 1).ToString() }, null)%>
+            <% } %>
+
+            <% if (Model.ActualPage == Model.LastPage)
+               { %>
+               >>
+            <% }
+               else
+               { %>
+                <%: Html.ActionLink(">>", "Index", "Message", new { page = (Model.ActualPage + 1).ToString() }, null)%>
+            <% } %>
+
        <%-- </div>
 
 
