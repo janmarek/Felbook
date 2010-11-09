@@ -37,12 +37,16 @@
             
                 <ul id="menu">
 					<li><%: Html.ActionLink("Groups", "Find", "Group") %></li>
-					<% if (Request.IsAuthenticated) { %>
+					<% if (Request.IsAuthenticated)
+                    { %>
 					<li><%: Html.ActionLink("My profile", "Index", "Profile", new { username = Page.User.Identity.Name }, null)%></li>
-		            <li><%: Html.ActionLink("Messages", "Index", "Message")%></li>
-	                <% } %>
+		            <li><%: Html.ActionLink("Messages", "Index", "Message", new { page = 1.ToString() }, null)%></li>
+	                <% }
+                    else
+                    { %>
                     <li><%: Html.ActionLink("TestData", "TestData", "Home")%></li>
-                </ul>
+                    <% } %>
+                 </ul>
             
             </div>
         </div>

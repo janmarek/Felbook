@@ -53,5 +53,16 @@ namespace Felbook.Models
 			return CalculateHash(password) == PasswordHash;
 		}
 
+
+		/// <summary>
+		/// Zjistit jestli některý uživatel sleduje uživatele
+		/// </summary>
+		/// <param name="follower">potenciální follower</param>
+		/// <returns></returns>
+		public bool IsFollowedBy(User follower)
+		{
+			return Followers.Contains(follower);
+		}
+
 	}
 }

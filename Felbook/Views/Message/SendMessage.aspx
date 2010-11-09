@@ -9,8 +9,8 @@
     <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
 
     <h3>
-    <%: Html.ActionLink("Recieved messages", "Index", "Message")%>,
-    <%: Html.ActionLink("Sent messages", "Sent", "Message")%>,
+    <%: Html.ActionLink("Messages", "Index", "Message", new { page = 1.ToString() }, null)%>, 
+    <%--<%: Html.ActionLink("Sent messages", "Sent", "Message")%>,--%>
     Send message
     </h3>
         
@@ -18,7 +18,8 @@
 		<%: Html.AntiForgeryToken() %>
         <h3>Reciervers (separator is space):</h3>
         <%: Html.Hidden("PrevMessageID", (object)0)%>
-		<%: Html.TextBox("To") %> <br />
+		Users: <%: Html.TextBox("ToUsers") %> <br />
+        Groups: <%: Html.TextBox("ToGroups") %> <br />
         <%: Html.ValidationSummary() %>
         <h3>Text</h3>
         <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
