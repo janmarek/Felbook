@@ -20,7 +20,7 @@
 
     //přidání elementu pro upload souboru
     $("#addFile").click(function () {
-        var new_row = $("<tr><td><input type=\"file\" id=\"file" + indexFile + "\" name=\"file" + indexFile + "\" /></td><td><textarea id=\"filedescription" + indexFile + "\" name=\"description" + indexFile + "\" rows=\"4\" cols=\"20\"></textarea></td></tr>").hide();
+        var new_row = $("<tr><td><input type=\"file\" id=\"file" + indexFile + "\" name=\"file" + indexFile + "\" /></td><td><textarea id=\"filedescription" + indexFile + "\" name=\"filedescription" + indexFile + "\" rows=\"4\" cols=\"20\"></textarea></td></tr>").hide();
         $("#fileInput:first").append(new_row);
         new_row.show("slow");
         indexFile++;
@@ -42,7 +42,6 @@
 var indexImg = 2; //index pro označení elementů jejich jednoznačné name a id - obrázek
 var indexFile = 2; //index pro označení elementů jejich jednoznačné name a id - soubor
 
-var linkIndex = 1;
 function AddLink(ajaxResponse) {
     var response = ajaxResponse.get_response().get_object();
     if (response == "null") {

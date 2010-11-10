@@ -23,7 +23,7 @@
         </div>
             
         <p>
-            <input type="submit" value="OK">
+            <input type="submit" value="OK" />
         </p>
     </fieldset>
 

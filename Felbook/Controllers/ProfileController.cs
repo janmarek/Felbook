@@ -85,13 +85,12 @@ namespace Felbook.Controllers
 
         
 
-        // AJAX: /Profile/GetContent/
         /// <summary>
         /// Tato metoda řeší parsování a kontrolování zadaných linků od uživatele
         /// </summary>
-        /// <param name="collection">Kolekce hodnot z formuláře</param>
+        /// <param name="collection">Kolekce hodnot z formuláře - v tomto případě jeden textbox</param>
         /// <returns>Vrátí obsah který se uloží 
-        /// do DIV elementu ve formuláři, a po odeslání formuláře se z SESSION 
+        /// do DIV elementu ve formuláři, a po odeslání formuláře
         /// vrátí JSON hodnotu do javascriptu clienta</returns>
         [HttpPost]
         public ActionResult SetLinksContent(FormCollection collection)  
@@ -112,7 +111,6 @@ namespace Felbook.Controllers
             Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (reg.IsMatch(link) && link.Split('.').Length > 1 && link.Length > 4 && link.Contains(',') == false)
             {
-
                 return Json(link);            
             }
             else {
@@ -168,41 +166,134 @@ namespace Felbook.Controllers
                 links = collection["link"].Split(',');
             }         
 
+            //representace obrázků k uploadu
+            List<HttpPostedFileBase> imagesToSave = new List<HttpPostedFileBase>();
+            //cesty kam se budou obrázky ukládat
+            List<string> imagesPathsToSave = new List<string>();
+
             //representace souborů k uploadu
             List<HttpPostedFileBase> filesToSave = new List<HttpPostedFileBase>();
             //cesty kam se budou soubory ukládat
             List<string> filesPathsToSave = new List<string>();
 
             int pictureOrder = 1; //pictureOrder je proměnná určující pořadí obrázku
-            //int fileOrder = 1; //fileOrder je proměnná určující pořadí obrázku
-            while (Request.Files.Count >= pictureOrder /*&& Request.Files["picture" + fileOrder].ContentLength > 0*/)
-            {
-                HttpPostedFileBase file = null;
-                if (/*Request.Files["picture" + pictureOrder] != null && */Request.Files["picture" + pictureOrder].ContentLength > 0)
+            int fileOrder = 1; //fileOrder je proměnná určující pořadí obrázku
+            
+            
+            //while (Request.Files.Count >= pictureOrder /*&& Request.Files["picture" + fileOrder].ContentLength > 0*/)
+            //{
+
+                HttpPostedFileBase fileToUpload = null;
+
+                bool areFilesUploaded = false;
+                while (areFilesUploaded==false) //(Request.Files["file" + fileOrder].FileName != null /*   .ContentLength > 0*/) 
                 {
-                    file = Request.Files["picture" + pictureOrder];               
+                    fileToUpload = Request.Files["file" + fileOrder];
+                    try
+                    {
+                        if (fileToUpload.ContentLength == 0)
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception) {
+                        areFilesUploaded = true;
+                        break;
+                    }
+
+
+                    //cesty k souborům
+                    string fileDir = "../Web_Data/status_files/";
+                    string fileFullPath = Path.Combine(HttpContext.Server.MapPath(fileDir + userId), Path.GetFileName(fileToUpload.FileName));
+                    string fileDirPath = Path.GetDirectoryName(fileFullPath);
+
+                    if (System.IO.File.Exists(fileFullPath) == true)
+                    {
+                        ModelState.AddModelError("file", "This file " + fileToUpload.FileName + " is already exist.");
+                    }
+
+                    if (Directory.Exists(fileDirPath) == false)
+                    {
+                        try
+                        {
+                            //pokusíme se vytvořit adresář
+                            Directory.CreateDirectory(fileDirPath);
+                        }
+                        //jednotlivě odchytávám chyby
+                        catch (UnauthorizedAccessException)
+                        {
+                            ModelState.AddModelError("file", "You have not permission to save file");
+                        }
+                        catch (Exception)
+                        {
+                            ModelState.AddModelError("file", "Some uknown error");
+                        }
+                    }
+
+                    //ke statusu se postupně ukládají informace ohledně uploadu
+                    //jestli se opravdu uploadujou soubory se rozhodne na konci metody
+                    Felbook.Models.File newFile = new Felbook.Models.File();
+                    if (String.IsNullOrEmpty(collection["filedescription" + fileOrder]))
+                    {
+                        newFile.Description = "no comment"; //pokud uživatel nevyplnil description
+                    }
+                    else
+                    {
+                        newFile.Description = collection["filedescription" + fileOrder];
+                    }
+                    newFile.FileName = fileToUpload.FileName;               
+                    status.Files.Add(newFile);
+                    filesToSave.Add(fileToUpload);
+                    filesPathsToSave.Add(fileFullPath);
+                    fileOrder++;
+                } //konec uploadování filů
+
+
+                areFilesUploaded = false;
+
+                HttpPostedFileBase imgToUpload = null;
+                /*if (Request.Files["picture" + pictureOrder].ContentLength > 0)
+                {*/
+                while(areFilesUploaded==false){
+
+                    imgToUpload = Request.Files["picture" + pictureOrder];               
                     
+                    try
+                    {
+                        if (imgToUpload.ContentLength == 0)
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception) {
+                        areFilesUploaded = true;
+                        break;
+                    }
+
+
+
                     //ověření jestli je to obrázek
-                    if (file.ContentType == "image/jpeg" && (file.FileName.ToLower().EndsWith(".jpg") || file.FileName.ToLower().EndsWith(".jpeg"))
-                        || file.ContentType == "image/gif" && file.FileName.ToLower().EndsWith(".gif")
-                        || file.ContentType == "image/png" && file.FileName.ToLower().EndsWith(".png")
+                    if (imgToUpload.ContentType == "image/jpeg" && (imgToUpload.FileName.ToLower().EndsWith(".jpg") || imgToUpload.FileName.ToLower().EndsWith(".jpeg"))
+                        || imgToUpload.ContentType == "image/gif" && imgToUpload.FileName.ToLower().EndsWith(".gif")
+                        || imgToUpload.ContentType == "image/png" && imgToUpload.FileName.ToLower().EndsWith(".png")
                         )
                     {
-                        string pathDir = "../Web_Data/status_images/";
-                        string filePath = Path.Combine(HttpContext.Server.MapPath(pathDir + userId), Path.GetFileName(file.FileName));
-                        string dirPath = Path.GetDirectoryName(filePath);
+                        //cesty k obrázkům
+                        string imgDir = "../Web_Data/status_images/";
+                        string imgFullPath = Path.Combine(HttpContext.Server.MapPath(imgDir + userId), Path.GetFileName(imgToUpload.FileName));
+                        string imgDirPath = Path.GetDirectoryName(imgFullPath);
 
-                        if (System.IO.File.Exists(filePath) == true)
+                        if (System.IO.File.Exists(imgFullPath) == true)
                         {
-                            ModelState.AddModelError("picture", "This file " + file.FileName + " is already exist.");
+                            ModelState.AddModelError("picture", "This file " + imgToUpload.FileName + " is already exist.");
                         }
 
-                        if (Directory.Exists(dirPath) == false)
+                        if (Directory.Exists(imgDirPath) == false)
                         {
                             try
                             {
                                 //pokusíme se vytvořit adresář
-                                Directory.CreateDirectory(dirPath);
+                                Directory.CreateDirectory(imgDirPath);
                             }
                             //jednotlivě odchytávám chyby
                             catch (UnauthorizedAccessException)
@@ -213,11 +304,7 @@ namespace Felbook.Controllers
                             {
                                 ModelState.AddModelError("picture", "Some uknown error");
                             }
-                        }
-
-                        //ukládám soubor zase s odchytavanim chyb
-                        try
-                        {         
+                        }     
                             //ke statusu se postupně ukládají informace ohledně uploadu
                             //jestli se opravdu uploadujou obrázky se rozhodne na konci metody
                             Felbook.Models.Image newImg = new Felbook.Models.Image();
@@ -229,31 +316,19 @@ namespace Felbook.Controllers
                             {
                                 newImg.Description = collection["description" + pictureOrder];
                             }
-                            newImg.FileName = file.FileName;
+                            newImg.FileName = imgToUpload.FileName;
                             status.Images.Add(newImg);
-                            filesToSave.Add(file);
-                            filesPathsToSave.Add(filePath);
-                        }
-                        catch (UnauthorizedAccessException)
-                        {
-                            ModelState.AddModelError("picture", "You have not permission to save picture");
-                        }
-                        catch (DirectoryNotFoundException)
-                        {
-                            ModelState.AddModelError("picture", "You have not permission to save picture");
-                        }
-                        catch (Exception)
-                        {
-                            ModelState.AddModelError("picture", "Some uknown error");
-                        }
+                            imagesToSave.Add(imgToUpload);
+                            imagesPathsToSave.Add(imgFullPath);
                     }
                     else
                     {
-                        ModelState.AddModelError("picture", "This file " + file.FileName + " is not image.");
+                        ModelState.AddModelError("picture", "This file " + imgToUpload.FileName + " is not image.");
                     }
+                    pictureOrder++; //inkrementace pro načtení dalšího uploadvatelného obrázku
                 }
-                pictureOrder++; //inkrementace pro načtení dalšího uploadvatelného obrázku
-            }
+                
+           // }
               
             if (!ModelState.IsValid) //pokud model není validní tak se nic neuloží a pouze se ukážou chyby pomocí View[]
             {
@@ -271,10 +346,16 @@ namespace Felbook.Controllers
                     }
                 }
                 //nyní upload obrázku ke statusu
-                int filePointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k souboru
-                foreach (HttpPostedFileBase file in filesToSave)
+                int imgPointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k obrázku
+                foreach (HttpPostedFileBase img in imagesToSave)
                 { //projdou ve vsechny soubory a uploadujou se
-                    this.ImageResize(file, filesPathsToSave.ElementAt(filePointer));
+                    this.ImageResize(img, imagesPathsToSave.ElementAt(imgPointer));
+                    imgPointer++;
+                }
+                int filePointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k souboru
+                foreach(HttpPostedFileBase uploadFile in filesToSave)
+                {
+                    uploadFile.SaveAs(filesPathsToSave.ElementAt(filePointer));
                     filePointer++;
                 }
                 Model.UserService.AddStatus(actualUser, status); //uloží se status i s obrázkem
