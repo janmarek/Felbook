@@ -388,3 +388,13 @@ div#title
     text-align: center;
 }
 
+#removeUserBox
+{
+    display: none;
+}
+
+#removeGroupBox
+{
+    display: none;
+}
+

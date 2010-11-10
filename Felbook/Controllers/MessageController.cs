@@ -33,6 +33,13 @@ namespace Felbook.Models
 
         public int ActualPage { get; set; }
     }
+
+    public class SendMessageView
+    {
+        public string AutocompleteUsers { get; set; }
+
+        public string AutocompleteGroups { get; set; }
+    }
 }
 
 #endregion
@@ -70,8 +77,7 @@ namespace Felbook.Controllers
         /// <returns></returns>
         public ActionResult Index(int page)
         {
-            //int pageNumber = 1;
-            
+                        
             if ((User != null) && (Request.IsAuthenticated))
             {
 
@@ -211,7 +217,42 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(model.UserService.FindByUsername(User.Identity.Name));
+                // TODO domluvit se, co má být v autocomplete seznamu
+                
+                FelBookDBEntities db = new FelBookDBEntities();
+
+                string users = "";
+                string groups = "";
+
+                IEnumerator<User> userEnum = db.UserSet.AsEnumerable().GetEnumerator();
+
+                if (userEnum.MoveNext())
+                {
+                    users += "\"" + userEnum.Current.Username + "\"";
+                }
+                while (userEnum.MoveNext())
+                {
+                    users += ", \"" + userEnum.Current.Username + "\"";
+                }
+
+                IEnumerator<Group> groupEnum = db.GroupSet.AsEnumerable().GetEnumerator();
+
+                if (groupEnum.MoveNext())
+                {
+                    groups += "\"" + groupEnum.Current.Name + "\"";
+                }
+                while (groupEnum.MoveNext())
+                {
+                    groups += ", \"" + groupEnum.Current.Name + "\"";
+                }
+
+                return View(new SendMessageView
+                {
+                    AutocompleteUsers = users,
+                    AutocompleteGroups = groups
+                });
+                
+                //return View(model.UserService.FindByUsername(User.Identity.Name));
             }
             else
             {
@@ -244,27 +285,38 @@ namespace Felbook.Controllers
             try
             {
                 User sender = model.UserService.FindByUsername(User.Identity.Name);
-                
-                string[] separators = new string[1];
-                //separators[0] = ";";
-                separators[0] = "; ";
-                //separators[2] = " ;";
                 ISet<User> setOfRecievers = new HashSet<User>();
 
-                string[] parsedRecievers = collection["ToUsers"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var reciever in parsedRecievers) 
+                if (String.IsNullOrEmpty(collection["text"]))
                 {
+                    ModelState.AddModelError("", "Text of message is requied!");
+                    return View(collection);
+                }
+
+                for (int i = 1; i <= int.Parse(collection["UserCounter"]); i++)
+                {
+                    string reciever = collection["ToUser" + i];
+                    if (String.IsNullOrEmpty(reciever) || (reciever == sender.Username))
+                    {
+                        continue;
+                    }
                     setOfRecievers.Add(model.UserService.FindByUsername(reciever));
                 }
 
-                string[] parsedGroups = collection["ToGroups"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var groupName in parsedGroups)
+                for (int i = 1; i <= int.Parse(collection["GroupCounter"]); i++)
                 {
+                    string groupName = collection["ToGroup" + i];
+                    if (String.IsNullOrEmpty(groupName))
+                    {
+                        continue;
+                    }
                     Group group = model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
                     foreach( var user in model.GroupService.GetUsers(group))
                     {
+                        if (user.Username == sender.Username)
+                        {
+                            continue;
+                        }
                         setOfRecievers.Add(user);
                     }
                 }
