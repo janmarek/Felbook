@@ -9,6 +9,11 @@ namespace Felbook.Models
 {
 	public partial class User
 	{
+		public User()
+		{
+			Created = DateTime.Now;
+		}
+
 		/// <summary>
 		/// Jméno a příjmení
 		/// </summary>
