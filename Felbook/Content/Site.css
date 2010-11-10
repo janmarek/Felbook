@@ -5,11 +5,10 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 body
 {
-    background-color: #5c87b2;
-    font-size: .75em;
-    font-family: Verdana, Helvetica, Sans-Serif;
-    margin: 0;
-    padding: 0;
+    background-color: #E3E0DF;
+    font-size: 80%;
+    font-family: Georgia, Helvetica, Sans-Serif;
+    margin: 45px 0 0;
     color: #696969;
 }
 
@@ -42,32 +41,28 @@ p, ul
 ----------------------------------------------------------*/
 h1, h2, h3, h4, h5, h6
 {
-    font-size: 1.5em;
-    color: #000;
-    font-family: Arial, Helvetica, sans-serif;
+    color: #932C20;
 }
 
 h1
 {
-    font-size: 2em;
-    padding-bottom: 0;
-    margin-bottom: 0;
+    font-size: 180%;
 }
 h2
 {
-    padding: 0 0 10px 0;
+    font-size: 160%;
 }
 h3
 {
-    font-size: 1.2em;
+    font-size: 140%;
 }
 h4
 {
-    font-size: 1.1em;
+    font-size: 120%;
 }
 h5, h6
 {
-    font-size: 1em;
+    font-size: 100%;
 }
 
 /* this rule styles <h2> tags that are the 
@@ -84,95 +79,99 @@ first child of the left and right table columns */
 page width. Or, you can specify an exact pixel width. */
 .page
 {
-    width: 90%;
+    width: 950px;
     margin-left: auto;
     margin-right: auto;
 }
 
 #header
 {
-    position: relative;
-    margin-bottom: 0px;
-    color: #000;
-    padding: 0;
+	color: white;
+    position: fixed;
+    background-color: #222;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(15,15,15)), color-stop(1, rgb(50,50,50)));
+	background: -moz-linear-gradient(center bottom, rgb(15,15,15) 0%, rgb(50,50,50) 100%);
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 45px;
+    -webkit-box-shadow: 0 -2px 10px #000;
+    -moz-box-shadow: 0 -2px 10px #000;
+    box-shadow: 0 -2px 10px #000;
 }
 
-#header h1
+#header-inner 
 {
-    font-weight: bold;
-    padding: 5px 0;
-    margin: 0;
-    color: #fff;
-    border: none;
-    line-height: 2em;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 32px !important;
+	line-height: 45px;
+	position: relative;
+	width: 950px;
+	margin: 0 auto;
+}
+
+#logindisplay
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#logindisplay a:link, #logindisplay a:visited
+{
+    text-decoration: underline;
+}
+
+#header a 
+{
+	color: white;
+}
+
+#header a:hover 
+{
+	color: #FFF035;
+}
+
+#title 
+{
+	font-weight: bold;
 }
 
 #main
 {
-    padding: 30px 30px 15px 30px;
+    padding: 20px 30px 15px 30px;
     background-color: #fff;
-    margin-bottom: 30px;
-    _height: 1px; /* only IE6 applies CSS properties starting with an underscore */
-}
-
-#footer
-{
-    color: #999;
-    padding: 10px 0;
-    text-align: center;
-    line-height: normal;
-    margin: 0;
-    font-size: .9em;
+    margin: 0 auto 30px;
+    width: 890px;
 }
 
 /* TAB MENU   
 ----------------------------------------------------------*/
 ul#menu
 {
-    border-bottom: 1px #5C87B2 solid;
-    padding: 0 0 2px;
-    position: relative;
+    position: absolute;
     margin: 0;
-    text-align: right;
+    padding: 0;
+    top: 0;
+    left: 100px;
 }
 
 ul#menu li
 {
-    display: inline;
+	float: left;
     list-style: none;
-}
-
-ul#menu li#greeting
-{
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    color: #fff;
 }
 
 ul#menu li a
 {
-    padding: 10px 20px;
-    font-weight: bold;
+	display: block;
+    padding: 0 10px;
+    line-height: 45px;
     text-decoration: none;
-    line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
+    color: #FFF;
 }
 
-ul#menu li a:hover
+ul#menu li a:hover, ul#menu li a:active
 {
-    background-color: #fff;
-    text-decoration: none;
-}
-
-ul#menu li a:active
-{
-    background-color: #a6e2a6;
-    text-decoration: none;
+    background-color: #000;
 }
 
 ul#menu li.selected a
@@ -188,7 +187,8 @@ fieldset
 {
     margin: 1em 0;
     padding: 1em;
-    border: 1px solid #CCC;
+    border: 1px solid #CEC9AA;
+    background: #F0EFE6;
 }
 
 fieldset p 
@@ -205,14 +205,19 @@ legend
 
 input[type="text"] 
 {
-    width: 200px;
+    width: 400px;
     border: 1px solid #CCC;
 }
 
 input[type="password"] 
 {
-    width: 200px;
+    width: 400px;
     border: 1px solid #CCC;
+}
+
+textarea 
+{
+	width: 400px;
 }
 
 /* TABLE
@@ -248,45 +253,6 @@ table th
 .error
 {
     color:Red;
-}
-
-#menucontainer
-{
-    margin-top:40px;
-}
-
-div#title
-{
-    display:block;
-    float:left;
-    text-align:left;
-}
-
-#logindisplay
-{
-    font-size:1.1em;
-    display:block;
-    text-align:right;
-    margin:10px;
-    color:White;
-}
-
-#logindisplay a:link
-{
-    color: white;
-    text-decoration: underline;
-}
-
-#logindisplay a:visited
-{
-    color: white;
-    text-decoration: underline;
-}
-
-#logindisplay a:hover
-{
-    color: white;
-    text-decoration: none;
 }
 
 /* Styles for validation helpers
