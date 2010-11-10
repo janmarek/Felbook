@@ -1,4 +1,12 @@
-﻿$(document).ready(function () {
+﻿$(function () {
+	// taby
+	$("div.tabs").tabs();
+
+	// "lightbox" galerie
+	$("a.colorbox").colorbox();
+});
+
+$(document).ready(function () {
 
     //přidání elementu pro upload obrázku
     $("#addImg").click(function () {
