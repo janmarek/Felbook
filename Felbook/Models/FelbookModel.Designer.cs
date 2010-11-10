@@ -32,6 +32,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "SentMessages", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.User), "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupChildren", "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group), "Group1", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageMessage", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), true)]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "WallItemUser", "WallItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.WallItem), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.User))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusWallItem", "Status", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Status), "WallItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.WallItem))]
 
 #endregion
 
@@ -210,6 +212,22 @@ namespace Felbook.Models
             }
         }
         private ObjectSet<Image> _ImageSet;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<WallItem> WallItemSet
+        {
+            get
+            {
+                if ((_WallItemSet == null))
+                {
+                    _WallItemSet = base.CreateObjectSet<WallItem>("WallItemSet");
+                }
+                return _WallItemSet;
+            }
+        }
+        private ObjectSet<WallItem> _WallItemSet;
 
         #endregion
         #region AddTo Methods
@@ -276,6 +294,14 @@ namespace Felbook.Models
         public void AddToImageSet(Image image)
         {
             base.AddObject("ImageSet", image);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the WallItemSet EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToWallItemSet(WallItem wallItem)
+        {
+            base.AddObject("WallItemSet", wallItem);
         }
 
         #endregion
@@ -1899,6 +1925,188 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.SentMessages", "Message", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "WallItemUser", "WallItem")]
+        public EntityCollection<WallItem> WallItems
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<WallItem>("FelBookDBModel.WallItemUser", "WallItem");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<WallItem>("FelBookDBModel.WallItemUser", "WallItem", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="FelBookDBModel", Name="WallItem")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class WallItem : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new WallItem object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="unread">Initial value of the Unread property.</param>
+        public static WallItem CreateWallItem(global::System.Int32 id, global::System.Boolean unread)
+        {
+            WallItem wallItem = new WallItem();
+            wallItem.Id = id;
+            wallItem.Unread = unread;
+            return wallItem;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Unread
+        {
+            get
+            {
+                return _Unread;
+            }
+            set
+            {
+                OnUnreadChanging(value);
+                ReportPropertyChanging("Unread");
+                _Unread = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Unread");
+                OnUnreadChanged();
+            }
+        }
+        private global::System.Boolean _Unread;
+        partial void OnUnreadChanging(global::System.Boolean value);
+        partial void OnUnreadChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "WallItemUser", "User")]
+        public User User
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("FelBookDBModel.WallItemUser", "User").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("FelBookDBModel.WallItemUser", "User").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<User> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("FelBookDBModel.WallItemUser", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("FelBookDBModel.WallItemUser", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "StatusWallItem", "Status")]
+        public Status Status
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Status>("FelBookDBModel.StatusWallItem", "Status").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Status>("FelBookDBModel.StatusWallItem", "Status").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Status> StatusReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Status>("FelBookDBModel.StatusWallItem", "Status");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Status>("FelBookDBModel.StatusWallItem", "Status", value);
                 }
             }
         }

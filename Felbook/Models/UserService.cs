@@ -10,13 +10,15 @@ namespace Felbook.Models
 
         #region Proměnné
         private FelBookDBEntities db;
+		private IWallService wallService;
         #endregion
 
 		#region Konstruktor
 
-		public UserService(FelBookDBEntities DBEntities)
+		public UserService(FelBookDBEntities DBEntities, IWallService wallService)
 		{
 			db = DBEntities;
+			this.wallService = wallService;
 		}
 		
 		#endregion
@@ -151,7 +153,7 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="id">ID uživatele</param>
         /// <returns>Vrátí daného uživatele podle ID</returns>
-        public User GetById(int id) {
+        public User FindById(int id) {
             return db.UserSet.Single(u => u.Id == id);
         }
 

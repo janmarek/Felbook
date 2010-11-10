@@ -36,14 +36,15 @@
             <div id="menucontainer">
             
                 <ul id="menu">
-					<li><%: Html.ActionLink("Groups", "Find", "Group") %></li>
+					<li><%: Html.ActionLink("Groups", "Find", "Group")%></li>
 					<% if (Request.IsAuthenticated)
-                    { %>
+		{ %>
+					<li><%: Html.ActionLink("Wall", "Index", "Wall")%></li>
 					<li><%: Html.ActionLink("My profile", "Index", "Profile", new { username = Page.User.Identity.Name }, null)%></li>
-		            <li><%: Html.ActionLink("Messages", "Index", "Message", new { page = 1.ToString() }, null)%></li>
+		            <li><%: Html.ActionLink("Messages", "Index", "Message", new { page = 1 }, null)%></li>
 	                <% }
-                    else
-                    { %>
+		else
+		{ %>
                     <li><%: Html.ActionLink("TestData", "TestData", "Home")%></li>
                     <% } %>
                  </ul>

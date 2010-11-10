@@ -80,7 +80,7 @@ namespace Felbook.Controllers
 				// TODO ošetřit chybu
 			}
 
-			var user = Model.UserService.GetById(id);
+			var user = Model.UserService.FindById(id);
 			Model.UserService.FollowUser(user, CurrentUser);
 
 			return RedirectToAction("Followings", new { username = CurrentUser.Username });

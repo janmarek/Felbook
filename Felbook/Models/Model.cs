@@ -9,11 +9,13 @@ namespace Felbook.Models
 	{
 		#region Variables
 
-		private IGroupService groupService = null;
+		private IGroupService groupService;
 
-		private IUserService userService = null;
+		private IUserService userService;
 
-        private IMessageService messageService = null;
+        private IMessageService messageService;
+
+		private IWallService wallService;
 
 		#endregion
 
@@ -27,7 +29,7 @@ namespace Felbook.Models
 			{
 				if (groupService == null)
 				{
-					groupService = new GroupService(DBEntities);
+					groupService = new GroupService(DBEntities, WallService);
 				}
 
 				return groupService;
@@ -40,7 +42,7 @@ namespace Felbook.Models
 			{
 				if (userService == null)
 				{
-					userService = new UserService(DBEntities);
+					userService = new UserService(DBEntities, WallService);
 				}
 
 				return userService;
@@ -59,6 +61,19 @@ namespace Felbook.Models
                 return messageService;
             }
         }
+
+		public IWallService WallService
+		{
+			get
+			{
+				if (wallService == null)
+				{
+					wallService = new WallService(DBEntities);
+				}
+
+				return wallService;
+			}
+		}
 
 		#endregion
 
