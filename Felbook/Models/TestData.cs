@@ -23,7 +23,8 @@ namespace Felbook.Models
             db.ExecuteStoreCommand("DELETE FROM Followings");
             db.ExecuteStoreCommand("DELETE FROM GroupAdministration");
             db.ExecuteStoreCommand("DELETE FROM MessageReaders");
-            db.ExecuteStoreCommand("DELETE FROM UserGroupMembership");
+			db.ExecuteStoreCommand("DELETE FROM UserGroupMembership");
+			db.ExecuteStoreCommand("DELETE FROM WallItemSet");
 
 			//vymazání tabulek které obsahují informace
 			db.ExecuteStoreCommand("DELETE FROM ImageSet");
@@ -44,6 +45,7 @@ namespace Felbook.Models
 			db.ExecuteStoreCommand("DBCC CHECKIDENT (MessageSet, RESEED, 0)");
 			db.ExecuteStoreCommand("DBCC CHECKIDENT (StatusSet, RESEED, 0)");
 			db.ExecuteStoreCommand("DBCC CHECKIDENT (UserSet, RESEED, 0)");
+			db.ExecuteStoreCommand("DBCC CHECKIDENT (WallItemSet, RESEED, 0)");
 
 
 			#endregion
