@@ -17,7 +17,7 @@
 	    <% using (Html.BeginForm("SendMessage", "Message")) { %>
 		    <%: Html.AntiForgeryToken() %>
             <h3>Reciervers:</h3>
-            <%: Html.Hidden("PrevMessageID", (object)0)%>
+            <%: Html.Hidden("PrevMessageID", (object)-1)%>
 		    
             <%: Html.Hidden("UserCounter", (object)1)%>
             <table id ="userInput">
