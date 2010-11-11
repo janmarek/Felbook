@@ -46,28 +46,8 @@ namespace Felbook.Models
 
 namespace Felbook.Controllers
 {
-    public class MessageController : Controller
+    public class MessageController : FelbookController
     {
-
-        #region Properties
-
-        private Model model { get; set; }
-        
-        #endregion
-
-        #region Init
-
-        protected override void Initialize(RequestContext requestContext)
-        {
-            if (model == null)
-            {
-                model = new Model();
-            }
-
-            base.Initialize(requestContext);
-        }
-
-        #endregion
 
         #region Actions
 
@@ -79,15 +59,12 @@ namespace Felbook.Controllers
         {
                         
             if ((User != null) && (Request.IsAuthenticated))
-            {
-
-                User user = model.UserService.FindByUsername(User.Identity.Name);
-                
+            {                
                 List<Message> msgRootList = new List<Message>();
                 List<MessageModelView> msgList = new List<MessageModelView>();
                 List<MessageModelView> pageList;
                 
-                foreach (var message in user.Messages)
+                foreach (var message in CurrentUser.Messages)
                 {
                     if (message.ReplyTo == null)
                     {
@@ -95,7 +72,7 @@ namespace Felbook.Controllers
                     }
                 }
 
-                foreach (var message in user.SentMessages)
+				foreach (var message in CurrentUser.SentMessages)
                 {
                     if (message.ReplyTo == null)
                     {
@@ -168,7 +145,7 @@ namespace Felbook.Controllers
                 else
                 {
 
-                    if (!message.Users.Contains(model.UserService.FindByUsername(User.Identity.Name)))
+                    if (!message.Users.Contains(CurrentUser))
                     {
                         continue; // pokud mi zpráva nepatří, tak ji zahodím
                     }
@@ -206,7 +183,7 @@ namespace Felbook.Controllers
         /// <returns></returns>
         public ActionResult Detail(int id)
         {
-            return View(model.MessageService.GetMessageById(id));
+            return View(Model.MessageService.FindById(id));
         }
 
         /// <summary>
@@ -270,7 +247,7 @@ namespace Felbook.Controllers
         {
             if ((User != null) && (Request.IsAuthenticated))
             {
-                return View(model.MessageService.GetMessageById(msgID));
+                return View(Model.MessageService.FindById(msgID));
             }
             else
             {
@@ -284,7 +261,7 @@ namespace Felbook.Controllers
         {
             try
             {
-                User sender = model.UserService.FindByUsername(User.Identity.Name);
+                User sender = CurrentUser;
                 ISet<User> setOfRecievers = new HashSet<User>();
 
                 if (String.IsNullOrEmpty(collection["text"]))
@@ -300,7 +277,7 @@ namespace Felbook.Controllers
                     {
                         continue;
                     }
-                    setOfRecievers.Add(model.UserService.FindByUsername(reciever));
+                    setOfRecievers.Add(Model.UserService.FindByUsername(reciever));
                 }
 
                 for (int i = 1; i <= int.Parse(collection["GroupCounter"]); i++)
@@ -310,8 +287,8 @@ namespace Felbook.Controllers
                     {
                         continue;
                     }
-                    Group group = model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
-                    foreach( var user in model.GroupService.GetUsers(group))
+                    Group group = Model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
+                    foreach( var user in Model.GroupService.GetUsers(group))
                     {
                         if (user.Username == sender.Username)
                         {
@@ -327,9 +304,9 @@ namespace Felbook.Controllers
                     return View(collection);
                 }
 
-                Message prevMessage = model.MessageService.GetMessageById(int.Parse(collection["PrevMessageID"]));
+                Message prevMessage = Model.MessageService.FindById(int.Parse(collection["PrevMessageID"]));
 
-                model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, collection["text"]);
+                Model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, collection["text"]);
                 return RedirectToAction("Index", new { page = 1.ToString() });
             }
             catch (InvalidOperationException)

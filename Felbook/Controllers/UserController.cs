@@ -33,53 +33,11 @@ namespace Felbook.Models
 
 namespace Felbook.Controllers
 {
-    public class UserController : Controller
+    public class UserController : FelbookController
 	{
-		#region properties
-
-		public Model Model { get; set; }
-
-		public User CurrentUser
-		{
-			get
-			{
-				if (Request.IsAuthenticated)
-				{
-					return Model.UserService.FindByUsername(User.Identity.Name);
-				}
-				else
-				{
-					return null;
-				}
-			}
-		}
-
-		#endregion
-
-		#region construct
-		
-		public UserController(Model model)
-		{
-			Model = model;
-		}
-
-
-		public UserController()
-			: this(new Model())
-		{
-
-		}
-
-		#endregion
-
-
+		[Authorize]
 		public ActionResult FollowUser(int id)
         {
-			if (CurrentUser == null)
-			{
-				// TODO ošetřit chybu
-			}
-
 			var user = Model.UserService.FindById(id);
 			Model.UserService.FollowUser(user, CurrentUser);
 

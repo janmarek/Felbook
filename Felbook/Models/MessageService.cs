@@ -13,7 +13,7 @@ namespace Felbook.Models
 
         void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text);
 
-        Message GetMessageById(int ID);
+        Message FindById(int ID);
                
     }
 
@@ -57,7 +57,7 @@ namespace Felbook.Models
         }
 
 
-        public Message GetMessageById(int ID)
+        public Message FindById(int ID)
         {
             try
             {

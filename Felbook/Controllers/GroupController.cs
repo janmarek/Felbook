@@ -29,40 +29,8 @@ namespace Felbook.Models
 
 namespace Felbook.Controllers
 {
-    public class GroupController : Controller
+    public class GroupController : FelbookController
 	{
-		#region properties
-
-		public Model Model { get; set; }
-
-		public User CurrentUser
-		{
-			get
-			{
-				return Model.UserService.FindByUsername(User.Identity.Name);
-			}
-		}
-
-		#endregion
-
-		#region init
-		
-		/// <summary>
-		/// Initialize
-		/// </summary>
-		/// <param name="requestContext"></param>
-		protected override void Initialize(RequestContext requestContext)
-		{
-			if (Model == null)
-			{
-				Model = new Model();
-			}
-
-			base.Initialize(requestContext);
-		}
-
-		#endregion
-
 		#region actions
 
 		#region find

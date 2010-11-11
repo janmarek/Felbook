@@ -18,40 +18,8 @@ using System.Text.RegularExpressions;
 
 namespace Felbook.Controllers
 {
-    public class ProfileController : Controller
+    public class ProfileController : FelbookController
     {
-        #region Proměnné
-        /// <summary>
-        /// Znak podle kterého se budou dělit strinq linků do pole
-        /// </summary>
-        #endregion
-
-        public Model Model { get; set; }
-
-		public User CurrentUser
-		{
-			get
-			{
-				if (Request.IsAuthenticated)
-				{
-					return Model.UserService.FindByUsername(User.Identity.Name);
-				}
-				else
-				{
-					return null;
-				}
-			}
-		}
-
-        protected override void Initialize(RequestContext requestContext)
-        {
-            if (Model == null)
-            {
-                Model = new Model();
-            }
-
-            base.Initialize(requestContext);
-        } 
 
         public ActionResult Index(string username)
         {

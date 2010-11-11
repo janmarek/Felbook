@@ -8,7 +8,7 @@ using Felbook.Models;
 namespace Felbook.Controllers
 {
     [HandleError]
-    public class HomeController : Controller
+    public class HomeController : FelbookController
     {
         public ActionResult Index()
         {
