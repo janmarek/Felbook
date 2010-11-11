@@ -56,6 +56,7 @@ namespace Felbook.Controllers
 
 		#endregion
 
+		[Authorize]
         public ActionResult Index()
         {
 			return View(new WallViewModel { 
