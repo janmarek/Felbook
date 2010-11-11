@@ -1,4 +1,12 @@
-﻿$(document).ready(function () {
+﻿$(function () {
+	// taby
+	$("div.tabs").tabs();
+
+	// "lightbox" galerie
+	$("a.colorbox").colorbox();
+});
+
+$(document).ready(function () {
 
     //přidání elementu pro upload obrázku
     $("#addImg").click(function () {
@@ -34,6 +42,78 @@
         var old_row = $("#fileInput tr:last");
         old_row.fadeOut(300, function () { $(this).remove(); });
         indexFile--;
+    });
+
+    //přidání textboxu pro uživatele
+    $("#addUserBox").click(function () {
+        var indexUser = document.getElementById("UserCounter").value;
+        indexUser++;
+        var new_row = $("<tr><td></td><td><input type=\"text\" id=\"ToUser" + indexUser + "\" name=\"ToUser" + indexUser + "\" /></td></tr>").hide();
+        $("#userInput:first").append(new_row);
+        new_row.show("slow");
+        document.getElementById("UserCounter").value = indexUser;
+
+        $("#ToUser" + indexUser).autocomplete({
+            source: availableTagsUsers
+        });
+
+        if (indexUser > 1) {
+            document.getElementById("removeUserBox").style = "display: inline;";
+        }
+    });
+
+    //odebrání textboxu pro uživatele
+    $("#removeUserBox").click(function () {
+        var indexUser = document.getElementById("UserCounter").value;
+        indexUser--;
+        var old_row = $("#userInput tr:last");
+        old_row.fadeOut(300, function () { $(this).remove(); });
+        document.getElementById("UserCounter").value = indexUser;
+
+        if (indexUser < 2) {
+            document.getElementById("removeUserBox").style = "display: none;";
+        }
+    });
+
+    //přidání textboxu pro skupiny
+    $("#addGroupBox").click(function () {
+        var indexGroup = document.getElementById("GroupCounter").value;
+        indexGroup++;
+        var new_row = $("<tr><td></td><td><input type=\"text\" id=\"ToGroup" + indexGroup + "\" name=\"ToGroup" + indexGroup + "\" /></td></tr>").hide();
+        $("#groupInput:first").append(new_row);
+        new_row.show("slow");
+        document.getElementById("GroupCounter").value = indexGroup;
+
+        $("#ToGroup" + indexGroup).autocomplete({
+            source: availableTagsGroups
+        });
+
+        if (indexGroup > 1) {
+            document.getElementById("removeGroupBox").style = "display: inline;";
+        }
+    });
+
+    //odebrání textboxu pro skupiny
+    $("#removeGroupBox").click(function () {
+        var indexGroup = document.getElementById("GroupCounter").value;
+        indexGroup--;
+        var old_row = $("#groupInput tr:last");
+        old_row.fadeOut(300, function () { $(this).remove(); });
+        document.getElementById("GroupCounter").value = indexGroup;
+
+        if (indexGroup < 2) {
+            document.getElementById("removeGroupBox").style = "display: none;";
+        }
+    });
+
+    $(function () {
+        $("#ToUser1").autocomplete({
+            source: availableTagsUsers
+        });
+
+        $("#ToGroup1").autocomplete({
+            source: availableTagsGroups
+        });
     });
 
 
