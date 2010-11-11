@@ -15,11 +15,6 @@ namespace Felbook.Controllers
             return View();
         }
 
-        public ActionResult About()
-        {
-            return View();
-        }
-
         public ActionResult TestData()
         {
             Felbook.Models.TestData.Insert();
