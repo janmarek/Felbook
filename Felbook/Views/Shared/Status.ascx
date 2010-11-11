@@ -1,5 +1,20 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Felbook.Models.Status>" %>
-<p><b><%= String.Format("{0:g}", Model.Created) %></b> - <%= Model.Text %></p>
+<p>
+<b>
+<%
+	// ukáže že je to staus ke skupině nebo k uživateli
+	if (Model.GroupReference.Value == null)
+	{
+    %>
+User: <%= Model.User.Username %>,
+	<%
+		} else {
+	%>
+Group: <%= Model.Group.Name %>,
+    <%
+		}
+	%>
+<%= Model.Created %></b> - <%: Model.Text %></p>
 <%
 	// images
 	if (Model.Images.Count > 0)
@@ -20,6 +35,23 @@
 	%>
 </div>
 <% } %>
+        
+        
+        <% if(Model.Files.Count > 0) { //pokud jsou ve statusu soubory tak se zobrazí %>
+        <div>
+        <br />
+        <span>Files:</span>
+        <% foreach (var file in Model.Files)
+           { %>
+	        <p>
+            <a href="/Web_Data/status_files/<%=  Model.User.Id + "/" + file.FileName %>"><%= file.FileName %></a>,
+            -
+            <%= file.Description %>
+            </p>
+        <% } %>
+        </div>
+        <% } %>
+
 
 <%
 	// links
