@@ -16,10 +16,29 @@
     <fieldset>    
 	    <% using (Html.BeginForm("SendMessage", "Message")) { %>
 		    <%: Html.AntiForgeryToken() %>
-            <h3>Reciervers (separator is semicolon):</h3>
-            <%: Html.Hidden("PrevMessageID", (object)0)%>
-		    Users: <%: Html.TextBox("ToUsers") %> <br />
-            Groups: <%: Html.TextBox("ToGroups") %> <br />
+            <h3>Reciervers:</h3>
+            <%: Html.Hidden("PrevMessageID", (object)-1)%>
+		    
+            <%: Html.Hidden("UserCounter", (object)1)%>
+            <table id ="userInput">
+                <tr>
+                    <td>Users:</td>
+                    <td><input type="text" id="ToUser1" name="ToUser1" /></td>
+                </tr>
+            </table>
+            <input type="button" value="+" id="addUserBox" />
+            <input type="button" value="-" id="removeUserBox" /> <br />
+
+            <%: Html.Hidden("GroupCounter", (object)1)%>
+            <table id ="groupInput">
+                <tr>
+                    <td>Groups:</td>
+                    <td><input type="text" id="ToGroup1" name="ToGroup1" /></td>
+                </tr>
+            </table>
+            <input type="button" value="+" id="addGroupBox" />
+            <input type="button" value="-" id="removeGroupBox" /> <br />
+
             <%: Html.ValidationSummary() %>
             <h3>Text</h3>
             <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
@@ -28,31 +47,25 @@
     </fieldset>
 
     <script type="text/javascript">
-        $(function () {
-            var availableTags = [
+
+        var availableTagsUsers = [
+            <%--= Model.AutocompleteUsers--%>
 			"novakjakub",
             "novakjan",
             "bedrich",
             "ondrej",
             "jiri"
 		];
-            $("#ToUsers").autocomplete({
-                source: availableTags
-            });
-        });
 
-        $(function () {
-            var availableTags = [
+        var availableTagsGroups = [
+            <%--= Model.AutocompleteGroups--%>
 			"Svět",
             "Asie",
             "Evropa",
             "Česká republika",
             "Slunce"
 		];
-            $("#ToGroups").autocomplete({
-                source: availableTags
-            });
-        });
+        
 	</script>
 
 </asp:Content>

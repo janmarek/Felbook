@@ -13,11 +13,14 @@
 		    <%: Html.AntiForgeryToken() %>
             <h3>Recierver:</h3>
             <%: Html.Hidden("PrevMessageID", (object)Model.Id)%>
-		    <%: Html.Hidden("ToUsers", (object)Model.Sender.Username)%>
-            <%: Html.Hidden("ToGroups", "")%>
+            <%: Html.Hidden("UserCounter", (object)1)%>
+		    <%: Html.Hidden("ToUser1", (object)Model.Sender.Username)%>
+            <%: Html.Hidden("GroupCounter", (object)1)%>
+            <%: Html.Hidden("ToGroup1", "")%>
             <%= Model.Sender.Username%>
             <h3>Original message</h3>
             <%= Model.Text%>
+            <%: Html.ValidationSummary() %>
             <h3>Text</h3>
             <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
 		    <input type="submit" value="Send" />

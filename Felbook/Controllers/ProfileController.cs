@@ -359,6 +359,11 @@ namespace Felbook.Controllers
                     filePointer++;
                 }
                 Model.UserService.AddStatus(actualUser, status); //uloží se status i s obrázkem
+
+				// add to wall
+				Model.WallService.Add(status, actualUser.Followers);
+				Model.WallService.Add(status, new User[] { actualUser });
+
                 return RedirectToAction("Index", new { username = User.Identity.Name });
             }
         }

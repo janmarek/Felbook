@@ -9,13 +9,15 @@ namespace Felbook.Models
     {
         #region Proměnné
         private FelBookDBEntities db;
+		private IWallService wallService;
         #endregion
 
 		#region Konstruktor
 
-		public GroupService(FelBookDBEntities DBEntities)
+		public GroupService(FelBookDBEntities DBEntities, IWallService wallService)
 		{
 			db = DBEntities;
+			this.wallService = wallService;
 		}
 
 		#endregion
