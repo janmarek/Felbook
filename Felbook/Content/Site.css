@@ -180,6 +180,26 @@ ul#menu li.selected a
     color: #000;
 }
 
+ul#menu .number 
+{
+	padding: 3px 5px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	line-height: 1em;
+	text-shadow: #333 1px 1px 0;
+	background: #666;
+	color: #AAA;
+	margin-left: 10px;
+	font-family: Verdana, Sans-Serif;
+}
+
+ul#menu .number.active 
+{
+	background: #FFFF9D;
+	color: #000;
+	text-shadow: #BBB 1px 1px 0;
+}
+
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 

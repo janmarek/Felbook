@@ -1,13 +1,26 @@
-﻿$(function () {
+﻿// všechny stránky - akce po spuštění
+$(function () {
 	// taby
 	$("div.tabs").tabs();
 
 	// "lightbox" galerie
 	$("a.colorbox").colorbox();
+
+	// ajax - obnovování počtu nepřečtených věcí
+	$('<span class="number">0</span>').appendTo("#wall-link");
+	loadUnreadNumbers();
+	setInterval(loadUnreadNumbers, 20000);
 });
 
-$(document).ready(function () {
+// ajax - obnovování počtu nepřečtených věcí
+function loadUnreadNumbers() {
+	$.getJSON("/Home/UnreadNumbers", function (data) {
+		$("#wall-link .number").html(data.wall)[data.wall > 0 ? "addClass" : "removeClass"]("active");
+	});
+}
 
+
+$(function () {
     //přidání elementu pro upload obrázku
     $("#addImg").click(function () {
         var new_row = $("<tr><td><input type=\"file\" id=\"picture" + indexImg + "\" name=\"picture" + indexImg + "\" /></td><td><textarea id=\"description" + indexImg + "\" name=\"description" + indexImg + "\" rows=\"4\" cols=\"20\"></textarea></td></tr>").hide();
@@ -106,17 +119,6 @@ $(document).ready(function () {
         }
     });
 
-    $(function () {
-        $("#ToUser1").autocomplete({
-            source: availableTagsUsers
-        });
-
-        $("#ToGroup1").autocomplete({
-            source: availableTagsGroups
-        });
-    });
-
-
 });
 
 var indexImg = 2; //index pro označení elementů jejich jednoznačné name a id - obrázek
@@ -145,3 +147,18 @@ function AddLink(ajaxResponse) {
 function formSubmit() {
     $('input[name*="link"]').attr("disabled", false);
 };
+
+
+$(function () {
+	if ($("#ToUser1").size() > 0) {
+		$("#ToUser1").autocomplete({
+			source: availableTagsUsers
+		});
+	}
+
+	if ($("#ToGroup1").size() > 0) {
+		$("#ToGroup1").autocomplete({
+			source: availableTagsGroups
+		});
+	}
+});

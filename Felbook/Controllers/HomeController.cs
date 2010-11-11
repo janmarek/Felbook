@@ -20,5 +20,13 @@ namespace Felbook.Controllers
             Felbook.Models.TestData.Insert();
             return View();
         }
+
+		[Authorize]
+		public ActionResult UnreadNumbers()
+		{
+			return Json(new {
+				wall = Model.WallService.GetUnreadCount(CurrentUser)
+			}, JsonRequestBehavior.AllowGet);
+		}
     }
 }

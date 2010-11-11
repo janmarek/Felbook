@@ -22,6 +22,8 @@ namespace Felbook.Controllers
 		[Authorize]
         public ActionResult Index()
         {
+			Model.WallService.MarkAllWallItemsRead(CurrentUser);
+
 			return View(new WallViewModel { 
 				CurrentUser = CurrentUser,
 				WallItems = Model.WallService.GetWall(CurrentUser),

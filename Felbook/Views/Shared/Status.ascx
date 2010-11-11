@@ -3,7 +3,7 @@
 <b>
 <%
 	// ukáže že je to staus ke skupině nebo k uživateli
-	if (Model.GroupReference.Value == null)
+	if (Model.Group == null)
 	{
     %>
 User: <%= Model.User.Username %>,
