@@ -16,6 +16,7 @@ namespace Felbook.Models
         User FindByUsername(string name); //najde uživatele podle jména
 
         bool IsUserInGroup(User usr, Group grp);
+        bool IsEmailUnique(string email);
         void Add(User user);
 		void Edit(User user);
         void Delete(User usr);

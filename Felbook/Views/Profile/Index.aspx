@@ -11,6 +11,7 @@
 	<ul>
 		<li>E-mail: <%= Model.Mail %></li>
 	</ul>
+
 	<h3>Add status</h3>
     <% Session["links"]=null; //vymazání session s linky kvůli ajaxovému přidávání linků %>
     <%: Html.ValidationSummary("There were some errors:") %>

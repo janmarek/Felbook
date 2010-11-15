@@ -7,13 +7,15 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using System.IO;
 using Felbook.Models;
+using Felbook.Helpers;
 
 namespace Felbook.Controllers
 {
 
 	[HandleError]
-	public class AccountController : Controller
+	public class AccountController : FelbookController
 	{
 
 		public IFormsAuthenticationService FormsService { get; set; }
@@ -83,26 +85,93 @@ namespace Felbook.Controllers
 			return View();
 		}
 
-		[HttpPost]
-		public ActionResult Register(RegisterModel model)
-		{
-			if (ModelState.IsValid) {
-				// Attempt to register the user
-				//MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
+        [HttpPost]
+        public ActionResult Register(RegisterModel model)
+        {
+            Felbook.Helpers.Image imageOperator = new Felbook.Helpers.Image();
+            HttpPostedFileBase imageToUpload = Request.Files["profileimage"];
+            bool uploadImage = false;
+
+            if (imageToUpload.ContentLength == 0)
+            {
+                uploadImage = false;
+            }
+            else if (imageOperator.IsImage(imageToUpload))
+            {
+                uploadImage = true;
+            }
+            else {
+                ModelState.AddModelError("file", "Your file wasn't image.");
+            }   
+                  
+            if (ModelState.IsValid)
+            {
+                // Attempt to register the user
+                //MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
                 MembershipCreateStatus createStatus = MembershipService.CreateUser(model);
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
 
-				if (createStatus == MembershipCreateStatus.Success) {
-					FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
-					return RedirectToAction("Index", "Home");
-				} else {
-					ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus));
-				}
-			}
+                    //upload user profile image 
+                    User actualUser = Model.UserService.FindByUsername(model.UserName);
+                    int userId = actualUser.Id;
+                    string fileDir = "../Web_Data/profile_images/";
+                    //string fileExtension = Path.GetExtension(imageToUpload.FileName).Substring(1).ToLower();
+                    string fileFullPath = Path.Combine(HttpContext.Server.MapPath(fileDir + userId), "profileimage" + ".png" /*+ fileExtension*/);
+                    string fileDirPath = Path.GetDirectoryName(fileFullPath);
 
-			// If we got this far, something failed, redisplay form
-			ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-			return View(model);
-		}
+                    try
+                    {
+                        //pokusíme se vytvořit adresář
+                        Directory.CreateDirectory(fileDirPath);
+                    }
+                    //jednotlivě odchytávám chyby
+                    catch (UnauthorizedAccessException)
+                    {
+                        ModelState.AddModelError("file", "You have not permission to save file");
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("file", "Some uknown error");
+                    }
+
+                    if (uploadImage == true)
+                    {
+                        imageOperator.ImageResize(imageToUpload, fileFullPath, 90, 120);
+                    }
+                    else 
+                    { 
+                        //zkopiruje defaultni obrazek
+                        string fileName = "profileimage.png";
+
+                        // Use Path class to manipulate file and directory paths.
+                        string sourceFile = Path.Combine(HttpContext.Server.MapPath(fileDir + "/default/"), fileName);
+                        string destFile = System.IO.Path.Combine(fileDirPath, fileName);
+
+                        // To copy a file to another location and 
+                        // overwrite the destination file if it already exists.
+                        System.IO.File.Copy(sourceFile, destFile, true);
+                    }
+                    //return View("Index", actualUser);
+                    return RedirectToAction("Index", "Profile", new { username = actualUser.Username });
+                    
+                    ///Profile?username=novakjan
+                    //return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus));
+                }
+                
+
+                    
+            }
+
+            // If we got this far, something failed, redisplay form
+            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
+            return View(model);
+        }
 
 		// **************************************
 		// URL: /Account/ChangePassword

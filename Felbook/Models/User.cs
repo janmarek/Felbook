@@ -4,9 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Text;
 using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Felbook.Models
 {
+
 	public partial class User
 	{
 		public User()
@@ -69,5 +72,6 @@ namespace Felbook.Models
 			return Followers.Contains(follower);
 		}
 
-	}
+    }
+
 }

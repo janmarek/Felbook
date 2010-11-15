@@ -1748,6 +1748,174 @@ namespace Felbook.Models
         private global::System.String _PasswordHash;
         partial void OnPasswordHashChanging(global::System.String value);
         partial void OnPasswordHashChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ICQ
+        {
+            get
+            {
+                return _ICQ;
+            }
+            set
+            {
+                OnICQChanging(value);
+                ReportPropertyChanging("ICQ");
+                _ICQ = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ICQ");
+                OnICQChanged();
+            }
+        }
+        private global::System.String _ICQ;
+        partial void OnICQChanging(global::System.String value);
+        partial void OnICQChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Phone
+        {
+            get
+            {
+                return _Phone;
+            }
+            set
+            {
+                OnPhoneChanging(value);
+                ReportPropertyChanging("Phone");
+                _Phone = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Phone");
+                OnPhoneChanged();
+            }
+        }
+        private global::System.String _Phone;
+        partial void OnPhoneChanging(global::System.String value);
+        partial void OnPhoneChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String StudyProgramme
+        {
+            get
+            {
+                return _StudyProgramme;
+            }
+            set
+            {
+                OnStudyProgrammeChanging(value);
+                ReportPropertyChanging("StudyProgramme");
+                _StudyProgramme = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("StudyProgramme");
+                OnStudyProgrammeChanged();
+            }
+        }
+        private global::System.String _StudyProgramme;
+        partial void OnStudyProgrammeChanging(global::System.String value);
+        partial void OnStudyProgrammeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Specialization
+        {
+            get
+            {
+                return _Specialization;
+            }
+            set
+            {
+                OnSpecializationChanging(value);
+                ReportPropertyChanging("Specialization");
+                _Specialization = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Specialization");
+                OnSpecializationChanged();
+            }
+        }
+        private global::System.String _Specialization;
+        partial void OnSpecializationChanging(global::System.String value);
+        partial void OnSpecializationChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Title
+        {
+            get
+            {
+                return _Title;
+            }
+            set
+            {
+                OnTitleChanging(value);
+                ReportPropertyChanging("Title");
+                _Title = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Title");
+                OnTitleChanged();
+            }
+        }
+        private global::System.String _Title;
+        partial void OnTitleChanging(global::System.String value);
+        partial void OnTitleChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TitleAfter
+        {
+            get
+            {
+                return _TitleAfter;
+            }
+            set
+            {
+                OnTitleAfterChanging(value);
+                ReportPropertyChanging("TitleAfter");
+                _TitleAfter = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TitleAfter");
+                OnTitleAfterChanged();
+            }
+        }
+        private global::System.String _TitleAfter;
+        partial void OnTitleAfterChanging(global::System.String value);
+        partial void OnTitleAfterChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SchoolEmail
+        {
+            get
+            {
+                return _SchoolEmail;
+            }
+            set
+            {
+                OnSchoolEmailChanging(value);
+                ReportPropertyChanging("SchoolEmail");
+                _SchoolEmail = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SchoolEmail");
+                OnSchoolEmailChanged();
+            }
+        }
+        private global::System.String _SchoolEmail;
+        partial void OnSchoolEmailChanging(global::System.String value);
+        partial void OnSchoolEmailChanged();
 
         #endregion
     

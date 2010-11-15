@@ -13,8 +13,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
-
-
+using Felbook.Helpers;
 
 namespace Felbook.Controllers
 {
@@ -86,44 +85,11 @@ namespace Felbook.Controllers
             }
         }
 
-        /// <summary>
-        /// Metoda která změní velikost obrázku a rovnou ho uploaduje
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="filePath"></param>
-        private void ImageResize(HttpPostedFileBase file, string filePath)
-        {
-         if (file != null && file.FileName != "")
-         {
-             int maxWidth = 800; //maximální šířka
-             int maxHeight = 600; //maximální výška
-
-            string strExtension = System.IO.Path.GetExtension(file.FileName);
-            if ((strExtension.ToUpper() == ".JPG") | (strExtension.ToUpper() == ".GIF") | (strExtension.ToUpper() == ".PNG"))
-            {
-             // změní velikost obrázku
-              System.Drawing.Image imageToBeResized = System.Drawing.Image.FromStream(file.InputStream);
-              int imageHeight = imageToBeResized.Height;
-              int imageWidth = imageToBeResized.Width;
-              imageHeight = (imageHeight * maxWidth) / imageWidth;
-              imageWidth = maxWidth;
-
-                      if (imageHeight > maxHeight)
-                        {
-                            imageWidth = (imageWidth * maxHeight) / imageHeight;
-                            imageHeight = maxHeight;
-                        }
-
-                        Bitmap bitmap = new Bitmap(imageToBeResized, imageWidth, imageHeight);
-                        bitmap.Save(filePath);        
-                    }
-                    }
-        }
-
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
         public ActionResult AddStatus(FormCollection collection)
         {
             User actualUser = Model.UserService.FindByUsername(User.Identity.Name);
+            Felbook.Helpers.Image imgOperator = new Felbook.Helpers.Image(); //proměnná pro volání operací s obrázky
             int userId = actualUser.Id; //vytáhnu si ID usera pro vytvoření složky
             Status status = new Status();
             status.Text = collection["status"];
@@ -237,14 +203,9 @@ namespace Felbook.Controllers
                         areFilesUploaded = true;
                         break;
                     }
-
-
-
+                  
                     //ověření jestli je to obrázek
-                    if (imgToUpload.ContentType == "image/jpeg" && (imgToUpload.FileName.ToLower().EndsWith(".jpg") || imgToUpload.FileName.ToLower().EndsWith(".jpeg"))
-                        || imgToUpload.ContentType == "image/gif" && imgToUpload.FileName.ToLower().EndsWith(".gif")
-                        || imgToUpload.ContentType == "image/png" && imgToUpload.FileName.ToLower().EndsWith(".png")
-                        )
+                    if (imgOperator.IsImage(imgToUpload))
                     {
                         //cesty k obrázkům
                         string imgDir = "../Web_Data/status_images/";
@@ -316,8 +277,8 @@ namespace Felbook.Controllers
                 //nyní upload obrázku ke statusu
                 int imgPointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k obrázku
                 foreach (HttpPostedFileBase img in imagesToSave)
-                { //projdou ve vsechny soubory a uploadujou se
-                    this.ImageResize(img, imagesPathsToSave.ElementAt(imgPointer));
+                { //projdou ve vsechny soubory a uploadujou se                 
+                    imgOperator.ImageResize(img, imagesPathsToSave.ElementAt(imgPointer), 800, 600);
                     imgPointer++;
                 }
                 int filePointer = 0; //ukazatel abych ukazoval vzdy na spravnou cestu k souboru

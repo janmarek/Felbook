@@ -46,72 +46,6 @@ namespace Felbook.Models
 		[DisplayName("Remember me?")]
 		public bool RememberMe { get; set; }
 	}
-
-	[PropertiesMustMatch("Password", "ConfirmPassword", ErrorMessage = "The password and confirmation password do not match.")]
-	public class RegisterModel
-	{
-		[Required]
-		[DisplayName("User name *")]
-		public string UserName { get; set; }
-
-        [Required]
-        [DisplayName("Name *")]
-        public string Name { get; set; }
-
-        [Required]
-        [DisplayName("Surname *")]
-        public string Surname { get; set; }
-
-        [DisplayName("Title (not working yet)")]
-        public string Title { get; set; }
-
-        [DisplayName("Title after name (not working yet)")]
-        public string TitleAfter { get; set; }
-
-        /************************************/
-        
-		[Required]
-		[ValidatePasswordLength]
-		[DataType(DataType.Password)]
-		[DisplayName("Password *")]
-		public string Password { get; set; }
-
-		[Required]
-		[DataType(DataType.Password)]
-		[DisplayName("Confirm password *")]
-		public string ConfirmPassword { get; set; }
-
-        /************************************/
-
-        [DisplayName("Faculty (not working yet)")]
-        public string Faculty { get; set; }
-
-        [DisplayName("Role (not working yet)")]
-        public string Role { get; set; }
-
-        [DisplayName("Study programme (not working yet)")]
-        public string StudyProgramme { get; set; }
-
-        [DisplayName("Specialization (not working yet)")]
-        public string Specialization { get; set; }
-
-        /************************************/
-
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [DisplayName("Email address *")]
-        public string Email { get; set; }
-
-        [DisplayName("ICQ (not working yet)")]
-        public string ICQ { get; set; }
-
-        [DisplayName("School email address (not working yet)")]
-        public string SchoolEmail { get; set; }
-
-        [DisplayName("Phone (not working yet)")]
-        public string Phone { get; set; }
-
-	}
 	#endregion
 
 	#region Services
@@ -320,5 +254,70 @@ namespace Felbook.Models
 		}
 	}
 	#endregion
+
+#region RegisterModel
+
+    [PropertiesMustMatch("Password", "ConfirmPassword", ErrorMessage = "The password and confirmation password do not match.")]
+    public class RegisterModel
+    {
+        [Required(ErrorMessage = "User name is required.")]
+        [DisplayName("User name *")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
+        [DisplayName("Name *")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Surname is required.")]
+        [DisplayName("Surname *")]
+        public string Surname { get; set; }
+
+        [DisplayName("Title before name")]
+        public string Title { get; set; }
+
+        [DisplayName("Title after name")]
+        public string TitleAfter { get; set; }
+
+        [Required]
+        [ValidatePasswordLength]
+        [DataType(DataType.Password)]
+        [DisplayName("Password *")]
+        public string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [DisplayName("Confirm password *")]
+        public string ConfirmPassword { get; set; }
+
+        [DisplayName("Faculty")]
+        public string Faculty { get; set; }
+
+        [DisplayName("Study programme")]
+        public string StudyProgramme { get; set; }
+
+        [DisplayName("Specialization")]
+        public string Specialization { get; set; }
+
+        [Required]
+        [Email(ErrorMessage = "Email is not valid.")]
+        [DataType(DataType.EmailAddress)]
+        [DisplayName("Email address *")]
+        public string Email { get; set; }
+
+        [ICQ(ErrorMessage = "ICQ is not valid.")]
+        [DisplayName("ICQ")]
+        public string ICQ { get; set; }
+
+        [Email(ErrorMessage = "School email is not valid.")]
+        [DisplayName("School email address")]
+        public string SchoolEmail { get; set; }
+
+        [ICQ(ErrorMessage = "Phone is not valid.")]
+        [DisplayName("Phone")]
+        public string Phone { get; set; }
+
+    }
+
+#endregion
 
 }

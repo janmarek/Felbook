@@ -25,6 +25,25 @@ namespace Felbook.Models
 
 		#region Metody
 
+        /// <summary>
+        /// Ověří jestli je daný email již v databázi
+        /// </summary>
+        /// <param name="email">String řetězec email</param>
+        /// <returns>vrátí true pokud je unikátní a false pokud již existuje</returns>
+        public bool IsEmailUnique(string email) 
+        {
+            var result = db.UserSet.Single(u => u.Mail == email);
+            if (result != null)
+            {
+                return false;
+            }
+            else 
+            {
+                return true;
+            }
+            
+        }
+
 		/// <summary>
 		/// Vrátí uživatelé ve kterých se objevuje daný řetězec
 		/// </summary>
