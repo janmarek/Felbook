@@ -108,8 +108,6 @@ namespace Felbook.Models
             newUser.Surname = model.Surname;
             newUser.Created = DateTime.Now;
             newUser.LastLogged = DateTime.Now;
-            
-            //nové properties usera
             newUser.ICQ = model.ICQ;
             newUser.Phone = model.Phone;
             newUser.SchoolEmail = model.SchoolEmail;
@@ -117,7 +115,6 @@ namespace Felbook.Models
             newUser.Title = model.Title;
             newUser.StudyProgramme = model.StudyProgramme;
             newUser.TitleAfter = model.TitleAfter;
-            //nové properies usera
 
             DBEntities.UserSet.AddObject(newUser);
             DBEntities.SaveChanges();

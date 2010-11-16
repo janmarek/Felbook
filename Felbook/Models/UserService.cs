@@ -29,19 +29,22 @@ namespace Felbook.Models
         /// Ověří jestli je daný email již v databázi
         /// </summary>
         /// <param name="email">String řetězec email</param>
+        /// <param name="usr">Uživatel ke kterému se daný email kontroluje</param>
         /// <returns>vrátí true pokud je unikátní a false pokud již existuje</returns>
-        public bool IsEmailUnique(string email) 
+        public bool IsEmailUnique(string email, User usr) 
         {
             var result = db.UserSet.Single(u => u.Mail == email);
             if (result != null)
             {
+                if (result.Username.Equals(usr.Username)) {
+                    return true;
+                }
                 return false;
             }
             else 
             {
                 return true;
-            }
-            
+            }       
         }
 
 		/// <summary>

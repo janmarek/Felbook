@@ -214,12 +214,11 @@
                             <li>It's just as big as this black box<div style="width: 90px; height: 120px; background-color: Black;"></div></li>
                         </ul>
                         <p>
-                          <input type="file" id="profileimage" name="profileimage" />
+                            <input type="file" id="profileimage" name="profileimage" />
                         </p>
 
                         </fieldset>
                     </div>
-
                 </div>
                 <p>&nbsp;<input type="submit" value="Register" /></p>
         </div>

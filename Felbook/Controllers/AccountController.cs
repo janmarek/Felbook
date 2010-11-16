@@ -88,7 +88,7 @@ namespace Felbook.Controllers
         [HttpPost]
         public ActionResult Register(RegisterModel model)
         {
-            Felbook.Helpers.Image imageOperator = new Felbook.Helpers.Image();
+            Felbook.Helpers.Image imageOperator = new Felbook.Helpers.Image(); //pomocná třída pro operace s obrázky
             HttpPostedFileBase imageToUpload = Request.Files["profileimage"];
             bool uploadImage = false;
 
@@ -107,7 +107,6 @@ namespace Felbook.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                //MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
                 MembershipCreateStatus createStatus = MembershipService.CreateUser(model);
                 if (createStatus == MembershipCreateStatus.Success)
                 {
@@ -117,7 +116,6 @@ namespace Felbook.Controllers
                     User actualUser = Model.UserService.FindByUsername(model.UserName);
                     int userId = actualUser.Id;
                     string fileDir = "../Web_Data/profile_images/";
-                    //string fileExtension = Path.GetExtension(imageToUpload.FileName).Substring(1).ToLower();
                     string fileFullPath = Path.Combine(HttpContext.Server.MapPath(fileDir + userId), "profileimage" + ".png" /*+ fileExtension*/);
                     string fileDirPath = Path.GetDirectoryName(fileFullPath);
 
@@ -129,7 +127,7 @@ namespace Felbook.Controllers
                     //jednotlivě odchytávám chyby
                     catch (UnauthorizedAccessException)
                     {
-                        ModelState.AddModelError("file", "You have not permission to save file");
+                        ModelState.AddModelError("file", "Upload wasn´t successful");
                     }
                     catch (Exception)
                     {
@@ -142,22 +140,17 @@ namespace Felbook.Controllers
                     }
                     else 
                     { 
-                        //zkopiruje defaultni obrazek
+                        //název souboru je vždy stejný
                         string fileName = "profileimage.png";
 
-                        // Use Path class to manipulate file and directory paths.
+                        //zjistím si cesty k souboru
                         string sourceFile = Path.Combine(HttpContext.Server.MapPath(fileDir + "/default/"), fileName);
                         string destFile = System.IO.Path.Combine(fileDirPath, fileName);
-
-                        // To copy a file to another location and 
-                        // overwrite the destination file if it already exists.
+                        
+                        //kopíruje to soubor
                         System.IO.File.Copy(sourceFile, destFile, true);
                     }
-                    //return View("Index", actualUser);
                     return RedirectToAction("Index", "Profile", new { username = actualUser.Username });
-                    
-                    ///Profile?username=novakjan
-                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
