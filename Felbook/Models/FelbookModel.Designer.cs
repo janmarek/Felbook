@@ -922,11 +922,13 @@ namespace Felbook.Models
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="uRL">Initial value of the URL property.</param>
-        public static Link CreateLink(global::System.Int32 id, global::System.String uRL)
+        /// <param name="description">Initial value of the Description property.</param>
+        public static Link CreateLink(global::System.Int32 id, global::System.String uRL, global::System.String description)
         {
             Link link = new Link();
             link.Id = id;
             link.URL = uRL;
+            link.Description = description;
             return link;
         }
 
@@ -983,6 +985,30 @@ namespace Felbook.Models
         private global::System.String _URL;
         partial void OnURLChanging(global::System.String value);
         partial void OnURLChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
 
         #endregion
     

@@ -171,6 +171,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="URL" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="CommentSet">
     <Key>
@@ -709,6 +710,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="URL" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -859,6 +861,7 @@
         <MappingFragment StoreEntitySet="LinkSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1067,22 +1070,22 @@
           <ConnectorPoint PointX="6.25" PointY="8.7996498467773172" />
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.Status" Width="1.5" PointX="8.375" PointY="6.625" Height="2.5571907552083335" />
-        <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.625" Height="1.4033821614583335" />
+        <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.625" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="9.625" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="FelBookDBModel.File" Width="1.5" PointX="12.5" PointY="9.625" Height="1.4479589843749992" />
         <EntityTypeShape EntityType="FelBookDBModel.Image" Width="1.5" PointX="10.75" PointY="9.625" Height="1.5956835937500031" />
         <AssociationConnector Association="FelBookDBModel.StatusInformationComment">
-          <ConnectorPoint PointX="8.375" PointY="9.03904296875" />
+          <ConnectorPoint PointX="8.375" PointY="9.3744921875" />
           <ConnectorPoint PointX="8.125" PointY="9.625" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationLinks">
-          <ConnectorPoint PointX="9.4375" PointY="9.1821907552083335" />
+          <ConnectorPoint PointX="9.4375" PointY="9.3744921875" />
           <ConnectorPoint PointX="9.4375" PointY="9.625" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationImages">
-          <ConnectorPoint PointX="8.6875025" PointY="9.1821907552083335" />
-          <ConnectorPoint PointX="8.6875025" PointY="11.155782877604167" />
-          <ConnectorPoint PointX="10.75" PointY="11.155782877604167" />
+          <ConnectorPoint PointX="9.875" PointY="8.9682441875000016" />
+          <ConnectorPoint PointX="11.5" PointY="8.9682441875000016" />
+          <ConnectorPoint PointX="11.5" PointY="9.625" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationFiles">
           <ConnectorPoint PointX="9.875" PointY="8.16404296875" />
