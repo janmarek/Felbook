@@ -18,10 +18,11 @@
     <EntitySet Name="UserGroupMembership" EntityType="FelBookDBModel.Store.UserGroupMembership" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupAdministration" EntityType="FelBookDBModel.Store.GroupAdministration" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Followings" EntityType="FelBookDBModel.Store.Followings" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="MessageReaders" EntityType="FelBookDBModel.Store.MessageReaders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MessageRecievers" EntityType="FelBookDBModel.Store.MessageRecievers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StatusInformationLinks" EntityType="FelBookDBModel.Store.StatusInformationLinks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StatusInformationImages" EntityType="FelBookDBModel.Store.StatusInformationImages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StatusInformationFiles" EntityType="FelBookDBModel.Store.StatusInformationFiles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MessageReaders" EntityType="FelBookDBModel.Store.MessageReaders" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserGroupMembership_User" Association="FelBookDBModel.Store.FK_UserGroupMembership_User">
       <End Role="User" EntitySet="UserSet" />
       <End Role="UserGroupMembership" EntitySet="UserGroupMembership" />
@@ -46,13 +47,13 @@
       <End Role="User1" EntitySet="UserSet" />
       <End Role="Followings" EntitySet="Followings" />
     </AssociationSet>
-    <AssociationSet Name="FK_MessageReaders_Message" Association="FelBookDBModel.Store.FK_MessageReaders_Message">
+    <AssociationSet Name="FK_MessageRecievers_Message" Association="FelBookDBModel.Store.FK_MessageRecievers_Message">
       <End Role="Message" EntitySet="MessageSet" />
-      <End Role="MessageReaders" EntitySet="MessageReaders" />
+      <End Role="MessageRecievers" EntitySet="MessageRecievers" />
     </AssociationSet>
-    <AssociationSet Name="FK_MessageReaders_User" Association="FelBookDBModel.Store.FK_MessageReaders_User">
+    <AssociationSet Name="FK_MessageRecievers_User" Association="FelBookDBModel.Store.FK_MessageRecievers_User">
       <End Role="User" EntitySet="UserSet" />
-      <End Role="MessageReaders" EntitySet="MessageReaders" />
+      <End Role="MessageRecievers" EntitySet="MessageRecievers" />
     </AssociationSet>
     <AssociationSet Name="StatusInformationComment" Association="FelBookDBModel.Store.StatusInformationComment">
       <End Role="StatusInformation" EntitySet="StatusSet" />
@@ -113,6 +114,14 @@
     <AssociationSet Name="StatusWallItem" Association="FelBookDBModel.Store.StatusWallItem">
       <End Role="Status" EntitySet="StatusSet" />
       <End Role="WallItem" EntitySet="WallItemSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MessageReaders_Message" Association="FelBookDBModel.Store.FK_MessageReaders_Message">
+      <End Role="Message" EntitySet="MessageSet" />
+      <End Role="MessageReaders" EntitySet="MessageReaders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MessageReaders_User" Association="FelBookDBModel.Store.FK_MessageReaders_User">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="MessageReaders" EntitySet="MessageReaders" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -231,13 +240,13 @@
     <Property Name="Followers_Id" Type="int" Nullable="false" />
     <Property Name="Followings_Id" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="MessageReaders">
+  <EntityType Name="MessageRecievers">
     <Key>
       <PropertyRef Name="Messages_Id" />
-      <PropertyRef Name="Users_Id" />
+      <PropertyRef Name="Recievers_Id" />
     </Key>
     <Property Name="Messages_Id" Type="int" Nullable="false" />
-    <Property Name="Users_Id" Type="int" Nullable="false" />
+    <Property Name="Recievers_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="StatusInformationLinks">
     <Key>
@@ -262,6 +271,14 @@
     </Key>
     <Property Name="StatusInformationFiles_File_Id" Type="int" Nullable="false" />
     <Property Name="Files_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MessageReaders">
+    <Key>
+      <PropertyRef Name="ReadMessages_Id" />
+      <PropertyRef Name="Readers_Id" />
+    </Key>
+    <Property Name="ReadMessages_Id" Type="int" Nullable="false" />
+    <Property Name="Readers_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="StatusInformationComment">
     <End Role="StatusInformation" Type="FelBookDBModel.Store.StatusSet" Multiplicity="1" />
@@ -443,27 +460,27 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_MessageReaders_Message">
+  <Association Name="FK_MessageRecievers_Message">
     <End Role="Message" Type="FelBookDBModel.Store.MessageSet" Multiplicity="1" />
-    <End Role="MessageReaders" Type="FelBookDBModel.Store.MessageReaders" Multiplicity="*" />
+    <End Role="MessageRecievers" Type="FelBookDBModel.Store.MessageRecievers" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Message">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="MessageReaders">
+      <Dependent Role="MessageRecievers">
         <PropertyRef Name="Messages_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_MessageReaders_User">
-    <End Role="MessageReaders" Type="FelBookDBModel.Store.MessageReaders" Multiplicity="*" />
+  <Association Name="FK_MessageRecievers_User">
+    <End Role="MessageRecievers" Type="FelBookDBModel.Store.MessageRecievers" Multiplicity="*" />
     <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="MessageReaders">
-        <PropertyRef Name="Users_Id" />
+      <Dependent Role="MessageRecievers">
+        <PropertyRef Name="Recievers_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -539,6 +556,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_MessageReaders_Message">
+    <End Role="Message" Type="FelBookDBModel.Store.MessageSet" Multiplicity="1" />
+    <End Role="MessageReaders" Type="FelBookDBModel.Store.MessageReaders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Message">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MessageReaders">
+        <PropertyRef Name="ReadMessages_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MessageReaders_User">
+    <End Role="MessageReaders" Type="FelBookDBModel.Store.MessageReaders" Multiplicity="*" />
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MessageReaders">
+        <PropertyRef Name="Readers_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -559,7 +600,7 @@
             <End Role="User1" EntitySet="UserSet" />
           </AssociationSet>
           <EntitySet Name="MessageSet" EntityType="FelBookDBModel.Message" />
-          <AssociationSet Name="MessageReaders" Association="FelBookDBModel.MessageReaders">
+          <AssociationSet Name="MessageRecievers" Association="FelBookDBModel.MessageRecievers">
             <End Role="Message" EntitySet="MessageSet" />
             <End Role="User" EntitySet="UserSet" />
           </AssociationSet>
@@ -617,6 +658,10 @@
             <End Role="Status" EntitySet="StatusSet" />
             <End Role="WallItem" EntitySet="WallItemSet" />
           </AssociationSet>
+          <AssociationSet Name="MessageReaders" Association="FelBookDBModel.MessageReaders">
+            <End Role="Message" EntitySet="MessageSet" />
+            <End Role="User" EntitySet="UserSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -632,7 +677,7 @@
           <NavigationProperty Name="AdminedGroups" Relationship="FelBookDBModel.GroupAdministration" FromRole="User" ToRole="Group" />
           <NavigationProperty Name="Followings" Relationship="FelBookDBModel.Followings" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="Followers" Relationship="FelBookDBModel.Followings" FromRole="User1" ToRole="User" />
-          <NavigationProperty Name="Messages" Relationship="FelBookDBModel.MessageReaders" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="Messages" Relationship="FelBookDBModel.MessageRecievers" FromRole="User" ToRole="Message" />
           <NavigationProperty Name="Statuses" Relationship="FelBookDBModel.UserStatuses" FromRole="User" ToRole="Status" />
           <NavigationProperty Name="CreatedGroups" Relationship="FelBookDBModel.UserGroupCreator" FromRole="User" ToRole="Group" />
           <NavigationProperty Name="SentMessages" Relationship="FelBookDBModel.SentMessages" FromRole="User" ToRole="Message" />
@@ -646,6 +691,7 @@
           <Property Type="String" Name="Title" Nullable="true" />
           <Property Type="String" Name="TitleAfter" Nullable="true" />
           <Property Type="String" Name="SchoolEmail" Nullable="true" />
+          <NavigationProperty Name="ReadMessages" Relationship="FelBookDBModel.MessageReaders" FromRole="User" ToRole="Message" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -679,14 +725,15 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Text" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="FelBookDBModel.MessageReaders" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="Recievers" Relationship="FelBookDBModel.MessageRecievers" FromRole="Message" ToRole="User" />
           <NavigationProperty Name="Sender" Relationship="FelBookDBModel.SentMessages" FromRole="Message" ToRole="User" />
           <Property Type="DateTime" Name="Created" Nullable="false" />
           <NavigationProperty Name="Replies" Relationship="FelBookDBModel.MessageMessage" FromRole="Message" ToRole="Message1" />
           <NavigationProperty Name="ReplyTo" Relationship="FelBookDBModel.MessageMessage" FromRole="Message1" ToRole="Message" />
           <Property Type="Int32" Name="MessageId" Nullable="true" />
+          <NavigationProperty Name="Readers" Relationship="FelBookDBModel.MessageReaders" FromRole="Message" ToRole="User" />
         </EntityType>
-        <Association Name="MessageReaders">
+        <Association Name="MessageRecievers">
           <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
           <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
         </Association>
@@ -800,6 +847,10 @@
         <Association Name="StatusWallItem">
           <End Type="FelBookDBModel.Status" Role="Status" Multiplicity="1" />
           <End Type="FelBookDBModel.WallItem" Role="WallItem" Multiplicity="*" />
+        </Association>
+        <Association Name="MessageReaders">
+          <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -924,12 +975,12 @@
         <ScalarProperty Name="Id" ColumnName="Followings_Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="MessageReaders" TypeName="FelBookDBModel.MessageReaders" StoreEntitySet="MessageReaders">
+    <AssociationSetMapping Name="MessageRecievers" TypeName="FelBookDBModel.MessageRecievers" StoreEntitySet="MessageRecievers">
       <EndProperty Name="Message">
         <ScalarProperty Name="Id" ColumnName="Messages_Id" />
       </EndProperty>
       <EndProperty Name="User">
-        <ScalarProperty Name="Id" ColumnName="Users_Id" />
+        <ScalarProperty Name="Id" ColumnName="Recievers_Id" />
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="StatusInformationComment" TypeName="FelBookDBModel.StatusInformationComment" StoreEntitySet="CommentSet">
@@ -1024,6 +1075,14 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="MessageReaders" TypeName="FelBookDBModel.MessageReaders" StoreEntitySet="MessageReaders">
+      <EndProperty Name="Message">
+        <ScalarProperty Name="Id" ColumnName="ReadMessages_Id" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="Readers_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -1043,7 +1102,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="FelbookModel" ZoomLevel="76">
+      <Diagram Name="FelbookModel" ZoomLevel="114">
         <EntityTypeShape EntityType="FelBookDBModel.User" Width="1.5" PointX="6.25" PointY="4.5" Height="4.8792529296874978" />
         <EntityTypeShape EntityType="FelBookDBModel.Group" Width="1.5" PointX="10.75" PointY="4.625" Height="2.7494921874999996" />
         <AssociationConnector Association="FelBookDBModel.UserGroupMembership">
@@ -1059,33 +1118,34 @@
           <ConnectorPoint PointX="10.75" PointY="6.1407654688477136" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.Followings">
-          <ConnectorPoint PointX="6.7819230769230767" PointY="9.3792529296874978" />
-          <ConnectorPoint PointX="6.7819230769230767" PointY="9.6292529296874978" />
-          <ConnectorPoint PointX="7.2284615384615378" PointY="9.6292529296874978" />
-          <ConnectorPoint PointX="7.2284615384615378" PointY="9.3792529296874978" />
+          <ConnectorPoint PointX="6.7819230769230767" PointY="10.134013671875" />
+          <ConnectorPoint PointX="6.7819230769230767" PointY="10.384013671875" />
+          <ConnectorPoint PointX="7.2284615384615378" PointY="10.384013671875" />
+          <ConnectorPoint PointX="7.2284615384615378" PointY="10.134013671875" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="FelBookDBModel.Message" Width="1.5" PointX="4.25" PointY="7.625" Height="2.0853483072916656" />
-        <AssociationConnector Association="FelBookDBModel.MessageReaders">
-          <ConnectorPoint PointX="5.75" PointY="8.7996498467773172" />
-          <ConnectorPoint PointX="6.25" PointY="8.7996498467773172" />
+        <EntityTypeShape EntityType="FelBookDBModel.Message" Width="1.5" PointX="3.5" PointY="7.625" Height="2.5571907552083317" />
+        <AssociationConnector Association="FelBookDBModel.MessageRecievers">
+          <ConnectorPoint PointX="5" PointY="8.8795068359375" />
+          <ConnectorPoint PointX="6.25" PointY="8.8795068359375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.Status" Width="1.5" PointX="8.375" PointY="6.625" Height="2.5571907552083335" />
-        <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.625" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="9.625" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.875" Height="1.4033821614583335" />
+        <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="10.75" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="FelBookDBModel.File" Width="1.5" PointX="12.5" PointY="9.625" Height="1.4479589843749992" />
-        <EntityTypeShape EntityType="FelBookDBModel.Image" Width="1.5" PointX="10.75" PointY="9.625" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="FelBookDBModel.Image" Width="1.5" PointX="10.75" PointY="10.625" Height="1.5956835937500031" />
         <AssociationConnector Association="FelBookDBModel.StatusInformationComment">
-          <ConnectorPoint PointX="8.375" PointY="9.3744921875" />
-          <ConnectorPoint PointX="8.125" PointY="9.625" />
+          <ConnectorPoint PointX="8.65625" PointY="9.3744921875" />
+          <ConnectorPoint PointX="8.65625" PointY="11.843282877604166" />
+          <ConnectorPoint PointX="8.125" PointY="11.843282877604166" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationLinks">
           <ConnectorPoint PointX="9.4375" PointY="9.3744921875" />
-          <ConnectorPoint PointX="9.4375" PointY="9.625" />
+          <ConnectorPoint PointX="9.4375" PointY="9.875" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationImages">
-          <ConnectorPoint PointX="9.875" PointY="8.9682441875000016" />
-          <ConnectorPoint PointX="11.5" PointY="8.9682441875000016" />
-          <ConnectorPoint PointX="11.5" PointY="9.625" />
+          <ConnectorPoint PointX="8.8281275" PointY="9.3744921875" />
+          <ConnectorPoint PointX="8.8281275" PointY="11.59208251953125" />
+          <ConnectorPoint PointX="10.75" PointY="11.59208251953125" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationFiles">
           <ConnectorPoint PointX="9.875" PointY="8.16404296875" />
@@ -1107,8 +1167,8 @@
           <ConnectorPoint PointX="10.75" PointY="5.0470154688477136" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.SentMessages">
-          <ConnectorPoint PointX="6.25" PointY="8.1498249233886586" />
-          <ConnectorPoint PointX="5.75" PointY="8.1498249233886586" />
+          <ConnectorPoint PointX="6.25" PointY="8.189753417968749" />
+          <ConnectorPoint PointX="5" PointY="8.189753417968749" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupChildren">
           <ConnectorPoint PointX="11.281923076923077" PointY="7.3744921875" />
@@ -1117,10 +1177,10 @@
           <ConnectorPoint PointX="11.728461538461538" PointY="7.3744921875" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.MessageMessage">
-          <ConnectorPoint PointX="4.7819230769230767" PointY="10.182190755208332" />
-          <ConnectorPoint PointX="4.7819230769230767" PointY="10.432190755208332" />
-          <ConnectorPoint PointX="5.2284615384615378" PointY="10.432190755208332" />
-          <ConnectorPoint PointX="5.2284615384615378" PointY="10.182190755208332" />
+          <ConnectorPoint PointX="4.0319230769230767" PointY="10.182190755208332" />
+          <ConnectorPoint PointX="4.0319230769230767" PointY="10.432190755208332" />
+          <ConnectorPoint PointX="4.4784615384615378" PointY="10.432190755208332" />
+          <ConnectorPoint PointX="4.4784615384615378" PointY="10.182190755208332" />
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.WallItem" Width="1.5" PointX="2.625" PointY="4.625" Height="1.4033821614583326" />
         <AssociationConnector Association="FelBookDBModel.WallItemUser">
@@ -1135,6 +1195,10 @@
           <ConnectorPoint PointX="4.5" PointY="4.25" />
           <ConnectorPoint PointX="4.5" PointY="5.850481736328125" />
           <ConnectorPoint PointX="4.125" PointY="5.850481736328125" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.MessageReaders">
+          <ConnectorPoint PointX="5" PointY="9.7679906907136136" />
+          <ConnectorPoint PointX="6.25" PointY="9.7679906907136136" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
