@@ -39,7 +39,7 @@ namespace Felbook.Helpers
                 int maxHeight = maximumHeight; //maximální výška
 
                 string strExtension = System.IO.Path.GetExtension(file.FileName);
-                if ((strExtension.ToUpper() == ".JPG") | (strExtension.ToUpper() == ".GIF") | (strExtension.ToUpper() == ".PNG"))
+                if ((strExtension.ToUpper() == ".JPG") || (strExtension.ToUpper() == ".GIF") || (strExtension.ToUpper() == ".PNG"))
                 {
                     // změní velikost obrázku
                     System.Drawing.Image imageToBeResized = System.Drawing.Image.FromStream(file.InputStream);
