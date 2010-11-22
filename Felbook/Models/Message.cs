@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace Felbook.Models
 {
     public partial class Message : IComparable<Message>
@@ -28,4 +29,5 @@ namespace Felbook.Models
         }
 
     }
+
 }

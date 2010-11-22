@@ -88,7 +88,7 @@ namespace Felbook.Models
         public IQueryable<Message> GetIncomingMessages(User usr)
         {
             return from recMessages in db.MessageSet
-                   where recMessages.Users.Contains(usr)
+                   where recMessages.Recievers.Contains(usr)
                    select recMessages;
         }
 

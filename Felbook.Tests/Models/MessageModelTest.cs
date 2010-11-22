@@ -93,7 +93,7 @@ namespace Felbook.Tests
             User mockUser = User.CreateUser(0, "test", "test",
                 DateTime.Now, DateTime.Now, "mail", "test user", "");
 
-            expected.Users.Add(mockUser);
+            expected.Recievers.Add(mockUser);
             expected.Sender = mockUser;
             expected.Text = "text";
             expected.Created = DateTime.Now;
@@ -137,7 +137,7 @@ namespace Felbook.Tests
 
             Message message1 = DbEntities.MessageSet.Single(m => m.Sender.Username == mockSender.Username);
             Assert.AreEqual(sender, message1.Sender.Username);
-            Assert.IsTrue(message1.Users.Contains(mockReciever));
+            Assert.IsTrue(message1.Recievers.Contains(mockReciever));
             Assert.AreEqual(text, message1.Text);
             Assert.IsNull(message1.FirstMessage);
 
@@ -151,7 +151,7 @@ namespace Felbook.Tests
            
             Message message2 = DbEntities.MessageSet.Single(m => m.Sender.Username == mockReciever.Username);
             Assert.AreEqual(sender, message2.Sender.Username);
-            Assert.IsTrue(message2.Users.Contains(mockSender));
+            Assert.IsTrue(message2.Recievers.Contains(mockSender));
             Assert.AreEqual(text, message2.Text);
             Assert.AreEqual(message1, message2.FirstMessage);
 

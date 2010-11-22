@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Felbook.Models;
 using System.Web.Routing;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Felbook.Models;
+
 
 #region View models
 
@@ -17,6 +20,8 @@ namespace Felbook.Models
         public DateTime Sent { get; set; }
         
         public bool Recieved { get; set; }
+
+        public bool Read { get; set; }
 
         public string SenderOrRecivers { get; set; }
 
@@ -34,11 +39,18 @@ namespace Felbook.Models
         public int ActualPage { get; set; }
     }
 
-    public class SendMessageView
+    public class SendMessageModel
     {
         public string AutocompleteUsers { get; set; }
 
         public string AutocompleteGroups { get; set; }
+
+        public Message prevMessage { get; set; }
+
+        [Required(ErrorMessage = "Text of message is requied!")]
+        [DisplayName("Text:")]
+        public string Text { get; set; }
+                
     }
 }
 
@@ -51,70 +63,74 @@ namespace Felbook.Controllers
 
         #region Actions
 
+        #region MessageList
+
         /// <summary>
         /// Zobrazit zprávy seznam zpráv
         /// </summary>
+        /// <param name="page">page</param>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Index(int page)
         {
-                        
-            if ((User != null) && (Request.IsAuthenticated))
-            {                
-                List<Message> msgRootList = new List<Message>();
-                List<MessageModelView> msgList = new List<MessageModelView>();
-                List<MessageModelView> pageList;
+            
+            List<Message> msgRootList = new List<Message>();
+            List<MessageModelView> msgList = new List<MessageModelView>();
+            List<MessageModelView> pageList;
                 
-                foreach (var message in CurrentUser.Messages)
+            foreach (var message in CurrentUser.Messages)
+            {
+                if (message.ReplyTo == null)
                 {
-                    if (message.ReplyTo == null)
-                    {
-                        msgRootList.Add(message);
-                    }
+                    msgRootList.Add(message);
                 }
+            }
 
-				foreach (var message in CurrentUser.SentMessages)
+			foreach (var message in CurrentUser.SentMessages)
+            {
+                if (message.ReplyTo == null)
                 {
-                    if (message.ReplyTo == null)
-                    {
-                        msgRootList.Add(message);
-                    }
+                    msgRootList.Add(message);
                 }
-                msgRootList.Sort();
-                CreateListForView(msgRootList, msgList, 0);
+            }
+            msgRootList.Sort();
+            CreateListForView(msgRootList, msgList, 0);
 
-                if (msgList.Count < (10 * page))
+            if (msgList.Count < (10 * page))
+            {
+                int countOfMessages = msgList.Count - (10 * page) + 10;
+
+                if (countOfMessages > 0)
                 {
-                    int countOfMessages = msgList.Count - (10 * page) + 10;
-
-                    if (countOfMessages > 0)
-                    {
-                        pageList = msgList.GetRange(10 * (page - 1), countOfMessages);
-                    }
-                    else
-                    {
-                        //return View("NotExist");
-                        return View("Error");
-                    }
+                    pageList = msgList.GetRange(10 * (page - 1), countOfMessages);
                 }
                 else
                 {
-                    pageList = msgList.GetRange(10 * (page - 1), 10);
+                    //return View("NotExist");
+                    return View("Error");
                 }
-
-                return View(new MessageListView
-                {
-                    MessageList = pageList,
-                    LastPage = msgList.Count <= 10 ? 1 : (msgList.Count - 1) / 10 + 1,
-                    ActualPage = page
-                });
             }
             else
             {
-                //return View("NotAuthorized");
-                return View("Error");
+                pageList = msgList.GetRange(10 * (page - 1), 10);
             }
+
+            return View(new MessageListView
+            {
+                MessageList = pageList,
+                LastPage = msgList.Count <= 10 ? 1 : (msgList.Count - 1) / 10 + 1,
+                ActualPage = page
+            });
+            
         }
 
+        /// <summary>
+        /// Pomocná metoda pro zobrazení seznamu zpráv
+        /// </summary>
+        /// <param name="inputList">inputList</param>
+        /// <param name="outputList">outputList</param>
+        /// <param name="indent">indent</param>
+        /// <returns></returns>
         private void CreateListForView(List<Message> inputList, List<MessageModelView> outputList, int indent)
         {
 
@@ -124,10 +140,10 @@ namespace Felbook.Controllers
                 messageView.ID = message.Id;
                 messageView.Sent = message.Created;
 
-                if (message.Sender.Username == User.Identity.Name)
+                if (message.Sender.Username == CurrentUser.Username)
                 {
                     messageView.Recieved = false;
-                    IEnumerator<User> iterator = message.Users.GetEnumerator();
+                    IEnumerator<User> iterator = message.Recievers.GetEnumerator();
 
                     if (!iterator.MoveNext())
                     {
@@ -145,7 +161,7 @@ namespace Felbook.Controllers
                 else
                 {
 
-                    if (!message.Users.Contains(CurrentUser))
+                    if (!message.Recievers.Contains(CurrentUser))
                     {
                         continue; // pokud mi zpráva nepatří, tak ji zahodím
                     }
@@ -154,6 +170,8 @@ namespace Felbook.Controllers
                     messageView.SenderOrRecivers = message.Sender.Username;
                 }
 
+                messageView.Read = message.Readers.Contains(CurrentUser);
+                
                 if (message.Text.Length <= 50)
                 {
                     messageView.TextPreview = message.Text;
@@ -163,7 +181,7 @@ namespace Felbook.Controllers
                     messageView.TextPreview = message.Text.Substring(0, 50);
                     messageView.TextPreview += "...";
                 }
-
+                
                 messageView.Indent = indent;
 
                 outputList.Add(messageView);
@@ -172,64 +190,27 @@ namespace Felbook.Controllers
                 {
                     CreateListForView(message.Replies.ToList(), outputList, indent + 20);
                 }
-
             }
         }
+
+        #endregion
+
+        #region MessageDetail
 
         /// <summary>
         /// Zobrazit detaily zprávy
         /// </summary>
         /// <param name="id">id</param>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Detail(int id)
         {
-            return View(Model.MessageService.FindById(id));
-        }
-
-        /// <summary>
-        /// Poslat zprávu
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult SendMessage()
-        {
-            if ((User != null) && (Request.IsAuthenticated))
+            Message msg = Model.MessageService.FindById(id);
+            
+            if (msg != null && (msg.Sender == CurrentUser || msg.Recievers.Contains(CurrentUser)))
             {
-                // TODO domluvit se, co má být v autocomplete seznamu
-                
-                FelBookDBEntities db = new FelBookDBEntities();
-
-                string users = "";
-                string groups = "";
-
-                IEnumerator<User> userEnum = db.UserSet.AsEnumerable().GetEnumerator();
-
-                if (userEnum.MoveNext())
-                {
-                    users += "\"" + userEnum.Current.Username + "\"";
-                }
-                while (userEnum.MoveNext())
-                {
-                    users += ", \"" + userEnum.Current.Username + "\"";
-                }
-
-                IEnumerator<Group> groupEnum = db.GroupSet.AsEnumerable().GetEnumerator();
-
-                if (groupEnum.MoveNext())
-                {
-                    groups += "\"" + groupEnum.Current.Name + "\"";
-                }
-                while (groupEnum.MoveNext())
-                {
-                    groups += ", \"" + groupEnum.Current.Name + "\"";
-                }
-
-                return View(new SendMessageView
-                {
-                    AutocompleteUsers = users,
-                    AutocompleteGroups = groups
-                });
-                
-                //return View(model.UserService.FindByUsername(User.Identity.Name));
+                Model.MessageService.MarkMessageReadBy(msg, CurrentUser);
+                return View(msg);
             }
             else
             {
@@ -237,17 +218,83 @@ namespace Felbook.Controllers
                 return View("Error");
             }
         }
+
+        [Authorize]
+        public ActionResult UnreadMessage(int msgid)
+        {
+            Model.MessageService.MarkMessageUnreadBy(Model.MessageService.FindById(msgid), CurrentUser);
+            return RedirectToAction("Index", new { page = 1.ToString() });
+        }
+
+        #endregion
+
+        #region SendMessage
+
+        /// <summary>
+        /// Poslat zprávu
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public ActionResult SendMessage()
+        {
+            return View(prepareMessageModelToSend());    
+        }
+
+        private SendMessageModel prepareMessageModelToSend()
+        {
+            // TODO domluvit se, co má být v autocomplete seznamu
+            
+            FelBookDBEntities db = new FelBookDBEntities();
+
+            string users = "";
+            string groups = "";
+
+            IEnumerator<User> userEnum = db.UserSet.AsEnumerable().GetEnumerator();
+
+            if (userEnum.MoveNext())
+            {
+                users += "\"" + userEnum.Current.Username + "\"";
+            }
+            while (userEnum.MoveNext())
+            {
+                users += ", \"" + userEnum.Current.Username + "\"";
+            }
+
+            IEnumerator<Group> groupEnum = db.GroupSet.AsEnumerable().GetEnumerator();
+
+            if (groupEnum.MoveNext())
+            {
+                groups += "\"" + groupEnum.Current.Name + "\"";
+            }
+            while (groupEnum.MoveNext())
+            {
+                groups += ", \"" + groupEnum.Current.Name + "\"";
+            }
+
+            return new SendMessageModel
+            {
+                AutocompleteUsers = users,
+                AutocompleteGroups = groups
+            };
+        }
+
+        #endregion
+
+        #region ReplyMessage
 
         /// <summary>
         /// Odpovědět na zprávu
         /// </summary>
         /// <param name="id">id</param>
         /// <returns></returns>
+        [Authorize]
         public ActionResult ReplyMessage(int msgID)
         {
-            if ((User != null) && (Request.IsAuthenticated))
+            Message msg = Model.MessageService.FindById(msgID);
+
+            if (msg != null && (msg.Sender == CurrentUser || msg.Recievers.Contains(CurrentUser)))
             {
-                return View(Model.MessageService.FindById(msgID));
+                return View(prepareMessageModelToReply(msg));
             }
             else
             {
@@ -256,65 +303,97 @@ namespace Felbook.Controllers
             }
         }
 
-        [AcceptVerbs(HttpVerbs.Post), HttpPost]
-        public ActionResult SendMessage(FormCollection collection)
+        private SendMessageModel prepareMessageModelToReply(Message msg)
         {
-            try
+            return new SendMessageModel
             {
-                User sender = CurrentUser;
-                ISet<User> setOfRecievers = new HashSet<User>();
+                prevMessage = msg
+            };
+        }
 
-                if (String.IsNullOrEmpty(collection["text"]))
-                {
-                    ModelState.AddModelError("", "Text of message is requied!");
-                    return View(collection);
-                }
+        #endregion
 
-                for (int i = 1; i <= int.Parse(collection["UserCounter"]); i++)
+        [AcceptVerbs(HttpVerbs.Post), HttpPost]
+        public ActionResult SendMessage(SendMessageModel model, FormCollection collection)
+        {
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    string reciever = collection["ToUser" + i];
-                    if (String.IsNullOrEmpty(reciever) || (reciever == sender.Username))
-                    {
-                        continue;
-                    }
-                    setOfRecievers.Add(Model.UserService.FindByUsername(reciever));
-                }
+                    User sender = CurrentUser;
+                    ISet<User> setOfRecievers = new HashSet<User>();
 
-                for (int i = 1; i <= int.Parse(collection["GroupCounter"]); i++)
-                {
-                    string groupName = collection["ToGroup" + i];
-                    if (String.IsNullOrEmpty(groupName))
+                    for (int i = 1; i <= int.Parse(collection["UserCounter"]); i++)
                     {
-                        continue;
-                    }
-                    Group group = Model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
-                    foreach( var user in Model.GroupService.GetUsers(group))
-                    {
-                        if (user.Username == sender.Username)
+                        string reciever = collection["ToUser" + i];
+                        if (String.IsNullOrEmpty(reciever) || (reciever == sender.Username))
                         {
                             continue;
                         }
-                        setOfRecievers.Add(user);
+                        setOfRecievers.Add(Model.UserService.FindByUsername(reciever));
                     }
-                }
 
-                if (setOfRecievers.Count == 0)
+                    for (int i = 1; i <= int.Parse(collection["GroupCounter"]); i++)
+                    {
+                        string groupName = collection["ToGroup" + i];
+                        if (String.IsNullOrEmpty(groupName))
+                        {
+                            continue;
+                        }
+                        Group group = Model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
+                        foreach( var user in Model.GroupService.GetUsers(group))
+                        {
+                            if (user.Username == sender.Username)
+                            {
+                                continue;
+                            }
+                            setOfRecievers.Add(user);
+                        }
+                    }
+
+                    if (setOfRecievers.Count == 0)
+                    {
+                        ModelState.AddModelError("", "No user selected!");
+
+                        var newMsgModel = prepareMessageModelToSend();
+                        newMsgModel.Text = model.Text;
+
+                        return View(newMsgModel);
+                    }
+
+                    Message prevMessage = Model.MessageService.FindById(int.Parse(collection["PrevMessageID"]));
+
+                    Model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, model.Text);
+                    return RedirectToAction("Index", new { page = 1.ToString() });
+                }
+                catch (InvalidOperationException)
                 {
-                    ModelState.AddModelError("", "No user selected!");
-                    return View(collection);
+                    ModelState.AddModelError("", "User does not exist!");
+                    
+                    var newMsgModel = prepareMessageModelToSend();
+                    newMsgModel.Text = model.Text;
+
+                    return View(newMsgModel);
                 }
-
-                Message prevMessage = Model.MessageService.FindById(int.Parse(collection["PrevMessageID"]));
-
-                Model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, collection["text"]);
-                return RedirectToAction("Index", new { page = 1.ToString() });
             }
-            catch (InvalidOperationException)
+            else
             {
-                ModelState.AddModelError("", "User does not exist!");
-                return View(collection);
-            }
+                if (int.Parse(collection["PrevMessageID"]) == -1)
+                {
+                    var newMsgModel = prepareMessageModelToSend();
+                    newMsgModel.Text = model.Text;
 
+                    return View("SendMessage", newMsgModel);
+                }
+                else
+                {
+                    var newMsgModel = prepareMessageModelToReply(Model.MessageService.FindById(int.Parse(collection["PrevMessageID"])));
+                    newMsgModel.Text = model.Text;
+
+                    return View("ReplyMessage", newMsgModel);
+                }
+            }
+ 
         }
 
         #endregion

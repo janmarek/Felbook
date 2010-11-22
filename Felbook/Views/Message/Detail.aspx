@@ -25,7 +25,7 @@
         <strong>Sent at <%: String.Format("{0:g}", Model.Created) %></strong><br />
         <strong>From: <%: Model.Sender.Username %></strong><br />
         <strong>To:
-        <%  IEnumerator<Felbook.Models.User> iterator = Model.Users.GetEnumerator();
+        <%  IEnumerator<Felbook.Models.User> iterator = Model.Recievers.GetEnumerator();
             if (iterator.MoveNext())
             { %><%: iterator.Current.Username %><% } while (iterator.MoveNext()) { %>, <%: iterator.Current.Username %><% } %>
         </strong><br />
@@ -47,6 +47,7 @@
          <% if (Model.Sender.Username != Page.User.Identity.Name)
             { %>
          | <%: Html.ActionLink("Reply message", "ReplyMessage", "Message", new { msgid = Model.Id.ToString() }, null)%>
+         | <%: Html.ActionLink("Mark as unread", "UnreadMessage", "Message", new { msgid = Model.Id.ToString() }, null)%>
          <% } %>
     </p>
 

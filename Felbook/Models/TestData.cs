@@ -22,6 +22,7 @@ namespace Felbook.Models
             db.ExecuteStoreCommand("DELETE FROM StatusInformationLinks");
             db.ExecuteStoreCommand("DELETE FROM Followings");
             db.ExecuteStoreCommand("DELETE FROM GroupAdministration");
+            db.ExecuteStoreCommand("DELETE FROM MessageRecievers");
             db.ExecuteStoreCommand("DELETE FROM MessageReaders");
 			db.ExecuteStoreCommand("DELETE FROM UserGroupMembership");
 			db.ExecuteStoreCommand("DELETE FROM WallItemSet");
@@ -112,35 +113,35 @@ namespace Felbook.Models
 			Message msg1 = new Message();
 			msg1.Sender = usr1;
 			msg1.Text = "Ahoj jak se máš?";
-			msg1.Users.Add(usr2);
+			msg1.Recievers.Add(usr2);
 			msg1.Created = new DateTime(2010, 10, 11, 12, 5, 7);
 
 			Message msg2 = new Message();
 			msg2.Sender = usr1;
-			msg2.Users.Add(usr2);
-			msg2.Users.Add(usr3);
-			msg2.Users.Add(usr4);
-			msg2.Users.Add(usr5);
+			msg2.Recievers.Add(usr2);
+			msg2.Recievers.Add(usr3);
+			msg2.Recievers.Add(usr4);
+			msg2.Recievers.Add(usr5);
 			msg2.Text = "Nezapomeňte dodělat domácí úkol.";
 			msg2.Created = new DateTime(2009, 3, 5, 8, 1, 2);
 
 			Message msg3 = new Message();
 			msg3.Sender = usr3;
-			msg3.Users.Add(usr1);
+			msg3.Recievers.Add(usr1);
             msg3.ReplyTo = msg2;
 			msg3.Text = "Už jsem ten úkol odevzdal.";
 			msg3.Created = new DateTime(2007, 12, 11, 10, 4, 4);
 
 			Message msg4 = new Message();
 			msg4.Sender = usr3;
-			msg4.Users.Add(usr1);
+			msg4.Recievers.Add(usr1);
             msg3.ReplyTo = msg2;
 			msg4.Text = "Taky už jsem ho udělal a díky za ty materiály, zejtra vás zvu na pivo.";
 			msg4.Created = new DateTime(2010, 12, 8, 10, 2, 2);
 
 			Message msg5 = new Message();
 			msg5.Sender = usr5;
-			msg5.Users.Add(usr4);
+			msg5.Recievers.Add(usr4);
 			msg5.Text = "Podařilo se mi rozchodit ten server !!!";
 			msg5.Created = new DateTime(2010, 1, 8, 7, 6, 2);
 

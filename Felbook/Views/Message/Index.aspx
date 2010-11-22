@@ -28,7 +28,14 @@
 
                    if (message.Recieved)
                    {
-                       attributes += "recieved\"";
+                       if (message.Read)
+                       {
+                           attributes += "recieved\"";
+                       }
+                       else
+                       {
+                           attributes += "unread\"";
+                       }
                    }
                    else
                    {
@@ -57,8 +64,8 @@
                        <p>
                            <%= message.TextPreview%>
                        </p>
-                       <%: Html.ActionLink("Message detail", "Detail", new { id = message.ID.ToString() })%>
-                   </div>
+                       <%: Html.ActionLink("Open message", "Detail", new { id = message.ID.ToString() })%>
+                    </div>
 
             <% } %>
 

@@ -364,6 +364,11 @@ table th
     border-color: green
 }
 
+.unread
+{
+    border-color: red
+}
+
 .sent 
 {
     border-color: blue

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Felbook.Models.SendMessageModel>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Send Message
@@ -39,31 +39,27 @@
             <input type="button" value="+" id="addGroupBox" />
             <input type="button" value="-" id="removeGroupBox" /> <br />
 
-            <%: Html.ValidationSummary() %>
-            <h3>Text</h3>
-            <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
-		    <input type="submit" value="Send" />
+            <%: Html.ValidationSummary(true) %>
+            
+            <div class="editor-label">
+                <h3><%: Html.LabelFor(m => m.Text)%></h3>
+            </div>
+            <div class="editor-field">
+                <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
+                <%: Html.ValidationMessageFor(m => m.Text) %> <br />
+            </div>
+            <input type="submit" value="Send" />
 	    <% } %>
     </fieldset>
 
     <script type="text/javascript">
 
         var availableTagsUsers = [
-            <%--= Model.AutocompleteUsers--%>
-			"novakjakub",
-            "novakjan",
-            "bedrich",
-            "ondrej",
-            "jiri"
+            <%= Model.AutocompleteUsers%>
 		];
 
         var availableTagsGroups = [
-            <%--= Model.AutocompleteGroups--%>
-			"Svět",
-            "Asie",
-            "Evropa",
-            "Česká republika",
-            "Slunce"
+            <%= Model.AutocompleteGroups%>
 		];
         
 	</script>

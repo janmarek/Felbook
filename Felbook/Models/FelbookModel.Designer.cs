@@ -21,7 +21,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "UserGroupMembership", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "GroupAdministration", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Group))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "Followings", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User), "User1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
-[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReaders", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageRecievers", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationComment", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Status), "Comment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Comment))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationLinks", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Link", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Link))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusInformationImages", "StatusInformation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status), "Image", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Image))]
@@ -34,6 +34,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageMessage", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Message), "Message1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), true)]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "WallItemUser", "WallItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.WallItem), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.User))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusWallItem", "Status", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Status), "WallItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.WallItem))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReaders", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
 
 #endregion
 
@@ -1151,18 +1152,18 @@ namespace Felbook.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageReaders", "User")]
-        public EntityCollection<User> Users
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageRecievers", "User")]
+        public EntityCollection<User> Recievers
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("FelBookDBModel.MessageReaders", "User");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("FelBookDBModel.MessageRecievers", "User");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("FelBookDBModel.MessageReaders", "User", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("FelBookDBModel.MessageRecievers", "User", value);
                 }
             }
         }
@@ -1261,6 +1262,28 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Message>("FelBookDBModel.MessageMessage", "Message", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageReaders", "User")]
+        public EntityCollection<User> Readers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("FelBookDBModel.MessageReaders", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("FelBookDBModel.MessageReaders", "User", value);
                 }
             }
         }
@@ -2041,18 +2064,18 @@ namespace Felbook.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageReaders", "Message")]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageRecievers", "Message")]
         public EntityCollection<Message> Messages
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("FelBookDBModel.MessageReaders", "Message");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("FelBookDBModel.MessageRecievers", "Message");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.MessageReaders", "Message", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.MessageRecievers", "Message", value);
                 }
             }
         }
@@ -2141,6 +2164,28 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<WallItem>("FelBookDBModel.WallItemUser", "WallItem", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "MessageReaders", "Message")]
+        public EntityCollection<Message> ReadMessages
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Message>("FelBookDBModel.MessageReaders", "Message");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Message>("FelBookDBModel.MessageReaders", "Message", value);
                 }
             }
         }
