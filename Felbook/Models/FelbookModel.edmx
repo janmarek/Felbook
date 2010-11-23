@@ -123,6 +123,10 @@
       <End Role="User" EntitySet="UserSet" />
       <End Role="MessageReaders" EntitySet="MessageReaders" />
     </AssociationSet>
+    <AssociationSet Name="UserComment" Association="FelBookDBModel.Store.UserComment">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
     <Key>
@@ -162,7 +166,7 @@
     <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Created" Type="datetime" Nullable="false" />
     <Property Name="MessageId" Type="int" Nullable="true" />
-    <Property Name="Sender_Id" Type="int" Nullable="true" />
+    <Property Name="Sender_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="StatusSet">
     <Key>
@@ -189,7 +193,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Created" Type="datetime" Nullable="false" />
-    <Property Name="StatusInformationComment_Comment_Id" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CommentStatus_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="FileSet">
     <Key>
@@ -288,7 +293,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Comment">
-        <PropertyRef Name="StatusInformationComment_Comment_Id" />
+        <PropertyRef Name="CommentStatus_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -329,7 +334,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="SentMessages">
-    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="0..1" />
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
     <End Role="Message" Type="FelBookDBModel.Store.MessageSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
@@ -385,6 +390,18 @@
       </Principal>
       <Dependent Role="WallItem">
         <PropertyRef Name="Status_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserComment">
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Comment" Type="FelBookDBModel.Store.CommentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -662,6 +679,10 @@
             <End Role="Message" EntitySet="MessageSet" />
             <End Role="User" EntitySet="UserSet" />
           </AssociationSet>
+          <AssociationSet Name="UserComment" Association="FelBookDBModel.UserComment">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Comment" EntitySet="CommentSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -692,6 +713,7 @@
           <Property Type="String" Name="TitleAfter" Nullable="true" />
           <Property Type="String" Name="SchoolEmail" Nullable="true" />
           <NavigationProperty Name="ReadMessages" Relationship="FelBookDBModel.MessageReaders" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="MyComments" Relationship="FelBookDBModel.UserComment" FromRole="User" ToRole="Comment" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -766,6 +788,9 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Text" Nullable="false" />
           <Property Type="DateTime" Name="Created" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="FelBookDBModel.UserComment" FromRole="Comment" ToRole="User" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <NavigationProperty Name="CommentStatus" Relationship="FelBookDBModel.StatusInformationComment" FromRole="Comment" ToRole="StatusInformation" />
         </EntityType>
         <EntityType Name="File">
           <Key>
@@ -812,7 +837,7 @@
           <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="*" />
         </Association>
         <Association Name="SentMessages">
-          <End Type="FelBookDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="1" />
           <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
         </Association>
         <Association Name="GroupChildren">
@@ -851,6 +876,18 @@
         <Association Name="MessageReaders">
           <End Type="FelBookDBModel.Message" Role="Message" Multiplicity="*" />
           <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <Association Name="UserComment">
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="FelBookDBModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -922,6 +959,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -985,7 +1023,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="StatusInformationComment" TypeName="FelBookDBModel.StatusInformationComment" StoreEntitySet="CommentSet">
       <EndProperty Name="StatusInformation">
-        <ScalarProperty Name="Id" ColumnName="StatusInformationComment_Comment_Id" />
+        <ScalarProperty Name="Id" ColumnName="CommentStatus_Id" />
       </EndProperty>
       <EndProperty Name="Comment">
         <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1048,7 +1086,6 @@
       <EndProperty Name="Message">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
-      <Condition ColumnName="Sender_Id" IsNull="false" />
     </AssociationSetMapping>
     <AssociationSetMapping Name="GroupChildren" TypeName="FelBookDBModel.GroupChildren" StoreEntitySet="GroupSet">
       <EndProperty Name="Group1">
@@ -1130,13 +1167,13 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.Status" Width="1.5" PointX="8.375" PointY="6.625" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="FelBookDBModel.Link" Width="1.5" PointX="9" PointY="9.875" Height="1.4033821614583335" />
-        <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="10.75" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="FelBookDBModel.Comment" Width="1.5" PointX="6.625" PointY="11.375" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="FelBookDBModel.File" Width="1.5" PointX="12.5" PointY="9.625" Height="1.4479589843749992" />
         <EntityTypeShape EntityType="FelBookDBModel.Image" Width="1.5" PointX="10.75" PointY="10.625" Height="1.5956835937500031" />
         <AssociationConnector Association="FelBookDBModel.StatusInformationComment">
           <ConnectorPoint PointX="8.65625" PointY="9.3744921875" />
-          <ConnectorPoint PointX="8.65625" PointY="11.843282877604166" />
-          <ConnectorPoint PointX="8.125" PointY="11.843282877604166" />
+          <ConnectorPoint PointX="8.65625" PointY="12.5403857421875" />
+          <ConnectorPoint PointX="8.125" PointY="12.5403857421875" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationLinks">
           <ConnectorPoint PointX="9.4375" PointY="9.3744921875" />
@@ -1144,8 +1181,8 @@
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationImages">
           <ConnectorPoint PointX="8.8281275" PointY="9.3744921875" />
-          <ConnectorPoint PointX="8.8281275" PointY="11.59208251953125" />
-          <ConnectorPoint PointX="10.75" PointY="11.59208251953125" />
+          <ConnectorPoint PointX="8.8281275" PointY="11.876933593750001" />
+          <ConnectorPoint PointX="10.75" PointY="11.876933593750001" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusInformationFiles">
           <ConnectorPoint PointX="9.875" PointY="8.16404296875" />
@@ -1199,6 +1236,10 @@
         <AssociationConnector Association="FelBookDBModel.MessageReaders">
           <ConnectorPoint PointX="5" PointY="9.7679906907136136" />
           <ConnectorPoint PointX="6.25" PointY="9.7679906907136136" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.UserComment">
+          <ConnectorPoint PointX="7.1875" PointY="10.518616536458334" />
+          <ConnectorPoint PointX="7.1875" PointY="11.375" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

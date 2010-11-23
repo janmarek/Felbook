@@ -33,8 +33,6 @@ namespace Felbook.Models
 
         private FelBookDBEntities db { get; set; }
 
-        private Model model { get; set; }
-
         #endregion
 
         #region Construcotrs
@@ -66,7 +64,11 @@ namespace Felbook.Models
             db.SaveChanges();
         }
 
-
+        /// <summary>
+        /// Najde zprávu, která má odpovídající id
+        /// </summary>
+        /// <param name="author">id zprávy, který má být vyhledána</param>
+        /// <returns>zpráva, která má odpovídající id</returns>
         public Message FindById(int ID)
         {
             try
@@ -114,17 +116,19 @@ namespace Felbook.Models
         /// <returns>počet nepřečtených zpráv</returns>
         public int NumberOfUnreadMessages(User user)
         {
-            int count = 0;
 
-            foreach (var message in user.Messages)
-            {
-                if(user.ReadMessages.Contains(message))
-                {
-                    count++;
-                }
-            }
+            return user.Messages.Count - user.ReadMessages.Count;
+            //int count = 0;
 
-            return count;
+            //foreach (var message in user.Messages)
+            //{
+            //    if(!user.ReadMessages.Contains(message))
+            //    {
+            //        count++;
+            //    }
+            //}
+
+            //return count;
         }
 
         #endregion

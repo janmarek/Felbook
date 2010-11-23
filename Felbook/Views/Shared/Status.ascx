@@ -66,3 +66,20 @@ Group: <%= Model.Group.Name %>,
 	<% } %>
 </p>
 <% } %>
+
+<div class="comments">
+    <% foreach (var comment in Model.Comments)
+       { %>
+       <div class="comment">
+            from
+            <strong><%= comment.Author.FullName %></strong>
+            at
+            <%= comment.Created %> <br />
+            <p><%= comment.Text %></p>
+       </div>
+    <% }
+        if (Request.IsAuthenticated)
+        { 
+            Html.RenderPartial("CommentForm", new Felbook.Models.CommentModel { StatusID = Model.Id });
+        }%>
+</div>

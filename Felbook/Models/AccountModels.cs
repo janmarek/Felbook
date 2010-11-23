@@ -299,20 +299,20 @@ namespace Felbook.Models
         public string Specialization { get; set; }
 
         [Required]
-        [Email(ErrorMessage = "Email is not valid.")]
+        //[Email(ErrorMessage = "Email is not valid.")]
         [DataType(DataType.EmailAddress)]
         [DisplayName("Email address *")]
         public string Email { get; set; }
 
-        [ICQ(ErrorMessage = "ICQ is not valid.")]
+        //[ICQ(ErrorMessage = "ICQ is not valid.")]
         [DisplayName("ICQ")]
         public string ICQ { get; set; }
 
-        [Email(ErrorMessage = "School email is not valid.")]
+        //[Email(ErrorMessage = "School email is not valid.")]
         [DisplayName("School email address")]
         public string SchoolEmail { get; set; }
 
-        [ICQ(ErrorMessage = "Phone is not valid.")]
+        //[ICQ(ErrorMessage = "Phone is not valid.")]
         [DisplayName("Phone")]
         public string Phone { get; set; }
 

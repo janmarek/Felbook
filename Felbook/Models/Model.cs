@@ -17,6 +17,8 @@ namespace Felbook.Models
 
 		private IWallService wallService;
 
+        private IStatusService statusService;
+
 		#endregion
 
 		#region Properties
@@ -74,6 +76,19 @@ namespace Felbook.Models
 				return wallService;
 			}
 		}
+
+        public IStatusService StatusService
+        {
+            get
+            {
+                if (statusService == null)
+                {
+                    statusService = new StatusService(DBEntities);
+                }
+
+                return statusService;
+            }
+        }
 
 		#endregion
 

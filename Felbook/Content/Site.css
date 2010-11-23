@@ -389,3 +389,18 @@ table th
     display: none;
 }
 
+/* Styly pro komentáře
+----------------------------------------------------------*/  
+
+.comment
+{
+    margin: 5px 5px 5px 0px;
+    padding: 1em 1em 0em 1em;
+    border: 1px solid #CEC9AA;
+    background: #F0EFE6;
+}
+
+.comments
+{
+    margin-left: 30px;
+}

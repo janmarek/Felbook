@@ -31,12 +31,12 @@ namespace Felbook.Models
 			db.ExecuteStoreCommand("DELETE FROM ImageSet");
 			db.ExecuteStoreCommand("DELETE FROM FileSet");
 			db.ExecuteStoreCommand("DELETE FROM LinkSet");
+            db.ExecuteStoreCommand("DELETE FROM CommentSet");
 			db.ExecuteStoreCommand("DELETE FROM StatusSet");
 			db.ExecuteStoreCommand("DELETE FROM MessageSet");
 			db.ExecuteStoreCommand("DELETE FROM GroupSet");
 			db.ExecuteStoreCommand("DELETE FROM UserSet");
-			db.ExecuteStoreCommand("DELETE FROM CommentSet");
-
+			
 			//resetování ID -> je spuštěno pouze na tabulky které mají klíč typu UNIQUE, INCREMENT=YES
 			db.ExecuteStoreCommand("DBCC CHECKIDENT (CommentSet, RESEED, 0)");
 			db.ExecuteStoreCommand("DBCC CHECKIDENT (FileSet, RESEED, 0)");
@@ -230,15 +230,22 @@ namespace Felbook.Models
 			st5.Group = grp4;
 			st5.Created = new DateTime(2010, 2, 4, 7, 1, 2);
 
-			//TOTO nejde zatím nevím proč :(
-			/* 
-			 Comment cmt1 = new Comment();
-			 cmt1.Text = "Ano také si to myslí !!";
-			 cmt1.Created = new DateTime(208, 10, 10, 7, 2, 3);
-            
-			 st3.Comments.Add(cmt1);
-			 db.AddToCommentSet(cmt1);
-			 */
+			 
+			Comment cmt1 = new Comment();
+            cmt1.Author = usr3;
+			cmt1.Text = "Ano také si to myslím !!";
+			cmt1.Created = new DateTime(2008, 10, 10, 7, 2, 3);
+            st3.Comments.Add(cmt1);
+
+            Comment cmt2 = new Comment();
+            cmt2.Author = usr5;
+            cmt2.Text = "Tak to jsi frajer!";
+            cmt2.Created = new DateTime(2010, 1, 1, 12, 20, 10);
+            st1.Comments.Add(cmt2);
+
+            db.AddToCommentSet(cmt1);
+            db.AddToCommentSet(cmt2);
+			 
 
 			db.AddToStatusSet(st1);
 			db.AddToStatusSet(st2);
