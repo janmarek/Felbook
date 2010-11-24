@@ -3,7 +3,7 @@
 <% foreach (var user in Model.Users)
 { %>
 	<li>
-		<%= Html.ActionLink(user.FullName, "Index", new {username = user.Username}) %>
+		<%= Html.ActionLink(user.FullName, "Index", "Profile", new {username = user.Username}, null) %>
 		<% Html.RenderPartial("FollowLink", new Felbook.Models.FollowLinkViewModel(Model.CurrentUser, user)); %>
 
 		(<%= Html.ActionLink("Followers", "Followers", "User", new {username = user.Username}, null) %>, 
