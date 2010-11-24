@@ -61,6 +61,13 @@ namespace Felbook.Controllers
     public class MessageController : FelbookController
     {
 
+        #region Constructors
+
+        public MessageController(IModel model) : base(model) {}
+        public MessageController() {}
+
+        #endregion
+
         #region Actions
 
         #region MessageList

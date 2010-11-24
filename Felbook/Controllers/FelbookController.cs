@@ -11,7 +11,7 @@ namespace Felbook.Controllers
     {     	
 		#region properties
 
-		public Model Model { get; set; }
+		public IModel Model { get; set; }
 
 		public User CurrentUser
 		{
@@ -32,7 +32,7 @@ namespace Felbook.Controllers
 
 		#region construct
 		
-		public FelbookController(Model model)
+		public FelbookController(IModel model)
 		{
 			Model = model;
 		}

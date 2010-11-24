@@ -5,7 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using Felbook.Models;
+using Felbook.Tests.Fakes;
 using System.Web.Mvc;
+using Moq;
 
 namespace Felbook.Tests
 {
@@ -68,6 +70,17 @@ namespace Felbook.Tests
         //
         #endregion
 
+        MessageController CreateMessageControllerAs(string userName)
+        {
+            var mock = new Mock<ControllerContext>();
+            mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
+            mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
+
+            var controller = new MessageController(new MockModel());
+            controller.ControllerContext = mock.Object;
+            
+            return controller;
+        }
 
         /// <summary>
         ///A test for Index
@@ -75,9 +88,21 @@ namespace Felbook.Tests
         [TestMethod()]
         public void IndexTest()
         {
-            MessageController target = new MessageController();
-            ViewResult actual = target.Index() as ViewResult;
+            MessageController target = CreateMessageControllerAs("novakjakub");
+            ViewResult result = target.Index(1) as ViewResult;
+            MessageListView actual = result.ViewData.Model as MessageListView;
             Assert.IsNotNull(actual);
+
+            Assert.AreEqual(actual.ActualPage, 1);
+            Assert.AreEqual(actual.LastPage, 1);
+
+            MessageModelView message = actual.MessageList.ToArray()[0];
+            Assert.AreEqual(message.Indent, 0);
+            Assert.IsFalse(message.Recieved);
+            Assert.AreEqual(message.TextPreview, "Text");
+
+
+
             // TODO - tenhle test trochu vylepšit
         }
     }

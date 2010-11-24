@@ -5,7 +5,16 @@ using System.Web;
 
 namespace Felbook.Models
 {
-	public class Model
+    public interface IModel
+    {
+        IGroupService GroupService{ get; }
+        IUserService UserService { get; }
+        IMessageService MessageService { get; }
+        IWallService WallService { get; }
+        IStatusService StatusService { get; }
+    }
+    
+    public class Model : IModel
 	{
 		#region Variables
 

@@ -11,8 +11,10 @@ namespace Felbook.Models
     public interface IMessageService
     {
 
+        // Odešle zprávu uživatelům
         void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text);
 
+        // Najde zprávu, která má odpovídající id
         Message FindById(int ID);
 
         // Označí zprávu jako přečtenou daným uživatelem
@@ -46,6 +48,13 @@ namespace Felbook.Models
 
         #region Methods
 
+        /// <summary>
+        /// Odešle zprávu uživatelům
+        /// </summary>
+        /// <param name="sender">odesilatel zprávy</param>
+        /// <param name="recievers">množina příjemců zprávy</param>
+        /// <param name="prevMessage">zpráva, na kterou tato zpráva odpovídá</param>
+        /// <param name="text">vlastní text zprávy</param>
         public void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text)
         {
             Message msg = new Message();
@@ -118,17 +127,7 @@ namespace Felbook.Models
         {
 
             return user.Messages.Count - user.ReadMessages.Count;
-            //int count = 0;
-
-            //foreach (var message in user.Messages)
-            //{
-            //    if(!user.ReadMessages.Contains(message))
-            //    {
-            //        count++;
-            //    }
-            //}
-
-            //return count;
+            
         }
 
         #endregion
