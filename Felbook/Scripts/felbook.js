@@ -8,6 +8,7 @@ $(function () {
 
 	// ajax - obnovování počtu nepřečtených věcí
 	$('<span class="number">0</span>').appendTo("#wall-link");
+	$('<span class="number">0</span>').appendTo("#messages-link");
 	loadUnreadNumbers();
 	setInterval(loadUnreadNumbers, 20000);
 });

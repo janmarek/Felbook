@@ -25,7 +25,8 @@ namespace Felbook.Controllers
 		public ActionResult UnreadNumbers()
 		{
 			return Json(new {
-				wall = Model.WallService.GetUnreadCount(CurrentUser)
+				wall = Model.WallService.GetUnreadCount(CurrentUser),
+				messages = Model.MessageService.NumberOfUnreadMessages(CurrentUser),
 			}, JsonRequestBehavior.AllowGet);
 		}
     }
