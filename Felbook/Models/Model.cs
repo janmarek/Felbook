@@ -12,6 +12,8 @@ namespace Felbook.Models
         IMessageService MessageService { get; }
         IWallService WallService { get; }
         IStatusService StatusService { get; }
+		IFileService FileService { get; }
+		IImageService ImageService { get; }
     }
     
     public class Model : IModel
@@ -108,7 +110,6 @@ namespace Felbook.Models
 			}
 		}
 
-
 		public IFileService FileService
 		{
 			get
@@ -122,7 +123,6 @@ namespace Felbook.Models
 				return fileService;
 			}
 		}
-
 
 		public IStatusService StatusService
 		{

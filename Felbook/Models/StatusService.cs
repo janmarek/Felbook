@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using Felbook.Helpers;
 
 namespace Felbook.Models
 {
@@ -21,12 +24,10 @@ namespace Felbook.Models
     
     public class StatusService : IStatusService
     {
-
-        #region Properities
-
-        private FelBookDBEntities db { get; set; }
-                
-        #endregion
+		private IWallService wallService;
+		private IImageService imageService;
+		private IFileService fileService;
+		private FelBookDBEntities db;
 
         #region Constructor
 

@@ -61,7 +61,7 @@ at <%= Model.Status.Created%></p>
 <% } %>
 
 <div class="comments">
-    <% foreach (var comment in Model.Comments)
+    <% foreach (var comment in Model.Status.Comments)
        { %>
        <div class="comment">
             from
@@ -73,6 +73,6 @@ at <%= Model.Status.Created%></p>
     <% }
         if (Request.IsAuthenticated)
         { 
-            Html.RenderPartial("CommentForm", new Felbook.Models.CommentModel { StatusID = Model.Id });
+            Html.RenderPartial("CommentForm", new Felbook.Models.CommentModel { StatusID = Model.Status.Id });
         }%>
 </div>
