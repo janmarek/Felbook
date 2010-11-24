@@ -71,28 +71,6 @@ namespace Felbook.Models
         }
 
         /// <summary>
-        /// Vrátí veškeré zprávy které jsou odchozí danému uživateli
-        /// </summary>
-        /// <param name="usr">Uživatel který odeslal zprávy</param>
-        /// <returns>Vrací recordset těch odchozích zpráv</returns>
-        public IQueryable<Message> GetOutcomingMessages(User usr)
-        {
-            return usr.SentMessages.AsQueryable();
-        }
-
-        /// <summary>
-        /// Vrátí veškeré zprávy které jsou příchozí danému uživateli
-        /// </summary>
-        /// <param name="usr">Uživatel který přijal zprávy</param>
-        /// <returns>Vrácí řádky kde každý řádek je Message</returns>
-        public IQueryable<Message> GetIncomingMessages(User usr)
-        {
-            return from recMessages in db.MessageSet
-                   where recMessages.Recievers.Contains(usr)
-                   select recMessages;
-        }
-
-        /// <summary>
         /// Vrátí společné přátelé dvou uživatelů
         /// </summary>
         /// <param name="usrFirst">První uživatel</param>
@@ -148,17 +126,6 @@ namespace Felbook.Models
 			db.SaveChanges();
         }
 
-
-        /// <summary>
-        /// Získá recordset přátel daného usera
-        /// </summary>
-        /// <param name="usr">Uživatel</param>
-        /// <returns></returns>
-        public IQueryable<User> GetFollowers(User usr)
-        {
-            return usr.Followers.AsQueryable();
-        }
-
         /// <summary>
         /// Vytvoří přátelství mezi dvěma uživately
         /// </summary>
@@ -186,17 +153,6 @@ namespace Felbook.Models
         /// <returns>Uživatel</returns>
         public User FindByUsername(string userName) {
             return db.UserSet.Single(u => u.Username == userName);
-        }
-
-        /// <summary>
-        /// Přidá status k uživateli
-        /// </summary>
-        /// <param name="user">Uživatel</param>
-        /// <param name="st">Status</param>
-        public void AddStatus(User user, Status st) {
-            User usr = FindByUsername(user.Username);
-            usr.Statuses.Add(st);
-			db.SaveChanges();
         }
 
 

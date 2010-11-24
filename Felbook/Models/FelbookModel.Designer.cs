@@ -921,13 +921,11 @@ namespace Felbook.Models
         /// Create a new Image object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="fileName">Initial value of the FileName property.</param>
         /// <param name="description">Initial value of the Description property.</param>
-        public static Image CreateImage(global::System.Int32 id, global::System.String fileName, global::System.String description)
+        public static Image CreateImage(global::System.Int32 id, global::System.String description)
         {
             Image image = new Image();
             image.Id = id;
-            image.FileName = fileName;
             image.Description = description;
             return image;
         }
@@ -961,30 +959,6 @@ namespace Felbook.Models
         private global::System.Int32 _Id;
         partial void OnIdChanging(global::System.Int32 value);
         partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String FileName
-        {
-            get
-            {
-                return _FileName;
-            }
-            set
-            {
-                OnFileNameChanging(value);
-                ReportPropertyChanging("FileName");
-                _FileName = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("FileName");
-                OnFileNameChanged();
-            }
-        }
-        private global::System.String _FileName;
-        partial void OnFileNameChanging(global::System.String value);
-        partial void OnFileNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

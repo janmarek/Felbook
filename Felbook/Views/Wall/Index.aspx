@@ -10,7 +10,7 @@
 
 	<% foreach (var wallItem in Model.WallItems)
 	{ %>
-	<% Html.RenderPartial("Status", wallItem.Status); %>
+	<% Html.RenderPartial("Status", Model.CreateStatusViewModel(wallItem.Status)); %>
 	<% } %>
 
 </asp:Content>

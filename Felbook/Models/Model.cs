@@ -26,7 +26,11 @@ namespace Felbook.Models
 
 		private IWallService wallService;
 
-        private IStatusService statusService;
+		private IImageService imageService;
+
+		private IStatusService statusService;
+
+		private IFileService fileService;
 
 		#endregion
 
@@ -85,19 +89,52 @@ namespace Felbook.Models
 				return wallService;
 			}
 		}
+		
+		public IImageService ImageService
+		{
+			get
+			{
+				if (imageService == null)
+				{
+					imageService = new ImageService(DBEntities);
+					imageService.ImageDir = "/Web_Data/status_images";
+					imageService.MaxHeight = 600;
+					imageService.MaxWidth = 800;
+					imageService.MaxThumbnailHeight = 60;
+					imageService.MaxThumbnailWidth = 80;
+				}
 
-        public IStatusService StatusService
-        {
-            get
-            {
-                if (statusService == null)
-                {
-                    statusService = new StatusService(DBEntities);
-                }
+				return imageService;
+			}
+		}
 
-                return statusService;
-            }
-        }
+
+		public IFileService FileService
+		{
+			get
+			{
+				if (fileService == null)
+				{
+					fileService = new FileService(DBEntities);
+					fileService.FileDir = "/Web_Data/status_files";
+				}
+
+				return fileService;
+			}
+		}
+
+
+		public IStatusService StatusService
+		{
+			get
+			{
+				if (statusService == null)
+				{
+					statusService = new StatusService(DBEntities, WallService, ImageService, FileService);
+				}
+				return statusService;
+			}
+		}
 
 		#endregion
 

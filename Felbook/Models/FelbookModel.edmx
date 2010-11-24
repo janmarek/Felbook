@@ -209,7 +209,6 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="WallItemSet">
@@ -805,7 +804,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="FileName" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="false" />
         </EntityType>
         <Association Name="StatusInformationComment">
@@ -976,7 +974,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Image)">
         <MappingFragment StoreEntitySet="ImageSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="FileName" ColumnName="FileName" />
           <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>

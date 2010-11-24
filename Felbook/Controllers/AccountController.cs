@@ -88,7 +88,7 @@ namespace Felbook.Controllers
         [HttpPost]
         public ActionResult Register(RegisterModel model)
         {
-            Felbook.Helpers.Image imageOperator = new Felbook.Helpers.Image(); //pomocná třída pro operace s obrázky
+            Felbook.Helpers.ImageHelper imageOperator = new Felbook.Helpers.ImageHelper(); //pomocná třída pro operace s obrázky
             HttpPostedFileBase imageToUpload = Request.Files["profileimage"];
             bool uploadImage = false;
 
@@ -96,7 +96,7 @@ namespace Felbook.Controllers
             {
                 uploadImage = false;
             }
-            else if (imageOperator.IsImage(imageToUpload))
+			else if (Felbook.Helpers.ImageHelper.IsImage(imageToUpload.ContentType))
             {
                 uploadImage = true;
             }

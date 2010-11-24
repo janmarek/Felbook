@@ -1,35 +1,29 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Felbook.Models.Status>" %>
-<p>
-<b>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Felbook.Models.StatusViewModel>" %>
+<p class="detail">By <%= Html.ActionLink(Model.Status.User.FullName, "Index", "Profile", new {username = Model.Status.User.Username}, null) %>
+
 <%
 	// ukáže že je to staus ke skupině nebo k uživateli
-	if (Model.Group == null)
+	if (Model.Status.Group != null)
 	{
     %>
-User: <%= Model.User.Username %>,
-	<%
-		} else {
-	%>
-Group: <%= Model.Group.Name %>,
+in group <%= Html.ActionLink(Model.Status.Group.Name, "Detail", "Group", new { id = Model.Status.Group.Id }, null) %>
     <%
 		}
 	%>
-<%= Model.Created %></b> - <%: Model.Text %></p>
+at <%= Model.Status.Created%></p>
+
+<p class="big"><%: Model.Status.Text%></p>
 <%
 	// images
-	if (Model.Images.Count > 0)
+	if (Model.Status.Images.Count > 0)
 	{
 %>
 <div>
 	<%
-		foreach (var img in Model.Images)
+		foreach (var img in Model.Status.Images)
 		{
 	%>
-	<a href="/Web_Data/status_images/<%= Model.User.Id + "/" + img.FileName %>" class="colorbox"
-		rel="status<%= Model.Id %>">
-		<img src="/Web_Data/status_images/<%= Model.User.Id + "/" + img.FileName %>" title="<%= img.Description %>"
-			alt="<%= img.Description %>" width="60" height="80" />
-	</a>
+	<%= Model.ImageOutput.GetHtml(img) %>
 	<%
 		}
 	%>
@@ -37,16 +31,15 @@ Group: <%= Model.Group.Name %>,
 <% } %>
         
         
-        <% if(Model.Files.Count > 0) { //pokud jsou ve statusu soubory tak se zobrazí %>
+        <% if (Model.Status.Files.Count > 0)
+		   { //pokud jsou ve statusu soubory tak se zobrazí %>
         <div>
         <br />
         <span>Files:</span>
-        <% foreach (var file in Model.Files)
+        <% foreach (var file in Model.Status.Files)
            { %>
 	        <p>
-            <a href="/Web_Data/status_files/<%=  Model.User.Id + "/" + file.FileName %>"><%= file.FileName %></a>,
-            -
-            <%= file.Description %>
+			<%= Model.FileOutput.GetHtml(file) %> - <%= file.Description %>
             </p>
         <% } %>
         </div>
@@ -55,14 +48,14 @@ Group: <%= Model.Group.Name %>,
 
 <%
 	// links
-	if (Model.Links.Count > 0)
+	if (Model.Status.Links.Count > 0)
 	{
 %>
 <p>
 	<span>Links:</span>
-	<% for (int i = 0; i < Model.Links.Count; i++)
+	<% foreach (var link in Model.Status.Links)
 	{ %>
-	<a href="<%= Model.Links.ElementAt(i).URL %>"><%= Model.Links.ElementAt(i).URL %></a>
+	<a href="<%= link.URL %>"><%= link.URL%></a> - <%= link.Description %>
 	<% } %>
 </p>
 <% } %>

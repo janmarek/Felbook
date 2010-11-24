@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Felbook.Helpers;
 
 namespace Felbook.Models
 {
@@ -52,5 +53,13 @@ namespace Felbook.Models
 			CurrentUser = currentUser;
 			Users = users;
 		}	
+	}
+
+
+	public class StatusViewModel
+	{
+		public Status Status { get; set; }
+		public ImageOutputHelper ImageOutput { get; set; }
+		public FileOutputHelper FileOutput { get; set; }
 	}
 }

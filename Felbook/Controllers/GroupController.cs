@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Felbook.Models;
+using Felbook.Helpers;
 
 # region view models
 
@@ -22,6 +23,15 @@ namespace Felbook.Models
 		public User CurrentUser { get; set; }
 
 		public Group Group { get; set; }
+
+		public ImageOutputHelper ImageOutput { get; set; }
+
+		public FileOutputHelper FileOutput { get; set; }
+
+		public StatusViewModel CreateStatusViewModel(Status status)
+		{
+			return new StatusViewModel { Status = status, FileOutput = FileOutput, ImageOutput = ImageOutput };
+		}
 	}
 }
 
@@ -67,6 +77,8 @@ namespace Felbook.Controllers
 			return View(new GroupViewModel {
 				CurrentUser = CurrentUser,
 				Group = Model.GroupService.FindById(id),
+				ImageOutput = new ImageOutputHelper(Model.ImageService),
+				FileOutput = new FileOutputHelper(Model.FileService),
 			});
 		}
 
@@ -96,6 +108,16 @@ namespace Felbook.Controllers
 			return RedirectToAction("Detail", new { id = id });
 		}
 
+		#endregion
+
+		#region add status
+
+		[HttpPost, ValidateAntiForgeryToken]
+		public ActionResult AddStatus(int id, StatusFormModel formModel)
+		{
+			Model.StatusService.AddStatus(CurrentUser, Model.GroupService.FindById(id), formModel);
+			return RedirectToAction("Detail", new { id = id });
+		}
 		#endregion
 
 		#region create
