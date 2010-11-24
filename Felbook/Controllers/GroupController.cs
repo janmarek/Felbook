@@ -88,6 +88,7 @@ namespace Felbook.Controllers
 		/// </summary>
 		/// <param name="id">id</param>
 		/// <returns></returns>
+		[Authorize]
 		public ActionResult Join(int id)
 		{
 			var group = Model.GroupService.FindById(id);
@@ -101,6 +102,7 @@ namespace Felbook.Controllers
 		/// </summary>
 		/// <param name="id">id</param>
 		/// <returns></returns>
+		[Authorize]
 		public ActionResult Leave(int id)
 		{
 			var group = Model.GroupService.FindById(id);
@@ -112,7 +114,7 @@ namespace Felbook.Controllers
 
 		#region add status
 
-		[HttpPost, ValidateAntiForgeryToken]
+		[HttpPost, ValidateAntiForgeryToken, Authorize]
 		public ActionResult AddStatus(int id, StatusFormModel formModel)
 		{
 			Model.StatusService.AddStatus(CurrentUser, Model.GroupService.FindById(id), formModel);
@@ -126,6 +128,7 @@ namespace Felbook.Controllers
 		/// Vytvořit skupinu
 		/// </summary>
 		/// <returns></returns>
+		[Authorize]
 		public ActionResult Create()
 		{
 			return View();
@@ -137,7 +140,7 @@ namespace Felbook.Controllers
 		/// </summary>
 		/// <param name="group">skupina s daty naplněnými z formuláře</param>
 		/// <returns></returns>
-		[HttpPost, ValidateAntiForgeryToken]
+		[HttpPost, ValidateAntiForgeryToken, Authorize]
 		public ActionResult Create(Group group)
 		{
 			if (ModelState.IsValid)
@@ -153,12 +156,13 @@ namespace Felbook.Controllers
 
 		#region create subgroup
 
+		[Authorize]
 		public ActionResult CreateSubGroup(int id)
 		{
 			return View();
 		}
 
-		[HttpPost]
+		[HttpPost, Authorize]
 		public ActionResult CreateSubGroup(int id, Group group)
 		{
 			var parent = Model.GroupService.FindById(id);
@@ -176,13 +180,14 @@ namespace Felbook.Controllers
 
 		#region edit group
 
+		[Authorize]
 		public ActionResult Edit(int id)
 		{
 			return View(Model.GroupService.FindById(id));
 		}
 
 
-		[HttpPost, ValidateAntiForgeryToken]
+		[HttpPost, ValidateAntiForgeryToken, Authorize]
 		public ActionResult Edit(int id, FormCollection collection)
 		{
 			var group = Model.GroupService.FindById(id);
