@@ -17,5 +17,15 @@ namespace Felbook.Tests.Fakes
         {
             throw new NotImplementedException();
         }
+
+        public void AddStatus(User user, Group group, StatusFormModel formModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStatus(User user, StatusFormModel formModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

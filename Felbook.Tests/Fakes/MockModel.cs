@@ -47,5 +47,21 @@ namespace Felbook.Tests.Fakes
                 return new MockStatusService();
             }
         }
+        
+        public IFileService FileService
+        {
+            get 
+            {
+                return new MockFileService();
+            }
+        }
+
+        public IImageService ImageService
+        {
+            get 
+            {
+                return new MockImageService();
+            }
+        }
     }
 }
