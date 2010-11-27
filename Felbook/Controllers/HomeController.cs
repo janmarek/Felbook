@@ -12,7 +12,11 @@ namespace Felbook.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (!Request.IsAuthenticated)
+            {
+                return View();
+            }
+            return RedirectToAction("../Profile", new { username = User.Identity.Name });      
         }
 
         public ActionResult TestData()

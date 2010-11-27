@@ -5,8 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <% if (!Request.IsAuthenticated) { %>
-		<h1 class="msgNavigation">Welcome in Felbook</h1>
+    <h1 class="msgNavigation">Welcome in Felbook</h1>
     <p>
     You can simply communicate with your classmates and teachers, share files and debate about school courses. 
     Friendship is established through follow someone. There is possibility of creating groups and subgroups you can read about
@@ -14,8 +13,4 @@
     <hr />
     If you have not yet registered you can register <%= Html.ActionLink("here", "../Account/Register/")%>.
     </p>
-	<% } else {
-    //jinak přesměruje uživatele do jeho profilu
-        Response.Redirect("/Profile?username=" + Page.User.Identity.Name); 
-    } %>
 </asp:Content>
