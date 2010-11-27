@@ -6,8 +6,11 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockMessageService : IMessageService
+    class MockMessageService : AbstractMockService, IMessageService
     {
+
+        public MockMessageService(MockModel model) : base(model) { }
+        
         public void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text)
         {
             throw new NotImplementedException();
@@ -15,12 +18,13 @@ namespace Felbook.Tests.Fakes
 
         public Message FindById(int ID)
         {
-            throw new NotImplementedException();
+            return model.MessageList.Single(m => m.Id == ID);
         }
 
         public void MarkMessageReadBy(Message msg, User reader)
         {
-            throw new NotImplementedException();
+            msg.Readers.Add(reader);
+            reader.ReadMessages.Add(msg);
         }
 
         public void MarkMessageUnreadBy(Message msg, User reader)

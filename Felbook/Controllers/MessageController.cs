@@ -80,7 +80,11 @@ namespace Felbook.Controllers
         [Authorize]
         public ActionResult Index(int page)
         {
-            
+            if (page < 1)
+            {
+                return View("NotExist");
+            }
+
             List<Message> msgRootList = new List<Message>();
             List<MessageModelView> msgList = new List<MessageModelView>();
             List<MessageModelView> pageList;
@@ -113,8 +117,8 @@ namespace Felbook.Controllers
                 }
                 else
                 {
-                    //return View("NotExist");
-                    return View("Error");
+                    return View("NotExist");
+                    //return View("Error");
                 }
             }
             else
@@ -221,8 +225,8 @@ namespace Felbook.Controllers
             }
             else
             {
-                //return View("NotAuthorized");
-                return View("Error");
+                return View("NotAuthorized");
+                //return View("Error");
             }
         }
 
@@ -305,8 +309,8 @@ namespace Felbook.Controllers
             }
             else
             {
-                //return View("NotAuthorized");
-                return View("Error");
+                return View("NotAuthorized");
+                //return View("Error");
             }
         }
 

@@ -6,8 +6,13 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockStatusService : IStatusService
+    class MockStatusService : AbstractMockService, IStatusService
     {
+
+        public MockStatusService(MockModel model) : base(model) { }
+
+        #region Interface methods
+
         public Status FindStatusById(int id)
         {
             throw new NotImplementedException();
@@ -27,5 +32,7 @@ namespace Felbook.Tests.Fakes
         {
             throw new NotImplementedException();
         }
+
+        #endregion  
     }
 }

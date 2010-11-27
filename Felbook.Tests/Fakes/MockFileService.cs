@@ -6,8 +6,12 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockFileService : IFileService
+    class MockFileService : AbstractMockService, IFileService
     {
+
+        public MockFileService(MockModel model) : base(model) { }
+
+        #region Interface methods
 
         public string FileDir
         {
@@ -35,5 +39,7 @@ namespace Felbook.Tests.Fakes
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

@@ -6,8 +6,10 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockUserService : IUserService
+    class MockUserService : AbstractMockService, IUserService
     {
+
+        public MockUserService(MockModel model) : base(model) { }
 
         public IQueryable<Message> GetIncomingMessages(User usr)
         {
@@ -36,29 +38,7 @@ namespace Felbook.Tests.Fakes
 
         public User FindByUsername(string name)
         {
-
-            // TODO vymyslet lepší způsob, protože v tomhle za chvíli bude zmatek
-
-            User user1 = User.CreateUser(0, "Jindra", "Hrnčír", DateTime.Now,
-                  DateTime.Now, "hrncir.jindra@nebelvir.br", "hpotter", "alohomora");
-            
-            User user2 = User.CreateUser(1, "Tomáš", "Raddle", DateTime.Now,
-                DateTime.Now, "tomas.raddle@zmijozel.br", "voltmetr", "avadaKadevra");
-
-            Message firstMsg = Message.CreateMessage(0, "Text", DateTime.Now);
-            firstMsg.Sender = user1;
-            user1.SentMessages.Add(firstMsg);
-            firstMsg.Recievers.Add(user2);
-            user2.Messages.Add(firstMsg);
-
-            Message secondMsg = Message.CreateMessage(0, "Text", DateTime.Now);
-            //secondMsg.
-            secondMsg.Sender = user2;
-            user2.SentMessages.Add(secondMsg);
-            secondMsg.Recievers.Add(user1);
-            user1.Messages.Add(secondMsg);
-            
-            return user1;
+            return model.UserList.Single(m => m.Username == name);
         }
 
         public bool IsUserInGroup(User usr, Group grp)

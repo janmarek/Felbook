@@ -6,8 +6,11 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockGroupService : IGroupService
+    class MockGroupService : AbstractMockService, IGroupService
     {
+
+        public MockGroupService(MockModel model) : base(model) { }
+        
         public void Add(User user, Group grp)
         {
             throw new NotImplementedException();

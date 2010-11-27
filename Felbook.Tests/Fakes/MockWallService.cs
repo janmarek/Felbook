@@ -6,8 +6,11 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockWallService : IWallService
+    class MockWallService : AbstractMockService, IWallService
     {
+
+        public MockWallService(MockModel model) : base(model) { }
+        
         public void Add(Status status, IEnumerable<User> users)
         {
             throw new NotImplementedException();

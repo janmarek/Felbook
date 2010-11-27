@@ -6,8 +6,10 @@ using Felbook.Models;
 
 namespace Felbook.Tests.Fakes
 {
-    class MockImageService : IImageService
+    class MockImageService : AbstractMockService, IImageService
     {
+        public MockImageService(MockModel model) : base(model) { }
+        
         public string GetImagePath(Image image)
         {
             throw new NotImplementedException();

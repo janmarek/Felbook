@@ -8,11 +8,27 @@ namespace Felbook.Tests.Fakes
 {
     class MockModel : IModel
     {
+
+        // Tyto proměné nahrazují datové uložiště
+        // Lze je v případě potřeby bez problémů přídávat
+        public List<User> UserList;
+        public List<Message> MessageList;
+
+        public MockModel()
+        {
+
+            UserList = new List<User>();
+            MessageList = new List<Message>();
+
+        }
+
+        #region Interface methods
+
         public IGroupService GroupService 
         {
             get
             {
-                return new MockGroupService();
+                return new MockGroupService(this);
             }
         }
         
@@ -20,7 +36,7 @@ namespace Felbook.Tests.Fakes
         {
             get
             {
-                return new MockUserService();
+                return new MockUserService(this);
             }
         }
         
@@ -28,7 +44,7 @@ namespace Felbook.Tests.Fakes
         {
             get
             {
-                return new MockMessageService();
+                return new MockMessageService(this);
             }
         }
 
@@ -36,7 +52,7 @@ namespace Felbook.Tests.Fakes
         {
             get
             {
-                return new MockWallService();
+                return new MockWallService(this);
             }
         }
 
@@ -44,7 +60,7 @@ namespace Felbook.Tests.Fakes
         {
             get
             {
-                return new MockStatusService();
+                return new MockStatusService(this);
             }
         }
         
@@ -52,7 +68,7 @@ namespace Felbook.Tests.Fakes
         {
             get 
             {
-                return new MockFileService();
+                return new MockFileService(this);
             }
         }
 
@@ -60,8 +76,20 @@ namespace Felbook.Tests.Fakes
         {
             get 
             {
-                return new MockImageService();
+                return new MockImageService(this);
             }
+        }
+
+        #endregion
+    }
+
+    abstract class AbstractMockService
+    {
+        protected MockModel model;
+
+        public AbstractMockService(MockModel model)
+        {
+            this.model = model;
         }
     }
 }
