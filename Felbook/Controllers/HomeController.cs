@@ -16,7 +16,7 @@ namespace Felbook.Controllers
             {
                 return View();
             }
-            return RedirectToAction("../Profile", new { username = User.Identity.Name });      
+            return RedirectToAction("Index", "Profile", new { username = User.Identity.Name });     
         }
 
         public ActionResult TestData()
