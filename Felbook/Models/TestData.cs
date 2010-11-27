@@ -78,7 +78,7 @@ namespace Felbook.Models
 			usr3.LastLogged = new DateTime(2008, 7, 8, 9, 4, 3);
 			usr3.Mail = "bedrich@cerveny.cz";
 			usr3.Username = "bedrich";
-			usr3.ChangePassword("asfad");
+			usr3.ChangePassword("123456");
 
 			User usr4 = new User();
 			usr4.Id = 4;
@@ -88,7 +88,7 @@ namespace Felbook.Models
 			usr4.LastLogged = new DateTime(2006, 7, 8, 9, 4, 3);
 			usr4.Mail = "ondrej@zeleny.cz";
 			usr4.Username = "ondrej";
-			usr4.ChangePassword("asfad");
+			usr4.ChangePassword("123456");
 
 			User usr5 = new User();
 			usr5.Id = 5;
@@ -98,13 +98,90 @@ namespace Felbook.Models
 			usr5.LastLogged = new DateTime(2010, 8, 9, 12, 5, 7);
 			usr5.Mail = "jiri@mach.cz";
 			usr5.Username = "jiri";
-			usr5.ChangePassword("asfad");
+			usr5.ChangePassword("123456");
+
+            User usr6 = new User();
+            usr6.Id = 6;
+            usr6.Name = "Alena";
+            usr6.Surname = "Bílá";
+            usr6.Created = new DateTime(2008, 7, 2, 5, 4, 6);
+            usr6.LastLogged = new DateTime(2009, 4, 1, 13, 4, 10);
+            usr6.Mail = "alena@bila.cz";
+            usr6.Username = "alena";
+            usr6.ChangePassword("123456");
+
+            User usr7 = new User();
+            usr7.Id = 7;
+            usr7.Name = "Květa";
+            usr7.Surname = "Pampeliškova";
+            usr7.Created = new DateTime(2007, 6, 3, 2, 2, 11);
+            usr7.LastLogged = new DateTime(2008, 6, 2, 7, 8, 9);
+            usr7.Mail = "kveta@pampeliskova.cz";
+            usr7.Username = "kveta";
+            usr7.ChangePassword("123456");
+
+            User usr8 = new User();
+            usr8.Id = 8;
+            usr8.Name = "Zuzana";
+            usr8.Surname = "Frydrychová";
+            usr8.Created = new DateTime(2007, 6, 3, 2, 2, 11);
+            usr8.LastLogged = new DateTime(2008, 6, 2, 7, 8, 9);
+            usr8.Mail = "zuzana@frydrychova.cz";
+            usr8.Username = "zuzana";
+            usr8.ChangePassword("123456");
+
+            User usr9 = new User();
+            usr9.Id = 9;
+            usr9.Name = "Andrea";
+            usr9.Surname = "Senová";
+            usr9.Created = new DateTime(2004, 1, 6, 2, 9, 12);
+            usr9.LastLogged = new DateTime(2005, 5, 1, 2, 6, 3);
+            usr9.Mail = "andrea@senova.cz";
+            usr9.Username = "andrea";
+            usr9.ChangePassword("123456");
+
+            User usr10 = new User();
+            usr10.Id = 10;
+            usr10.Name = "Simona";
+            usr10.Surname = "Červená";
+            usr10.Created = new DateTime(2006, 2, 6, 2, 9, 9);
+            usr10.LastLogged = new DateTime(2007, 5, 8, 2, 1, 3);
+            usr10.Mail = "simona@cervena.cz";
+            usr10.Username = "simona";
+            usr10.ChangePassword("123456");
+
+            User usr11 = new User();
+            usr11.Id = 11;
+            usr11.Name = "Michal";
+            usr11.Surname = "Stach";
+            usr11.Created = new DateTime(2005, 2, 6, 2, 10, 12);
+            usr11.LastLogged = new DateTime(2006, 1, 2, 2, 8, 3);
+            usr11.Mail = "michal@stach.cz";
+            usr11.Username = "michal";
+            usr11.ChangePassword("123456");
+
+            User usr12 = new User();
+            usr12.Id = 12;
+            usr12.Name = "Vladimír";
+            usr12.Surname = "Roubal";
+            usr12.Created = new DateTime(2003, 8, 6, 4, 7, 9);
+            usr12.LastLogged = new DateTime(2008, 1, 4, 2, 5, 3);
+            usr12.Mail = "vladimir@roubal.cz";
+            usr12.Username = "vladimir";
+            usr12.ChangePassword("123456");
 
 			db.AddToUserSet(usr1);
 			db.AddToUserSet(usr2);
 			db.AddToUserSet(usr3);
 			db.AddToUserSet(usr4);
 			db.AddToUserSet(usr5);
+            db.AddToUserSet(usr6);
+            db.AddToUserSet(usr7);
+            db.AddToUserSet(usr8);
+            db.AddToUserSet(usr9);
+            db.AddToUserSet(usr10);
+            db.AddToUserSet(usr11);
+            db.AddToUserSet(usr12);
 
 			#endregion
 
@@ -159,6 +236,17 @@ namespace Felbook.Models
 			Group grp3 = new Group();
 			Group grp4 = new Group();
 			Group grp5 = new Group();
+            Group grp6 = new Group();
+            Group grp7 = new Group();
+            Group grp8 = new Group();
+            Group grp9 = new Group();
+            Group grp10 = new Group();
+            Group grp11 = new Group();
+            Group grp12 = new Group();
+            Group grp13 = new Group();
+            Group grp14 = new Group();
+            Group grp15 = new Group();
+
 
 			grp1.Name = "Svět";
 			grp1.Description = "Řídíme svět";
@@ -198,6 +286,69 @@ namespace Felbook.Models
 			grp5.Description = "Jsme úplně jiná planeta";
 			grp5.Creator = usr1;
 			grp5.Administrators.Add(usr1);
+
+            grp6.Name = "Katedra Kybernetiky";
+            grp6.Description = "Řešíme hlavne nedeterministické algoritmy";
+            grp6.Children.Add(grp7);
+            grp6.Children.Add(grp8);
+            grp6.Creator = usr5;
+            grp6.Administrators.Add(usr5);
+
+            grp7.Name = "Vytěžování dat";
+            grp7.Description = "Zabíváme se tu dataminingem";
+            grp7.Parent = grp6;
+            grp7.Creator = usr5;
+            grp7.Administrators.Add(usr5);
+
+            grp8.Name = "Kybernetika a umělá inteligence";
+            grp8.Description = "Jedná se o úvodní obecný předmět umožňující studentům pochopit cíle a metody kybernetiky a umělé inteligence.";
+            grp8.Parent = grp6;
+            grp8.Creator = usr5;
+            grp8.Administrators.Add(usr5);
+
+            grp9.Name = "Katedra matematiky";
+            grp9.Description = "Stále něco počítáme.";
+            grp9.Children.Add(grp10);
+            grp9.Children.Add(grp11);
+            grp9.Creator = usr7;
+            grp9.Administrators.Add(usr7);
+
+            grp10.Name = "Úvod do lineární algebry";
+            grp10.Description = "Matice, zobrazení, polynomy atd";
+            grp10.Parent = grp9;
+            grp10.Creator = usr9;
+            grp10.Administrators.Add(usr9);
+
+            grp11.Name = "Matematická logika";
+            grp11.Description = "PCNF, kvantifikátory, logické operátory atd";
+            grp11.Parent = grp9;
+            grp11.Creator = usr9;
+            grp11.Administrators.Add(usr9);
+
+            grp12.Name = "Diskrétní matematika";
+            grp12.Description = "Počítání modulo a samá přirozená čísla.";
+            grp12.Parent = grp9;
+            grp12.Creator = usr9;
+            grp12.Administrators.Add(usr9);
+
+            grp13.Name = "Katedra počítačů";
+            grp13.Description = "Programování a různé techniky při tvorbě softwaru to je naše.";
+            grp13.Children.Add(grp14);
+            grp13.Children.Add(grp15);
+            grp12.Creator = usr10;
+            grp13.Administrators.Add(usr10);
+
+            grp14.Name = "Teoretická informatika";
+            grp14.Description = "Teorie grafů a algoritmy ohledně teorie grafů to je hlavní náplň tohoto kurzu.";
+            grp14.Parent = grp13;
+            grp14.Creator = usr10;
+            grp14.Administrators.Add(usr10);
+
+            grp15.Name = "Softwarové inženýrství";
+            grp15.Description = "Tak kvůli tomuhle předmětu jsem vůbec napsal tuhle větu :).";
+            grp15.Parent = grp13;
+            grp15.Creator = usr10;
+            grp15.Administrators.Add(usr10);
 
 			#endregion
 
