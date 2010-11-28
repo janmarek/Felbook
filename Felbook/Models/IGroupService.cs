@@ -8,6 +8,7 @@ namespace Felbook.Models
 		void Delete(Group grp);
 		System.Linq.IQueryable<User> GetUsers(Group grp);
 		Group FindById(int id);
+        Group FindByName(string name);
 		System.Linq.IQueryable<Group> SearchGroups(string str);
 		void Edit(Group group);
 	}

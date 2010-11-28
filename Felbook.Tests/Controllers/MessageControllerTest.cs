@@ -46,9 +46,22 @@ namespace Felbook.Tests
         //You can use the following additional attributes as you write your tests:
         //
         //Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        //[ClassInitialize()]
+        //public static void MyClassInitialize(TestContext testContext)
+        //{
+        //}
+        //
+        //Use ClassCleanup to run code after all tests in a class have run
+        //[ClassCleanup()]
+        //public static void MyClassCleanup()
+        //{
+        //}
+        //
+        //Use TestInitialize to run code before running each test
+        [TestInitialize()]
+        public void MyTestInitialize()
         {
+
             // Inicicalizace a naplnění modelu pro testy            
             TestModel = new MockModel();
 
@@ -75,19 +88,8 @@ namespace Felbook.Tests
             user1.Messages.Add(secondMsg);
             secondMsg.ReplyTo = firstMsg;
             firstMsg.Replies.Add(secondMsg);
+
         }
-        
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
         //
         //Use TestCleanup to run code after each test has run
         //[TestCleanup()]
@@ -97,6 +99,12 @@ namespace Felbook.Tests
         //
         #endregion
 
+        /// <summary>
+        /// Pomocná metoda pro vytvoření controlleru s falšeným Contextem
+        /// </summary>
+        /// <param name="userName">uživatelské jméno "jakoby přihlášeného" uživatele</param>
+        /// <param name="model">model, ze kterého bude controller získávat data</param>
+        /// <returns>Controller s falšeným Contextem</returns>
         private MessageController CreateMessageControllerAs(string userName, IModel model)
         {
             var mock = new Mock<ControllerContext>();
@@ -110,8 +118,8 @@ namespace Felbook.Tests
         }
 
         /// <summary>
-        ///A test for Index
-        ///</summary>
+        /// A test for Index
+        /// </summary>
         [TestMethod()]
         public void IndexTest()
         {
@@ -132,6 +140,7 @@ namespace Felbook.Tests
             Assert.IsTrue(message2.Recieved);
             Assert.AreEqual(message2.TextPreview, "Another Text");
 
+
             result = target.Index(2) as ViewResult;
             Assert.AreEqual(result.ViewName, "NotExist");
 
@@ -140,21 +149,109 @@ namespace Felbook.Tests
 
             result = target.Index(-1) as ViewResult;
             Assert.AreEqual(result.ViewName, "NotExist");
-            
         }
 
         /// <summary>
-        ///A test for Detail
-        ///</summary>
+        /// A test for Detail
+        /// </summary>
         [TestMethod()]
         public void DetailTest()
         {
-            MessageController target = CreateMessageControllerAs("hpotter", TestModel);
-            int messageID = 1;
-            ViewResult result = target.Detail(messageID) as ViewResult;
+            string username = "hpotter";
+            MessageController targetController = CreateMessageControllerAs(username, TestModel);
+            User user = TestModel.UserList.Single(m => m.Username == username);
+
+            // Na odesílané zprávě mě přečtený/nepřečtený nezajímá
+            Message targetMessage = TestModel.MessageList.Single(m => m.Id == 0);
+            ViewResult result = targetController.Detail(targetMessage.Id) as ViewResult;
             Message actual = result.ViewData.Model as Message;
 
-            Assert.AreEqual(actual, TestModel.MessageList.Single(m => m.Id == messageID));
+            Assert.AreEqual(actual, targetMessage);
+
+            // Na přijaté zprávě mě přečtený/nepřečtený zajímá
+            targetMessage = TestModel.MessageList.Single(m => m.Id == 1);
+            Assert.IsFalse(targetMessage.Readers.Contains(user));
+
+            result = targetController.Detail(targetMessage.Id) as ViewResult;
+            actual = result.ViewData.Model as Message;
+
+            Assert.AreEqual(actual, targetMessage);
+            Assert.IsTrue(targetMessage.Readers.Contains(user));
+
+
+            result = targetController.Detail(2) as ViewResult;
+            Assert.AreEqual(result.ViewName, "NotAuthorized");
+
+            result = targetController.Detail(-1) as ViewResult;
+            Assert.AreEqual(result.ViewName, "NotAuthorized");
         }
+
+        /// <summary>
+        /// A test for UnreadMessage
+        /// </summary>
+        [TestMethod()]
+        public void UnreadMessageTest()
+        {
+            string username = "hpotter";
+            MessageController targetController = CreateMessageControllerAs(username, TestModel);
+            User user = TestModel.UserList.Single(m => m.Username == username);
+
+            Message targetMessage = TestModel.MessageList.Single(m => m.Id == 1);
+            targetMessage.Readers.Add(user);
+            user.ReadMessages.Add(targetMessage);
+
+            RedirectToRouteResult result = targetController.UnreadMessage(targetMessage.Id) as RedirectToRouteResult;
+            Assert.IsNotNull(result);
+            Assert.IsFalse(targetMessage.Readers.Contains(user));
+            Assert.IsFalse(user.ReadMessages.Contains(targetMessage));
+
+            result = targetController.UnreadMessage(2) as RedirectToRouteResult;
+            Assert.IsNotNull(result);
+
+            result = targetController.UnreadMessage(-1) as RedirectToRouteResult;
+            Assert.IsNotNull(result);
+        }
+
+        /// <summary>
+        /// A test for SendMessage (page)
+        /// </summary>
+        [TestMethod()]
+        public void SendMessagePageTest()
+        {
+            string username = "hpotter";
+            MessageController targetController = CreateMessageControllerAs(username, TestModel);
+            
+            ViewResult result = targetController.SendMessage() as ViewResult;
+            SendMessageModel actual = result.ViewData.Model as SendMessageModel;
+
+            Assert.IsNotNull(actual.AutocompleteGroups);
+            Assert.IsNotNull(actual.AutocompleteUsers);
+            Assert.IsNull(actual.prevMessage);
+            Assert.IsNull(actual.Text);
+        }
+
+        /// <summary>
+        /// A test for ReplyMessage
+        /// </summary>
+        [TestMethod()]
+        public void ReplyMessageTest()
+        {
+            string username = "hpotter";
+            MessageController targetController = CreateMessageControllerAs(username, TestModel);
+            User user = TestModel.UserList.Single(m => m.Username == username);
+            
+            ViewResult result = targetController.ReplyMessage(0) as ViewResult;
+            Assert.AreEqual(result.ViewName, "NotAuthorized");
+
+            Message message = TestModel.MessageList.Single(m => m.Id == 1);
+            result = targetController.ReplyMessage(message.Id) as ViewResult;
+            SendMessageModel actual = result.ViewData.Model as SendMessageModel;
+
+            Assert.IsNull(actual.AutocompleteGroups);
+            Assert.IsNull(actual.AutocompleteUsers);
+            Assert.AreEqual(message, actual.prevMessage);
+            Assert.IsNull(actual.Text);
+        }
+
     }
 }

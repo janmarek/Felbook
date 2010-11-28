@@ -45,5 +45,10 @@ namespace Felbook.Tests.Fakes
         {
             throw new NotImplementedException();
         }
+
+        public Group FindByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

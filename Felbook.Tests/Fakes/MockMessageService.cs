@@ -18,7 +18,14 @@ namespace Felbook.Tests.Fakes
 
         public Message FindById(int ID)
         {
-            return model.MessageList.Single(m => m.Id == ID);
+            try
+            {
+                return model.MessageList.Single(m => m.Id == ID);
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
         }
 
         public void MarkMessageReadBy(Message msg, User reader)
@@ -29,7 +36,8 @@ namespace Felbook.Tests.Fakes
 
         public void MarkMessageUnreadBy(Message msg, User reader)
         {
-            throw new NotImplementedException();
+            msg.Readers.Remove(reader);
+            reader.ReadMessages.Remove(msg);
         }
 
         public int NumberOfUnreadMessages(User user)

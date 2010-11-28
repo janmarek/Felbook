@@ -117,6 +117,16 @@ namespace Felbook.Models
             return db.GroupSet.Single(g => g.Id == id);
         }
 
+        /// <summary>
+        /// Vrátí Group podle jména groupy
+        /// </summary>
+        /// <param name="name">Jméno které hledáme</param>
+        /// <returns></returns>
+        public Group FindByName(string name)
+        {
+            return db.GroupSet.Single(g => g.Name == name);
+        }
+
 
 		/// <summary>
 		/// 

@@ -233,7 +233,13 @@ namespace Felbook.Controllers
         [Authorize]
         public ActionResult UnreadMessage(int msgid)
         {
-            Model.MessageService.MarkMessageUnreadBy(Model.MessageService.FindById(msgid), CurrentUser);
+            Message msg = Model.MessageService.FindById(msgid);
+
+            if (msg != null)
+            {
+                Model.MessageService.MarkMessageUnreadBy(msg, CurrentUser);
+            }
+            
             return RedirectToAction("Index", new { page = 1.ToString() });
         }
 
@@ -251,16 +257,16 @@ namespace Felbook.Controllers
             return View(prepareMessageModelToSend());    
         }
 
+        /// <summary>
+        /// Pomocná metoda, která připravuje seznam uživatelů skupina pro autocomplete funkc.
+        /// </summary>
+        /// <returns>Zobrazovací model s připravenými seznami</returns>
         private SendMessageModel prepareMessageModelToSend()
         {
-            // TODO domluvit se, co má být v autocomplete seznamu
-            
-            FelBookDBEntities db = new FelBookDBEntities();
-
             string users = "";
             string groups = "";
 
-            IEnumerator<User> userEnum = db.UserSet.AsEnumerable().GetEnumerator();
+            IEnumerator<User> userEnum = CurrentUser.Followers.AsEnumerable().GetEnumerator();
 
             if (userEnum.MoveNext())
             {
@@ -271,7 +277,7 @@ namespace Felbook.Controllers
                 users += ", \"" + userEnum.Current.Username + "\"";
             }
 
-            IEnumerator<Group> groupEnum = db.GroupSet.AsEnumerable().GetEnumerator();
+            IEnumerator<Group> groupEnum = CurrentUser.JoinedGroups.AsEnumerable().GetEnumerator();
 
             if (groupEnum.MoveNext())
             {
@@ -303,7 +309,7 @@ namespace Felbook.Controllers
         {
             Message msg = Model.MessageService.FindById(msgID);
 
-            if (msg != null && (msg.Sender == CurrentUser || msg.Recievers.Contains(CurrentUser)))
+            if (msg != null && (msg.Recievers.Contains(CurrentUser)))
             {
                 return View(prepareMessageModelToReply(msg));
             }
@@ -351,7 +357,7 @@ namespace Felbook.Controllers
                         {
                             continue;
                         }
-                        Group group = Model.GroupService.SearchGroups(groupName).Single(g => g.Name == groupName);
+                        Group group = Model.GroupService.FindByName(groupName);
                         foreach( var user in Model.GroupService.GetUsers(group))
                         {
                             if (user.Username == sender.Username)
