@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Messages (<%= Page.User.Identity.Name%>)</h2>
+    <h2>Messages (<%= Page.User.Identity.Name%>)<%-- <%= Model.UnreadCount%>--%></h2>
 
     <h3>
         Recieved messages,

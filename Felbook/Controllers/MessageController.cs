@@ -37,6 +37,8 @@ namespace Felbook.Models
         public int LastPage { get; set; }
 
         public int ActualPage { get; set; }
+
+        //public int UnreadCount { get; set; }
     }
 
     public class SendMessageModel
@@ -130,7 +132,8 @@ namespace Felbook.Controllers
             {
                 MessageList = pageList,
                 LastPage = msgList.Count <= 10 ? 1 : (msgList.Count - 1) / 10 + 1,
-                ActualPage = page
+                ActualPage = page//,
+                //UnreadCount = Model.MessageService.NumberOfUnreadMessages(CurrentUser)
             });
             
         }
@@ -266,7 +269,7 @@ namespace Felbook.Controllers
             string users = "";
             string groups = "";
 
-            IEnumerator<User> userEnum = CurrentUser.Followers.AsEnumerable().GetEnumerator();
+            IEnumerator<User> userEnum = CurrentUser.Followings.AsEnumerable().GetEnumerator();
 
             if (userEnum.MoveNext())
             {
@@ -339,10 +342,13 @@ namespace Felbook.Controllers
                 {
                     User sender = CurrentUser;
                     ISet<User> setOfRecievers = new HashSet<User>();
+                    string[] separators = new string[1];
+                    separators[0] = "; ";
 
-                    for (int i = 1; i <= int.Parse(collection["UserCounter"]); i++)
+                    string[] parsedRecievers = collection["ToUsers"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var reciever in parsedRecievers)
                     {
-                        string reciever = collection["ToUser" + i];
                         if (String.IsNullOrEmpty(reciever) || (reciever == sender.Username))
                         {
                             continue;
@@ -350,15 +356,16 @@ namespace Felbook.Controllers
                         setOfRecievers.Add(Model.UserService.FindByUsername(reciever));
                     }
 
-                    for (int i = 1; i <= int.Parse(collection["GroupCounter"]); i++)
+                    string[] parsedGroups = collection["ToGroups"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var groupName in parsedGroups)
                     {
-                        string groupName = collection["ToGroup" + i];
                         if (String.IsNullOrEmpty(groupName))
                         {
                             continue;
                         }
                         Group group = Model.GroupService.FindByName(groupName);
-                        foreach( var user in Model.GroupService.GetUsers(group))
+                        foreach (var user in Model.GroupService.GetUsers(group))
                         {
                             if (user.Username == sender.Username)
                             {

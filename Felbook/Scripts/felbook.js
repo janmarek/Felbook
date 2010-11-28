@@ -16,7 +16,8 @@ $(function () {
 // ajax - obnovování počtu nepřečtených věcí
 function loadUnreadNumbers() {
 	$.getJSON("/Home/UnreadNumbers", function (data) {
-		$("#wall-link .number").html(data.wall)[data.wall > 0 ? "addClass" : "removeClass"]("active");
+	    $("#wall-link .number").html(data.wall)[data.wall > 0 ? "addClass" : "removeClass"]("active");
+	    $("#messages-link .number").html(data.messages)[data.messages > 0 ? "addClass" : "removeClass"]("active");
 	});
 }
 
@@ -58,68 +59,6 @@ $(function () {
         indexFile--;
     });
 
-    //přidání textboxu pro uživatele
-    $("#addUserBox").click(function () {
-        var indexUser = document.getElementById("UserCounter").value;
-        indexUser++;
-        var new_row = $("<tr><td></td><td><input type=\"text\" id=\"ToUser" + indexUser + "\" name=\"ToUser" + indexUser + "\" /></td></tr>").hide();
-        $("#userInput:first").append(new_row);
-        new_row.show("slow");
-        document.getElementById("UserCounter").value = indexUser;
-
-        $("#ToUser" + indexUser).autocomplete({
-            source: availableTagsUsers
-        });
-
-        if (indexUser > 1) {
-            document.getElementById("removeUserBox").style = "display: inline;";
-        }
-    });
-
-    //odebrání textboxu pro uživatele
-    $("#removeUserBox").click(function () {
-        var indexUser = document.getElementById("UserCounter").value;
-        indexUser--;
-        var old_row = $("#userInput tr:last");
-        old_row.fadeOut(300, function () { $(this).remove(); });
-        document.getElementById("UserCounter").value = indexUser;
-
-        if (indexUser < 2) {
-            document.getElementById("removeUserBox").style = "display: none;";
-        }
-    });
-
-    //přidání textboxu pro skupiny
-    $("#addGroupBox").click(function () {
-        var indexGroup = document.getElementById("GroupCounter").value;
-        indexGroup++;
-        var new_row = $("<tr><td></td><td><input type=\"text\" id=\"ToGroup" + indexGroup + "\" name=\"ToGroup" + indexGroup + "\" /></td></tr>").hide();
-        $("#groupInput:first").append(new_row);
-        new_row.show("slow");
-        document.getElementById("GroupCounter").value = indexGroup;
-
-        $("#ToGroup" + indexGroup).autocomplete({
-            source: availableTagsGroups
-        });
-
-        if (indexGroup > 1) {
-            document.getElementById("removeGroupBox").style = "display: inline;";
-        }
-    });
-
-    //odebrání textboxu pro skupiny
-    $("#removeGroupBox").click(function () {
-        var indexGroup = document.getElementById("GroupCounter").value;
-        indexGroup--;
-        var old_row = $("#groupInput tr:last");
-        old_row.fadeOut(300, function () { $(this).remove(); });
-        document.getElementById("GroupCounter").value = indexGroup;
-
-        if (indexGroup < 2) {
-            document.getElementById("removeGroupBox").style = "display: none;";
-        }
-    });
-
 });
 
 var indexImg = 2; //index pro označení elementů jejich jednoznačné name a id - obrázek
@@ -148,20 +87,6 @@ function AddLink(ajaxResponse) {
 function formSubmit() {
     $('input[name*="link"]').attr("disabled", false);
 };
-
-$(function () {
-	if ($("#ToUser1").size() > 0) {
-		$("#ToUser1").autocomplete({
-			source: availableTagsUsers
-		});
-	}
-
-	if ($("#ToGroup1").size() > 0) {
-		$("#ToGroup1").autocomplete({
-			source: availableTagsGroups
-		});
-	}
-});
 
 
 //REGISTRACE, REGISTRATION
@@ -247,3 +172,54 @@ $(function () {
         select.val(selectedOption);
     });
 });
+
+
+// Funkce pro automatické doplňování uživatelů při posílání zprávy
+$(function () {
+    function split(val) {
+        return val.split(/;\s*/);
+    }
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+    $("#ToUsers").autocomplete({
+        minLength: 0,
+        source: function (request, response) {
+            response($.ui.autocomplete.filter(
+					    availableTagsUsers, extractLast(request.term)));
+        },
+        focus: function () {
+            return false;
+        },
+        select: function (event, ui) {
+            var terms = split(this.value);
+            terms.pop();
+            terms.push(ui.item.value);
+            terms.push("");
+            this.value = terms.join("; ");
+            return false;
+        }
+    });
+
+    $("#ToGroups").autocomplete({
+        minLength: 0,
+        source: function (request, response) {
+            response($.ui.autocomplete.filter(
+					    availableTagsGroups, extractLast(request.term)));
+        },
+        focus: function () {
+            return false;
+        },
+        select: function (event, ui) {
+            var terms = split(this.value);
+            terms.pop();
+            terms.push(ui.item.value);
+            terms.push("");
+            this.value = terms.join("; ");
+            return false;
+        }
+    });
+});
+                
+ 

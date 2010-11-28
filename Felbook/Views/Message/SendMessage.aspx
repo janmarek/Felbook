@@ -19,26 +19,17 @@
             <h3>Reciervers:</h3>
             <%: Html.Hidden("PrevMessageID", (object)-1)%>
 		    
-            <%: Html.Hidden("UserCounter", (object)1)%>
-            <table id ="userInput">
+            <table>
                 <tr>
                     <td>Users:</td>
-                    <td><input type="text" id="ToUser1" name="ToUser1" /></td>
+                    <td><input type="text" id="ToUsers" name="ToUsers" /></td>
                 </tr>
-            </table>
-            <input type="button" value="+" id="addUserBox" />
-            <input type="button" value="-" id="removeUserBox" /> <br />
-
-            <%: Html.Hidden("GroupCounter", (object)1)%>
-            <table id ="groupInput">
                 <tr>
                     <td>Groups:</td>
-                    <td><input type="text" id="ToGroup1" name="ToGroup1" /></td>
+                    <td><input type="text" id="ToGroups" name="ToGroups" /></td>
                 </tr>
             </table>
-            <input type="button" value="+" id="addGroupBox" />
-            <input type="button" value="-" id="removeGroupBox" /> <br />
-
+            
             <%: Html.ValidationSummary(true) %>
             
             <div class="editor-label">
