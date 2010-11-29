@@ -253,5 +253,66 @@ namespace Felbook.Tests
             Assert.IsNull(actual.Text);
         }
 
+        /// <summary>
+        /// A test for SendMessage (action)
+        /// </summary>
+        [TestMethod()]
+        public void SendMessageActionTest()
+        {
+            string senderName = "hpotter";
+            MessageController targetController = CreateMessageControllerAs(senderName, TestModel);
+            User sender = TestModel.UserList.Single(m => m.Username == senderName);
+
+            string recieverName = "voltmetr";
+            User reciever = TestModel.UserList.Single(m => m.Username == recieverName);
+            string msgText = "Some text";
+
+
+            SendMessageModel model = new SendMessageModel();
+            model.ToUsers = recieverName + "; " + senderName + "; ";
+            model.ToGroups = null;
+            model.PrevMessageID = -1;
+            model.Text = msgText;
+
+            RedirectToRouteResult redirectResult = targetController.SendMessage(model) as RedirectToRouteResult;
+            Assert.IsNotNull(redirectResult);
+            Assert.AreEqual(3, TestModel.MessageList.Count);
+
+            Message targetMessage = TestModel.MessageList.Last();
+            Assert.AreEqual(sender, targetMessage.Sender);
+            Assert.IsNull(targetMessage.ReplyTo);
+            Assert.AreEqual(msgText, targetMessage.Text);
+            Assert.IsTrue(targetMessage.Recievers.Contains(reciever));
+            Assert.IsFalse(targetMessage.Recievers.Contains(sender));
+
+
+            model = new SendMessageModel();
+            model.ToUsers = null;
+            model.ToGroups = null;
+            model.PrevMessageID = -1;
+            model.Text = msgText;
+
+            ViewResult viewResult = targetController.SendMessage(model) as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual(3, TestModel.MessageList.Count);
+
+            SendMessageModel actual = viewResult.ViewData.Model as SendMessageModel;
+            Assert.AreEqual(msgText, actual.Text);
+
+
+            model = new SendMessageModel();
+            model.ToUsers = recieverName;
+            model.ToGroups = null;
+            model.PrevMessageID = -1;
+            model.Text = "";
+
+            viewResult = targetController.SendMessage(model) as ViewResult;
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual(3, TestModel.MessageList.Count);
+
+            actual = viewResult.ViewData.Model as SendMessageModel;
+            Assert.AreEqual(recieverName, actual.ToUsers);
+        }
+
     }
 }

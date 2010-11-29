@@ -13,7 +13,20 @@ namespace Felbook.Tests.Fakes
         
         public void SendMessageToUsers(User sender, ISet<User> recievers, Message prevMessage, string text)
         {
-            throw new NotImplementedException();
+
+            Message msg = new Message();
+            msg.Created = DateTime.Now;
+            msg.Sender = sender;
+            msg.ReplyTo = prevMessage;
+            msg.Text = text;
+            
+            foreach (var reciever in recievers)
+            {
+                msg.Recievers.Add(reciever);
+            }
+
+            model.MessageList.Add(msg);
+            
         }
 
         public Message FindById(int ID)
