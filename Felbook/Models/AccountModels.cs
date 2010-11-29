@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Felbook.Helpers;
 
 namespace Felbook.Models
 {
@@ -317,7 +318,6 @@ namespace Felbook.Models
         public string Phone { get; set; }
 
     }
-
-#endregion
+    #endregion
 
 }

@@ -152,7 +152,15 @@ namespace Felbook.Models
         /// <param name="name">Jméno</param>
         /// <returns>Uživatel</returns>
         public User FindByUsername(string userName) {
-            return db.UserSet.Single(u => u.Username == userName);
+            try
+            {
+                return db.UserSet.Single(u => u.Username == userName);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }     
         }
 
 

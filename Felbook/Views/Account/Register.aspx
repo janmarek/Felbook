@@ -12,7 +12,7 @@
     <p>
         Passwords are required to be a minimum of <%: ViewData["PasswordLength"] %> characters in length.
     </p>
-     <%: Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.") %>
+    <%: Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.") %>
     <% using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
        { %> 
         <%: Html.AntiForgeryToken() %>
@@ -89,14 +89,6 @@
 <div id="education">
                 <fieldset>
                 <legend>Education</legend>
-                    <!-- Faculty -->
-                    <div class="editor-label">
-                        <%: Html.LabelFor(m => m.Faculty) %>
-                    </div>
-                    <div class="editor-field">
-                        <%: Html.TextBoxFor(m => m.Faculty) %>
-                    </div>
-
                     <!-- Study programme -->
                     <div class="editor-label">
                         <%: Html.LabelFor(m => m.StudyProgramme) %>

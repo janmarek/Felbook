@@ -155,10 +155,7 @@ namespace Felbook.Controllers
                 else
                 {
                     ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus));
-                }
-                
-
-                    
+                }    
             }
 
             // If we got this far, something failed, redisplay form
@@ -166,10 +163,28 @@ namespace Felbook.Controllers
             return View(model);
         }
 
-		// **************************************
-		// URL: /Account/ChangePassword
-		// **************************************
 
+
+        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit(Felbook.Models.User model) //FormCollection collection
+        {
+            TryUpdateModel(CurrentUser);
+
+            if (ModelState.IsValid)
+            {
+                //if(collection.)
+                Model.UserService.Edit(CurrentUser);
+                return RedirectToAction("Index", "Profile", new { username = model.Username });
+            }
+
+            return RedirectToAction("Index", "Profile", new { username = model.Username });
+        }
+
+
+        // **************************************
+		// URL: /Account/ChangePassword
+        // **************************************
 		[Authorize]
 		public ActionResult ChangePassword()
 		{

@@ -12,7 +12,12 @@ namespace Felbook.Models
 
 	public partial class User
 	{
-		public User()
+
+        #region Proměnné
+        private string oldPasswrod = "";
+        #endregion
+
+        public User()
 		{
 			Created = DateTime.Now;
 		}
@@ -70,8 +75,32 @@ namespace Felbook.Models
 		public bool IsFollowedBy(User follower)
 		{
 			return Followers.Contains(follower);
-		}
+        }
 
+
+        public string OldPassword {     
+            get
+            {
+            return this.oldPasswrod;
+            }
+            set 
+            {
+                this.oldPasswrod = value;
+            } 
+        }
+        #region Validace
+        
+
+        [ValidatePasswordLength]
+        [DataType(DataType.Password)]
+        [DisplayName("Password *")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [DisplayName("Confirm password *")]
+        public string ConfirmPassword { get; set; }
+        
+        #endregion
     }
 
 }

@@ -60,6 +60,12 @@ namespace Felbook.Models
 			usr1.LastLogged = DateTime.Now;
 			usr1.Mail = "jakub@novak.cz";
 			usr1.Username = "novakjakub";
+            usr1.Title = "Ing.";
+            usr1.TitleAfter = "CSc.";
+            usr1.StudyProgramme = "STM";
+            usr1.Phone = "0609112567";
+            usr1.ICQ = "123456789";
+            usr1.Specialization = "Software engineering";
 			usr1.ChangePassword("123456");
 
 			User usr2 = new User();
