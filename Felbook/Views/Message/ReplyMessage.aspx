@@ -12,14 +12,13 @@
         <% using (Html.BeginForm("SendMessage", "Message")) { %>
 		    <%: Html.AntiForgeryToken() %>
             <h3>Recierver:</h3>
-            <%: Html.Hidden("PrevMessageID", (object)Model.prevMessage.Id)%>
-            <%: Html.Hidden("UserCounter", (object)1)%>
-		    <%: Html.Hidden("ToUser1", (object)Model.prevMessage.Sender.Username)%>
-            <%: Html.Hidden("GroupCounter", (object)1)%>
-            <%: Html.Hidden("ToGroup1", "")%>
-            <%= Model.prevMessage.Sender.Username%>
+            <%: Html.Hidden("PrevMessageID", (object)Model.PrevMessage.Id)%>
+            <%: Html.Hidden("ToUsers", (object)Model.PrevMessage.Sender.Username)%>
+            <%: Html.Hidden("ToGroups", "")%>
+            <%= Model.PrevMessage.Sender.Username%>
+            
             <h3>Original message</h3>
-            <%= Model.prevMessage.Text%>
+            <%= Model.PrevMessage.Text%>
             
             <%: Html.ValidationSummary(true) %>
             
@@ -27,7 +26,7 @@
                 <h3><%: Html.LabelFor(m => m.Text)%></h3>
             </div>
             <div class="editor-field">
-                <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
+                <%: Html.TextAreaFor(m => m.Text, 15, 50, "")%> <br />
                 <%: Html.ValidationMessageFor(m => m.Text) %> <br />
             </div>
             <input type="submit" value="Send" />

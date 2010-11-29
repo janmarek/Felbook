@@ -47,7 +47,15 @@ namespace Felbook.Models
 
         public string AutocompleteGroups { get; set; }
 
-        public Message prevMessage { get; set; }
+        [DisplayName("Users:")]
+        public string ToUsers { get; set; }
+
+        [DisplayName("Groups:")]
+        public string ToGroups { get; set; }
+
+        public Message PrevMessage { get; set; }
+
+        public int PrevMessageID { get; set; }
 
         [Required(ErrorMessage = "Text of message is requied!")]
         [DisplayName("Text:")]
@@ -120,7 +128,6 @@ namespace Felbook.Controllers
                 else
                 {
                     return View("NotExist");
-                    //return View("Error");
                 }
             }
             else
@@ -327,14 +334,19 @@ namespace Felbook.Controllers
         {
             return new SendMessageModel
             {
-                prevMessage = msg
+                PrevMessage = msg
             };
         }
 
         #endregion
 
+        /// <summary>
+        /// Metoda řídící odeslání zprávy
+        /// </summary>
+        /// <param name="model">Model z View naplněný daty</param>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Post), HttpPost]
-        public ActionResult SendMessage(SendMessageModel model, FormCollection collection)
+        public ActionResult SendMessage(SendMessageModel model)
         {
             if (ModelState.IsValid)
             {
@@ -345,34 +357,40 @@ namespace Felbook.Controllers
                     string[] separators = new string[1];
                     separators[0] = "; ";
 
-                    string[] parsedRecievers = collection["ToUsers"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (var reciever in parsedRecievers)
+                    if (model.ToUsers != null)
                     {
-                        if (String.IsNullOrEmpty(reciever) || (reciever == sender.Username))
-                        {
-                            continue;
-                        }
-                        setOfRecievers.Add(Model.UserService.FindByUsername(reciever));
-                    }
+                        string[] parsedRecievers = model.ToUsers.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] parsedGroups = collection["ToGroups"].Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (var groupName in parsedGroups)
-                    {
-                        if (String.IsNullOrEmpty(groupName))
+                        foreach (var reciever in parsedRecievers)
                         {
-                            continue;
-                        }
-                        Group group = Model.GroupService.FindByName(groupName);
-                        foreach (var user in Model.GroupService.GetUsers(group))
-                        {
-                            if (user.Username == sender.Username)
+                            if (String.IsNullOrEmpty(reciever) || (reciever == sender.Username))
                             {
                                 continue;
                             }
-                            setOfRecievers.Add(user);
+                            setOfRecievers.Add(Model.UserService.FindByUsername(reciever));
                         }
+                    }
+
+                    if (model.ToGroups != null)
+                    {
+                        string[] parsedGroups = model.ToGroups.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (var groupName in parsedGroups)
+                        {
+                            if (String.IsNullOrEmpty(groupName))
+                            {
+                                continue;
+                            }
+                            Group group = Model.GroupService.FindByName(groupName);
+                            foreach (var user in Model.GroupService.GetUsers(group))
+                            {
+                                if (user.Username == sender.Username)
+                                {
+                                    continue;
+                                }
+                                setOfRecievers.Add(user);
+                            }
+                        } 
                     }
 
                     if (setOfRecievers.Count == 0)
@@ -385,7 +403,7 @@ namespace Felbook.Controllers
                         return View(newMsgModel);
                     }
 
-                    Message prevMessage = Model.MessageService.FindById(int.Parse(collection["PrevMessageID"]));
+                    Message prevMessage = Model.MessageService.FindById(model.PrevMessageID);
 
                     Model.MessageService.SendMessageToUsers(sender, setOfRecievers, prevMessage, model.Text);
                     return RedirectToAction("Index", new { page = 1.ToString() });
@@ -402,22 +420,23 @@ namespace Felbook.Controllers
             }
             else
             {
-                if (int.Parse(collection["PrevMessageID"]) == -1)
+                if (model.PrevMessageID == -1)
                 {
                     var newMsgModel = prepareMessageModelToSend();
                     newMsgModel.Text = model.Text;
+                    newMsgModel.ToGroups = model.ToGroups;
+                    newMsgModel.ToUsers = model.ToUsers;
 
                     return View("SendMessage", newMsgModel);
                 }
                 else
                 {
-                    var newMsgModel = prepareMessageModelToReply(Model.MessageService.FindById(int.Parse(collection["PrevMessageID"])));
+                    var newMsgModel = prepareMessageModelToReply(Model.MessageService.FindById(model.PrevMessageID));
                     newMsgModel.Text = model.Text;
 
                     return View("ReplyMessage", newMsgModel);
                 }
             }
- 
         }
 
         #endregion

@@ -62,7 +62,7 @@ namespace Felbook.Models
             msg.Sender = sender;
             msg.ReplyTo = prevMessage;
             msg.Text = text;
-            msg.Readers.Add(sender);
+            //msg.Readers.Add(sender);
 
             foreach (var reciever in recievers)
             {

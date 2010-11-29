@@ -226,7 +226,7 @@ namespace Felbook.Tests
 
             Assert.IsNotNull(actual.AutocompleteGroups);
             Assert.IsNotNull(actual.AutocompleteUsers);
-            Assert.IsNull(actual.prevMessage);
+            Assert.IsNull(actual.PrevMessage);
             Assert.IsNull(actual.Text);
         }
 
@@ -249,7 +249,7 @@ namespace Felbook.Tests
 
             Assert.IsNull(actual.AutocompleteGroups);
             Assert.IsNull(actual.AutocompleteUsers);
-            Assert.AreEqual(message, actual.prevMessage);
+            Assert.AreEqual(message, actual.PrevMessage);
             Assert.IsNull(actual.Text);
         }
 

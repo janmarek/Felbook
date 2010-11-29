@@ -17,7 +17,7 @@ namespace Felbook.Models
                 return 0;
             }
             
-            if (this.Created < other.Created)
+            if (this.Created > other.Created)
             {
                 return -1;
             }

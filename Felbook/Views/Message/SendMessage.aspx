@@ -21,12 +21,28 @@
 		    
             <table>
                 <tr>
-                    <td>Users:</td>
-                    <td><input type="text" id="ToUsers" name="ToUsers" /></td>
+                    <td>
+                        <div class="editor-label">
+                            <%: Html.LabelFor(m => m.ToUsers)%>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <%: Html.TextBoxFor(m => m.ToUsers)%>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
-                    <td>Groups:</td>
-                    <td><input type="text" id="ToGroups" name="ToGroups" /></td>
+                    <td>
+                        <div class="editor-label">
+                            <%: Html.LabelFor(m => m.ToGroups)%>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="editor-field">
+                            <%: Html.TextBoxFor(m => m.ToGroups)%>
+                        </div>
+                    </td>
                 </tr>
             </table>
             
@@ -36,7 +52,7 @@
                 <h3><%: Html.LabelFor(m => m.Text)%></h3>
             </div>
             <div class="editor-field">
-                <%: Html.TextArea("Text", "", 15, 50, "") %> <br />
+                <%: Html.TextAreaFor(m => m.Text, 15, 50, "")%> <br />
                 <%: Html.ValidationMessageFor(m => m.Text) %> <br />
             </div>
             <input type="submit" value="Send" />
