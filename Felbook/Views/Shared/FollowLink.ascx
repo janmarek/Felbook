@@ -2,5 +2,5 @@
 
 <% if (Model.CurrentUser != null && Model.CurrentUser != Model.Follower && !Model.Follower.IsFollowedBy(Model.CurrentUser))
    { %>
-<%= Html.ActionLink("Follow", "FollowUser", "User", new { id = Model.Follower.Id }, null) %>
+<%= Html.ActionLink("Follow", "FollowUser", "User", new { id = Model.Follower.Id }, new { @class = "ajax-default" }) %>
 <% } %>

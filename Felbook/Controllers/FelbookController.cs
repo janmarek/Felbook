@@ -8,7 +8,11 @@ using Felbook.Models;
 namespace Felbook.Controllers
 {
     public abstract class FelbookController : Controller
-    {     	
+    {
+		protected const string FLASH_SUCCESS = "success";
+
+		protected const string FLASH_ERROR = "error";
+
 		#region properties
 
 		public IModel Model { get; set; }
@@ -45,6 +49,22 @@ namespace Felbook.Controllers
 		}
 
 		#endregion
+
+		public void FlashMessage(string message, string type = FLASH_SUCCESS)
+		{
+			TempData["flashMessage"] = message;
+			TempData["flashType"] = type;
+		}
+
+		public JsonResult AjaxFlashMessage(string message, string type = FLASH_SUCCESS)
+		{
+			return Json(new {
+				flash = new {
+					message = message,
+					type = type,
+				}
+			}, JsonRequestBehavior.AllowGet);
+		}
 
     }
 }

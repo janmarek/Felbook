@@ -29,7 +29,14 @@
               
 		<div id="logindisplay">
 			<% Html.RenderPartial("LogOnUserControl"); %>
-		</div> 
+		</div>
+
+		<div id="flash">
+		<% if (ViewContext.TempData["flashMessage"] != null)
+	 { %>
+			<p class="flash <%: ViewContext.TempData["flashType"] %>"><%: ViewContext.TempData["flashMessage"] %></div>
+			<% } %>
+		</div>
 	</div>
 </div>
 

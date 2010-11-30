@@ -41,6 +41,17 @@ namespace Felbook.Controllers
 			var user = Model.UserService.FindById(id);
 			Model.UserService.FollowUser(user, CurrentUser);
 
+			var message = "You started following " + user.FullName;
+
+			if (Request.IsAjaxRequest())
+			{
+				return AjaxFlashMessage(message);
+			}
+			else
+			{
+				FlashMessage(message);
+			}
+
 			return RedirectToAction("Followings", new { username = CurrentUser.Username });
         }
 
