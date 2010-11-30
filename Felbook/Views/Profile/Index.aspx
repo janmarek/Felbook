@@ -14,11 +14,8 @@
 		Profile
 		<%= Model.User.Name %>
 		<%= Model.User.Surname %>
+		<% Html.RenderPartial("FollowLink", new Felbook.Models.FollowLinkViewModel(Model.CurrentUser, Model.User)); %>
 	</h2>
-	<ul>
-		<li>E-mail:
-			<%= Model.User.Mail %></li>
-	</ul>
 	<h3>
 		Add status</h3>
 	<% using (Html.BeginForm("AddStatus", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))

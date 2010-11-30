@@ -9,17 +9,20 @@ namespace Felbook.Models
 	{
 		#region variables
 		private User user;
+		private User currentUser;
 		private ImageOutputHelper imageOutputHelper;
 		private FileOutputHelper fileOutputHelper;
 		#endregion
 
 		#region properties
 		public User User { get { return user; } }
+		public User CurrentUser { get { return currentUser; } }
 		#endregion
 
-		public ProfileViewModel(User user, IImageService imageService, IFileService fileService)
+		public ProfileViewModel(User user, User currentUser, IImageService imageService, IFileService fileService)
 		{
 			this.user = user;
+			this.currentUser = currentUser;
 			this.imageOutputHelper = new ImageOutputHelper(imageService);
 			this.fileOutputHelper = new FileOutputHelper(fileService);
 		}
@@ -40,7 +43,7 @@ namespace Felbook.Controllers
         public ActionResult Index(string username)
         {
             User user = Model.UserService.FindByUsername(username);
-            return View(new ProfileViewModel(user, Model.ImageService, Model.FileService));
+            return View(new ProfileViewModel(user, CurrentUser, Model.ImageService, Model.FileService));
         }
 
 
