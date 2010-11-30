@@ -25,6 +25,7 @@
 			<li><a href="#education">Education</a></li>
 			<li><a href="#othercontacts">Other user contact</a></li>
             <li><a href="#profilepicture">Profile picture</a></li>
+            <li><a href="#changepassword">Change password</a></li>
 		</ul>
 
         <div id="account">
@@ -57,33 +58,6 @@
                         <%: Html.TextBoxFor(m => m.Surname)%>
                         <%: Html.ValidationMessageFor(m => m.Surname) %>
                     </div>
-
-                    <!-- Password -->
-                    <div class="editor-label">
-                        <%: Html.LabelFor(m => m.OldPassword) %>
-                    </div>
-                    <div class="editor-field">
-                        <%: Html.PasswordFor(m => m.OldPassword)%>
-                        <%: Html.ValidationMessageFor(m => m.OldPassword)%>
-                    </div>
-
-                    <div class="editor-label">
-                        <%: Html.LabelFor(m => m.Password) %>
-                    </div>
-                    <div class="editor-field">
-                        <%: Html.PasswordFor(m => m.Password) %>
-                        <%: Html.ValidationMessageFor(m => m.Password) %>
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="editor-label">
-                        <%: Html.LabelFor(m => m.ConfirmPassword) %>
-                    </div>
-                    <div class="editor-field">
-                        <%: Html.PasswordFor(m => m.ConfirmPassword) %>
-                        <%: Html.ValidationMessageFor(m => m.ConfirmPassword) %>
-                    </div>
-
                 </fieldset>
             </div>
 
@@ -212,6 +186,33 @@
 
                         </fieldset>
                     </div>
+                    <div id="changepassword">
+                    <!-- Password -->
+                    <div class="editor-label">
+                        <%: Html.LabelFor(m => m.OldPassword) %>
+                    </div>
+                    <div class="editor-field">
+                        <%: Html.PasswordFor(m => m.OldPassword)%>
+                        <%: Html.ValidationMessageFor(m => m.OldPassword)%>
+                    </div>
+
+                    <div class="editor-label">
+                        <%: Html.LabelFor(m => m.Password) %>
+                    </div>
+                    <div class="editor-field">
+                        <%: Html.PasswordFor(m => m.Password) %>
+                        <%: Html.ValidationMessageFor(m => m.Password) %>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="editor-label">
+                        <%: Html.LabelFor(m => m.ConfirmPassword) %>
+                    </div>
+                    <div class="editor-field">
+                        <%: Html.PasswordFor(m => m.ConfirmPassword) %>
+                        <%: Html.ValidationMessageFor(m => m.ConfirmPassword) %>
+                    </div>
+                </div>
                 </div>
                 <p>&nbsp;<input type="submit" value="Edit profile" /></p>
         </div>

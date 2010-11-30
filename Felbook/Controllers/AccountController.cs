@@ -171,9 +171,22 @@ namespace Felbook.Controllers
         {
             TryUpdateModel(CurrentUser);
 
+            if (model.OldPassword != "" && String.Equals(model.Password, model.ConfirmPassword)) 
+            { 
+                User user = Model.UserService.FindByUsername(model.Username);
+                if (user.CheckPassword(model.OldPassword))
+                {
+                    user.ChangePassword(model.Password);
+                }
+                else 
+                {
+                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                //if(collection.)
+                
                 Model.UserService.Edit(CurrentUser);
                 return RedirectToAction("Index", "Profile", new { username = model.Username });
             }

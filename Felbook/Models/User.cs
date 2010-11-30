@@ -15,6 +15,8 @@ namespace Felbook.Models
 
         #region Proměnné
         private string oldPasswrod = "";
+        private string password = "";
+        private string confirmPassword = "";
         #endregion
 
         public User()
@@ -38,7 +40,7 @@ namespace Felbook.Models
 		/// </summary>
 		/// <param name="password">heslo</param>
 		/// <returns></returns>
-		private string CalculateHash(string password)
+		public string CalculateHash(string password)
 		{
 			byte[] buffer = Encoding.UTF8.GetBytes(password + Username);
 			SHA1CryptoServiceProvider cryptoTransformSHA1 = new SHA1CryptoServiceProvider();
@@ -91,14 +93,20 @@ namespace Felbook.Models
         #region Validace
         
 
-        [ValidatePasswordLength]
+        /*[ValidatePasswordLength]
         [DataType(DataType.Password)]
-        [DisplayName("Password *")]
-        public string Password { get; set; }
+        [DisplayName("Password *")]*/
+        public string Password { 
+            get {return this.password;}
+            set { this.password = value;} 
+        }
 
-        [DataType(DataType.Password)]
-        [DisplayName("Confirm password *")]
-        public string ConfirmPassword { get; set; }
+        //[DataType(DataType.Password)]
+        //[DisplayName("Confirm password *")]
+        public string ConfirmPassword {
+            get { return this.confirmPassword;}
+            set { this.confirmPassword = value;} 
+        }
         
         #endregion
     }
