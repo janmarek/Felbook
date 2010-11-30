@@ -38,22 +38,75 @@ namespace Felbook.Controllers
 		[Authorize]
 		public ActionResult FollowUser(int id)
         {
-			var user = Model.UserService.FindById(id);
-			Model.UserService.FollowUser(user, CurrentUser);
-
-			var message = "You started following " + user.FullName;
-
-			if (Request.IsAjaxRequest())
+			try
 			{
-				return AjaxFlashMessage(message);
+				var user = Model.UserService.FindById(id);
+				Model.UserService.FollowUser(user, CurrentUser);
+
+				var message = "You started following " + user.FullName + ".";
+
+				if (Request.IsAjaxRequest())
+				{
+					return AjaxFlashMessage(message);
+				}
+				else
+				{
+					FlashMessage(message);
+				}
 			}
-			else
+			catch (UserException)
 			{
-				FlashMessage(message);
+				var message = "You already follow user.";
+
+				if (Request.IsAjaxRequest())
+				{
+					return AjaxFlashMessage(message, FLASH_ERROR);
+				}
+				else
+				{
+					FlashMessage(message, FLASH_ERROR);
+				}
 			}
 
 			return RedirectToAction("Followings", new { username = CurrentUser.Username });
         }
+
+
+		[Authorize]
+		public ActionResult UnfollowUser(int id)
+		{
+			try
+			{
+				var user = Model.UserService.FindById(id);
+				Model.UserService.UnfollowUser(user, CurrentUser);
+
+				var message = "You stopped following " + user.FullName + ".";
+
+				if (Request.IsAjaxRequest())
+				{
+					return AjaxFlashMessage(message);
+				}
+				else
+				{
+					FlashMessage(message);
+				}
+			}
+			catch (UserException)
+			{
+				var message = "You are not following this user.";
+
+				if (Request.IsAjaxRequest())
+				{
+					return AjaxFlashMessage(message, FLASH_ERROR);
+				}
+				else
+				{
+					FlashMessage(message, FLASH_ERROR);
+				}
+			}
+
+			return RedirectToAction("Followings", new { username = CurrentUser.Username });
+		}
 
 
 		public ActionResult Followers(string username)

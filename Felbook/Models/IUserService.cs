@@ -17,6 +17,7 @@ namespace Felbook.Models
         void Delete(User usr);
         void JoinGroup(User usr, Group grp); //přidání do skupiny
         void LeaveGroup(User usr, Group grp); //odchod ze skupiny
-        void FollowUser(User user, User follower); //vytvoření něco jako přátelství
+		void FollowUser(User user, User follower); //vytvoření něco jako přátelství
+		void UnfollowUser(User user, User follower); //vytvoření něco jako přátelství
     }
 }

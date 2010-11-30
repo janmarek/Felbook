@@ -126,16 +126,37 @@ namespace Felbook.Models
 			db.SaveChanges();
         }
 
-        /// <summary>
-        /// Vytvoří přátelství mezi dvěma uživately
-        /// </summary>
-        /// <param name="usrFirst">První uživatel</param>
-        /// <param name="usrSecond">Druhý uživatel</param>
-        public void FollowUser(User user, User follower)
-        {
-            user.Followers.Add(follower);
+		/// <summary>
+		/// První uživatel začne být sledován druhým
+		/// </summary>
+		/// <param name="usrFirst">První uživatel</param>
+		/// <param name="usrSecond">Druhý uživatel</param>
+		public void FollowUser(User user, User follower)
+		{
+			if (user.Followers.Contains(follower))
+			{
+				throw new UserException("User is already followed");
+			}
+
+			user.Followers.Add(follower);
 			db.SaveChanges();
-        }
+		}
+
+		/// <summary>
+		/// První uživatel přestane být sledován prvním
+		/// </summary>
+		/// <param name="usrFirst">První uživatel</param>
+		/// <param name="usrSecond">Druhý uživatel</param>
+		public void UnfollowUser(User user, User follower)
+		{
+			if (!user.Followers.Contains(follower))
+			{
+				throw new UserException("User is not followed by " + user.FullName);
+			}
+
+			user.Followers.Remove(follower);
+			db.SaveChanges();
+		}
 
         /// <summary>
         /// Najde uživatele podle ID

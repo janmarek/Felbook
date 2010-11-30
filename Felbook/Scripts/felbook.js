@@ -45,7 +45,7 @@ function defaultAjaxCallback(data) {
 			});
 		});
 
-		$('#flash').append(message);
+		$('#flash').append(message.hide());
 
 		message.slideDown();
 	}
