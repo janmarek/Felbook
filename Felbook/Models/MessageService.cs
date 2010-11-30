@@ -77,7 +77,7 @@ namespace Felbook.Models
         /// Najde zprávu, která má odpovídající id
         /// </summary>
         /// <param name="author">id zprávy, který má být vyhledána</param>
-        /// <returns>zpráva, která má odpovídající id</returns>
+        /// <returns>zpráva, která má odpovídající id nebo null pokud taková neexistuje</returns>
         public Message FindById(int ID)
         {
             try

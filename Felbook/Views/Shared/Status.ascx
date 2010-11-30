@@ -65,7 +65,7 @@ at <%= Model.Status.Created%></p>
        { %>
        <div class="comment">
             from
-            <strong><%= comment.Author.FullName %></strong>
+            <%= Html.ActionLink(comment.Author.FullName, "Index", "Profile", new {username = comment.Author.Username}, null) %>
             at
             <%= comment.Created %> <br />
             <p><%= comment.Text %></p>

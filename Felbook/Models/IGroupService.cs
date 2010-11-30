@@ -5,7 +5,7 @@ namespace Felbook.Models
 	{
 		void Add(User user, Group grp);
 		void AddSubGroup(User user, Group group, Group child);
-		void Delete(Group grp);
+		//void Delete(Group grp);
 		System.Linq.IQueryable<User> GetUsers(Group grp);
 		Group FindById(int id);
         Group FindByName(string name);

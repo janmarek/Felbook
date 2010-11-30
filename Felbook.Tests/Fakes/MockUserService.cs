@@ -85,5 +85,10 @@ namespace Felbook.Tests.Fakes
         {
             throw new NotImplementedException();
         }
+
+        public void UnfollowUser(User user, User follower)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

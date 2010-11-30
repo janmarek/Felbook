@@ -79,34 +79,34 @@ namespace Felbook.Models
 			db.SaveChanges();
         }
 
-        /// <summary>
-        /// Vymazání skupiny, ještě nefunguje zcela správně
-        /// </summary>
-        /// <param name="grp">Skupina</param>
-        public void Delete(Group grp)
-        {
-            List<Group> groupForDel = new List<Group>();
-            Queue<Group> Q = new Queue<Group>();
-            Group g;
-            Q.Enqueue(grp);
-            do
-            {
-                g = Q.Dequeue();
-                groupForDel.Add(g);
-                for (int i = 0; i < g.Children.Count; i++)
-                {
-                    Q.Enqueue(g.Children.ElementAt(i));
-                }
-            } while (Q.Count > 0); //běží to do té doby dokud se nevyprázdní fronta
-               
-            //a nyní vymažu všechny groupy z listu
-            foreach(Group gDel in groupForDel){
-                db.GroupSet.DeleteObject(gDel);
-            }
-
-			db.SaveChanges();
-            
-        }
+        ///// <summary>
+        ///// Vymazání skupiny, ještě nefunguje zcela správně
+        ///// </summary>
+        ///// <param name="grp">Skupina</param>
+        //public void Delete(Group grp)
+        //{
+        //    List<Group> groupForDel = new List<Group>();
+        //    Queue<Group> Q = new Queue<Group>();
+        //    Group g;
+        //    Q.Enqueue(grp);
+        //    do
+        //    {
+        //        g = Q.Dequeue();
+        //        groupForDel.Add(g);
+        //        for (int i = 0; i < g.Children.Count; i++)
+        //        {
+        //            Q.Enqueue(g.Children.ElementAt(i));
+        //        }
+        //    } while (Q.Count > 0); //běží to do té doby dokud se nevyprázdní fronta
+        //       
+        //    //a nyní vymažu všechny groupy z listu
+        //    foreach(Group gDel in groupForDel){
+        //        db.GroupSet.DeleteObject(gDel);
+        //    }
+        //
+        //    db.SaveChanges();
+        //    
+        //}
 
         /// <summary>
         /// Vrátí Group podle ID groupy
