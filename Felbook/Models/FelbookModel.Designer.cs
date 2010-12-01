@@ -36,6 +36,9 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "StatusWallItem", "Status", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.Status), "WallItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.WallItem))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "MessageReaders", "Message", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Message), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.User))]
 [assembly: EdmRelationshipAttribute("FelBookDBModel", "UserComment", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.User), "Comment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Comment), true)]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "EventUser", "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Event), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Felbook.Models.User))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "EventGroup", "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Event), "Group", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Group))]
+[assembly: EdmRelationshipAttribute("FelBookDBModel", "EventStatus", "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Felbook.Models.Event), "Status", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Felbook.Models.Status))]
 
 #endregion
 
@@ -230,6 +233,22 @@ namespace Felbook.Models
             }
         }
         private ObjectSet<WallItem> _WallItemSet;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Event> EventSet
+        {
+            get
+            {
+                if ((_EventSet == null))
+                {
+                    _EventSet = base.CreateObjectSet<Event>("EventSet");
+                }
+                return _EventSet;
+            }
+        }
+        private ObjectSet<Event> _EventSet;
 
         #endregion
         #region AddTo Methods
@@ -304,6 +323,14 @@ namespace Felbook.Models
         public void AddToWallItemSet(WallItem wallItem)
         {
             base.AddObject("WallItemSet", wallItem);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the EventSet EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToEventSet(Event @event)
+        {
+            base.AddObject("EventSet", @event);
         }
 
         #endregion
@@ -519,6 +546,266 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Status>("FelBookDBModel.StatusInformationComment", "StatusInformation", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="FelBookDBModel", Name="Event")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Event : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Event object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="from">Initial value of the From property.</param>
+        /// <param name="to">Initial value of the To property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="text">Initial value of the Text property.</param>
+        public static Event CreateEvent(global::System.Int32 id, global::System.DateTime from, global::System.DateTime to, global::System.String name, global::System.String text)
+        {
+            Event @event = new Event();
+            @event.Id = id;
+            @event.From = from;
+            @event.To = to;
+            @event.Name = name;
+            @event.Text = text;
+            return @event;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime From
+        {
+            get
+            {
+                return _From;
+            }
+            set
+            {
+                OnFromChanging(value);
+                ReportPropertyChanging("From");
+                _From = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("From");
+                OnFromChanged();
+            }
+        }
+        private global::System.DateTime _From;
+        partial void OnFromChanging(global::System.DateTime value);
+        partial void OnFromChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime To
+        {
+            get
+            {
+                return _To;
+            }
+            set
+            {
+                OnToChanging(value);
+                ReportPropertyChanging("To");
+                _To = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("To");
+                OnToChanged();
+            }
+        }
+        private global::System.DateTime _To;
+        partial void OnToChanging(global::System.DateTime value);
+        partial void OnToChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Text
+        {
+            get
+            {
+                return _Text;
+            }
+            set
+            {
+                OnTextChanging(value);
+                ReportPropertyChanging("Text");
+                _Text = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Text");
+                OnTextChanged();
+            }
+        }
+        private global::System.String _Text;
+        partial void OnTextChanging(global::System.String value);
+        partial void OnTextChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "EventUser", "User")]
+        public User User
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("FelBookDBModel.EventUser", "User").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("FelBookDBModel.EventUser", "User").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<User> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<User>("FelBookDBModel.EventUser", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("FelBookDBModel.EventUser", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "EventGroup", "Group")]
+        public Group Group
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.EventGroup", "Group").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.EventGroup", "Group").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Group> GroupReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("FelBookDBModel.EventGroup", "Group");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Group>("FelBookDBModel.EventGroup", "Group", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "EventStatus", "Status")]
+        public EntityCollection<Status> Status
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Status>("FelBookDBModel.EventStatus", "Status");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Status>("FelBookDBModel.EventStatus", "Status", value);
                 }
             }
         }
@@ -900,6 +1187,28 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Group>("FelBookDBModel.GroupChildren", "Group", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "EventGroup", "Event")]
+        public EntityCollection<Event> Events
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Event>("FelBookDBModel.EventGroup", "Event");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Event>("FelBookDBModel.EventGroup", "Event", value);
                 }
             }
         }
@@ -1387,12 +1696,14 @@ namespace Felbook.Models
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="text">Initial value of the Text property.</param>
         /// <param name="created">Initial value of the Created property.</param>
-        public static Status CreateStatus(global::System.Int32 id, global::System.String text, global::System.DateTime created)
+        /// <param name="eventId">Initial value of the EventId property.</param>
+        public static Status CreateStatus(global::System.Int32 id, global::System.String text, global::System.DateTime created, global::System.Int32 eventId)
         {
             Status status = new Status();
             status.Id = id;
             status.Text = text;
             status.Created = created;
+            status.EventId = eventId;
             return status;
         }
 
@@ -1473,6 +1784,30 @@ namespace Felbook.Models
         private global::System.DateTime _Created;
         partial void OnCreatedChanging(global::System.DateTime value);
         partial void OnCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 EventId
+        {
+            get
+            {
+                return _EventId;
+            }
+            set
+            {
+                OnEventIdChanging(value);
+                ReportPropertyChanging("EventId");
+                _EventId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EventId");
+                OnEventIdChanged();
+            }
+        }
+        private global::System.Int32 _EventId;
+        partial void OnEventIdChanging(global::System.Int32 value);
+        partial void OnEventIdChanged();
 
         #endregion
     
@@ -1638,6 +1973,44 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("FelBookDBModel.UserStatuses", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "EventStatus", "Event")]
+        public Event Event
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Event>("FelBookDBModel.EventStatus", "Event").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Event>("FelBookDBModel.EventStatus", "Event").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Event> EventReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Event>("FelBookDBModel.EventStatus", "Event");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Event>("FelBookDBModel.EventStatus", "Event", value);
                 }
             }
         }
@@ -2286,6 +2659,28 @@ namespace Felbook.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Comment>("FelBookDBModel.UserComment", "Comment", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("FelBookDBModel", "EventUser", "Event")]
+        public EntityCollection<Event> EventsCreated
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Event>("FelBookDBModel.EventUser", "Event");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Event>("FelBookDBModel.EventUser", "Event", value);
                 }
             }
         }

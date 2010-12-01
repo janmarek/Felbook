@@ -1283,20 +1283,22 @@
         <EntityTypeShape EntityType="FelBookDBModel.User" Width="1.5" PointX="6.25" PointY="4.5" Height="4.8792529296874978" />
         <EntityTypeShape EntityType="FelBookDBModel.Group" Width="1.5" PointX="10.75" PointY="4.625" Height="2.7494921874999996" />
         <AssociationConnector Association="FelBookDBModel.UserGroupMembership">
-          <ConnectorPoint PointX="7.75" PointY="5.410891092574948" />
-          <ConnectorPoint PointX="8.8541646666666658" PointY="5.4108910925749472" />
-          <ConnectorPoint PointX="9.0208313333333336" PointY="5.410891092574948" />
-          <ConnectorPoint PointX="9.385415666666665" PointY="5.4108910925749472" />
-          <ConnectorPoint PointX="9.5520823333333329" PointY="5.410891092574948" />
-          <ConnectorPoint PointX="10.75" PointY="5.410891092574948" />
+          <ConnectorPoint PointX="7.75" PointY="5.3928604601737167" />
+          <ConnectorPoint PointX="9.0416666666666661" PointY="5.3928604601737158" />
+          <ConnectorPoint PointX="9.2083333333333339" PointY="5.3928604601737167" />
+          <ConnectorPoint PointX="9.4791666666666661" PointY="5.3928604601737158" />
+          <ConnectorPoint PointX="9.6458333333333339" PointY="5.3928604601737167" />
+          <ConnectorPoint PointX="9.8854166666666661" PointY="5.3928604601737158" />
+          <ConnectorPoint PointX="10.052083333333334" PointY="5.3928604601737167" />
+          <ConnectorPoint PointX="10.75" PointY="5.3928604601737167" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupAdministration">
-          <ConnectorPoint PointX="7.75" PointY="6.1606938016426884" />
-          <ConnectorPoint PointX="8.8541646666666658" PointY="6.1606938016426875" />
-          <ConnectorPoint PointX="9.0208313333333336" PointY="6.1606938016426884" />
-          <ConnectorPoint PointX="9.385415666666665" PointY="6.1606938016426875" />
-          <ConnectorPoint PointX="9.5520823333333329" PointY="6.1606938016426884" />
-          <ConnectorPoint PointX="10.75" PointY="6.1606938016426884" />
+          <ConnectorPoint PointX="7.75" PointY="6.1146591128112284" />
+          <ConnectorPoint PointX="9.0416666666666661" PointY="6.1146591128112275" />
+          <ConnectorPoint PointX="9.2083333333333339" PointY="6.1146591128112284" />
+          <ConnectorPoint PointX="9.4791666666666661" PointY="6.1146591128112275" />
+          <ConnectorPoint PointX="9.6458333333333339" PointY="6.1146591128112284" />
+          <ConnectorPoint PointX="10.75" PointY="6.1146591128112284" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.Followings">
           <ConnectorPoint PointX="6.7819230769230767" PointY="10.134013671875" />
@@ -1342,12 +1344,14 @@
           <ConnectorPoint PointX="8.375" PointY="7.800768984374999" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.UserGroupCreator">
-          <ConnectorPoint PointX="7.75" PointY="4.955445546287474" />
-          <ConnectorPoint PointX="8.8541646666666658" PointY="4.9554455462874731" />
-          <ConnectorPoint PointX="9.0208313333333336" PointY="4.955445546287474" />
-          <ConnectorPoint PointX="9.385415666666665" PointY="4.9554455462874731" />
-          <ConnectorPoint PointX="9.5520823333333329" PointY="4.955445546287474" />
-          <ConnectorPoint PointX="10.75" PointY="4.955445546287474" />
+          <ConnectorPoint PointX="7.75" PointY="4.9464302300868583" />
+          <ConnectorPoint PointX="9.0416666666666661" PointY="4.9464302300868574" />
+          <ConnectorPoint PointX="9.2083333333333339" PointY="4.9464302300868583" />
+          <ConnectorPoint PointX="9.4791666666666661" PointY="4.9464302300868574" />
+          <ConnectorPoint PointX="9.6458333333333339" PointY="4.9464302300868583" />
+          <ConnectorPoint PointX="9.8854166666666661" PointY="4.9464302300868574" />
+          <ConnectorPoint PointX="10.052083333333334" PointY="4.9464302300868583" />
+          <ConnectorPoint PointX="10.75" PointY="4.9464302300868583" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.SentMessages">
           <ConnectorPoint PointX="6.25" PointY="8.189753417968749" />
@@ -1367,19 +1371,19 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.WallItem" Width="1.5" PointX="2.625" PointY="4.625" Height="1.4033821614583326" />
         <AssociationConnector Association="FelBookDBModel.WallItemUser">
-          <ConnectorPoint PointX="4.125" PointY="5.2782618993225316" />
-          <ConnectorPoint PointX="4.416666666666667" PointY="5.2782618993225308" />
-          <ConnectorPoint PointX="4.583333333333333" PointY="5.2782618993225316" />
-          <ConnectorPoint PointX="6.25" PointY="5.2782618993225316" />
+          <ConnectorPoint PointX="4.125" PointY="5.3717513852979213" />
+          <ConnectorPoint PointX="4.416666666666667" PointY="5.37175138529792" />
+          <ConnectorPoint PointX="4.583333333333333" PointY="5.3717513852979213" />
+          <ConnectorPoint PointX="6.25" PointY="5.3717513852979213" />
         </AssociationConnector>
-        <AssociationConnector Association="FelBookDBModel.StatusWallItem">
+        <AssociationConnector Association="FelBookDBModel.StatusWallItem" ManuallyRouted="true">
           <ConnectorPoint PointX="9.125" PointY="6.625" />
-          <ConnectorPoint PointX="9.125" PointY="4.25" />
-          <ConnectorPoint PointX="7.083333333333333" PointY="4.2499999999999991" />
-          <ConnectorPoint PointX="6.916666666666667" PointY="4.25" />
-          <ConnectorPoint PointX="4.5" PointY="4.25" />
-          <ConnectorPoint PointX="4.5" PointY="5.99724076953125" />
-          <ConnectorPoint PointX="4.125" PointY="5.99724076953125" />
+          <ConnectorPoint PointX="9.125" PointY="3.8196463881445624" />
+          <ConnectorPoint PointX="6.5680423717948715" PointY="3.8196463881445619" />
+          <ConnectorPoint PointX="6.4013757051282054" PointY="3.8196463881445624" />
+          <ConnectorPoint PointX="4.5" PointY="3.8196463881445624" />
+          <ConnectorPoint PointX="4.5" PointY="5.9236202056697937" />
+          <ConnectorPoint PointX="4.125" PointY="5.9236202056697937" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.MessageReaders">
           <ConnectorPoint PointX="5" PointY="9.7679906907136136" />
@@ -1389,20 +1393,20 @@
           <ConnectorPoint PointX="7.1875" PointY="10.518616536458334" />
           <ConnectorPoint PointX="7.1875" PointY="11.375" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="FelBookDBModel.Event" Width="1.5" PointX="8.5" PointY="1.5" Height="1.9802864583333331" />
+        <EntityTypeShape EntityType="FelBookDBModel.Event" Width="1.5" PointX="8.5" PointY="0.875" Height="2.5571907552083326" />
         <AssociationConnector Association="FelBookDBModel.EventUser">
-          <ConnectorPoint PointX="8.5" PointY="2.5862939453125" />
-          <ConnectorPoint PointX="7" PointY="2.5862939453125" />
-          <ConnectorPoint PointX="7" PointY="4.5" />
+          <ConnectorPoint PointX="8.5" PointY="2.1535953776041663" />
+          <ConnectorPoint PointX="6.4847090384615385" PointY="2.1535953776041663" />
+          <ConnectorPoint PointX="6.4847090384615385" PointY="4.5" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.EventGroup">
-          <ConnectorPoint PointX="9.96875" PointY="3.8648893229166661" />
-          <ConnectorPoint PointX="9.96875" PointY="5.8302753740599584" />
-          <ConnectorPoint PointX="10.75" PointY="5.8302753740599584" />
+          <ConnectorPoint PointX="9.96875" PointY="3.4321907552083326" />
+          <ConnectorPoint PointX="9.96875" PointY="5.7537597864924726" />
+          <ConnectorPoint PointX="10.75" PointY="5.7537597864924726" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.EventStatus">
-          <ConnectorPoint PointX="9.468748999999999" PointY="4.0571907552083326" />
-          <ConnectorPoint PointX="9.468748999999999" PointY="6.625" />
+          <ConnectorPoint PointX="9.5625" PointY="3.4321907552083326" />
+          <ConnectorPoint PointX="9.5625" PointY="6.625" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
