@@ -14,6 +14,7 @@ namespace Felbook.Models
         IStatusService StatusService { get; }
 		IFileService FileService { get; }
 		IImageService ImageService { get; }
+        IEventService EventService { get; }
     }
     
     public class Model : IModel
@@ -33,6 +34,8 @@ namespace Felbook.Models
 		private IStatusService statusService;
 
 		private IFileService fileService;
+
+        private IEventService eventService;
 
 		#endregion
 
@@ -135,6 +138,18 @@ namespace Felbook.Models
 				return statusService;
 			}
 		}
+
+        public IEventService EventService 
+        {
+            get 
+            {
+                if (eventService == null) 
+                {
+                    eventService = new EventService(DBEntities);
+                }
+                return eventService;
+            }
+        }
 
 		#endregion
 

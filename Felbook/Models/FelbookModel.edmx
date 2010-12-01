@@ -15,6 +15,7 @@
     <EntitySet Name="FileSet" EntityType="FelBookDBModel.Store.FileSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ImageSet" EntityType="FelBookDBModel.Store.ImageSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="WallItemSet" EntityType="FelBookDBModel.Store.WallItemSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventSet" EntityType="FelBookDBModel.Store.EventSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserGroupMembership" EntityType="FelBookDBModel.Store.UserGroupMembership" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupAdministration" EntityType="FelBookDBModel.Store.GroupAdministration" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Followings" EntityType="FelBookDBModel.Store.Followings" store:Type="Tables" Schema="dbo" />
@@ -127,6 +128,18 @@
       <End Role="User" EntitySet="UserSet" />
       <End Role="Comment" EntitySet="CommentSet" />
     </AssociationSet>
+    <AssociationSet Name="EventUser" Association="FelBookDBModel.Store.EventUser">
+      <End Role="Event" EntitySet="EventSet" />
+      <End Role="User" EntitySet="UserSet" />
+    </AssociationSet>
+    <AssociationSet Name="EventGroup" Association="FelBookDBModel.Store.EventGroup">
+      <End Role="Event" EntitySet="EventSet" />
+      <End Role="Group" EntitySet="GroupSet" />
+    </AssociationSet>
+    <AssociationSet Name="EventStatus" Association="FelBookDBModel.Store.EventStatus">
+      <End Role="Event" EntitySet="EventSet" />
+      <End Role="Status" EntitySet="StatusSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
     <Key>
@@ -175,8 +188,10 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Created" Type="datetime" Nullable="false" />
+    <Property Name="EventId" Type="int" Nullable="false" />
     <Property Name="Group_Id" Type="int" Nullable="true" />
     <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="Event_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="LinkSet">
     <Key>
@@ -219,6 +234,18 @@
     <Property Name="Unread" Type="bit" Nullable="false" />
     <Property Name="User_Id" Type="int" Nullable="false" />
     <Property Name="Status_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="From" Type="datetime" Nullable="false" />
+    <Property Name="To" Type="datetime" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="Group_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="UserGroupMembership">
     <Key>
@@ -401,6 +428,42 @@
       </Principal>
       <Dependent Role="Comment">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventUser">
+    <End Role="Event" Type="FelBookDBModel.Store.EventSet" Multiplicity="*" />
+    <End Role="User" Type="FelBookDBModel.Store.UserSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventGroup">
+    <End Role="Event" Type="FelBookDBModel.Store.EventSet" Multiplicity="*" />
+    <End Role="Group" Type="FelBookDBModel.Store.GroupSet" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="Group_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventStatus">
+    <End Role="Event" Type="FelBookDBModel.Store.EventSet" Multiplicity="0..1" />
+    <End Role="Status" Type="FelBookDBModel.Store.StatusSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Status">
+        <PropertyRef Name="Event_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -682,6 +745,19 @@
             <End Role="User" EntitySet="UserSet" />
             <End Role="Comment" EntitySet="CommentSet" />
           </AssociationSet>
+          <EntitySet Name="EventSet" EntityType="FelBookDBModel.Event" />
+          <AssociationSet Name="EventUser" Association="FelBookDBModel.EventUser">
+            <End Role="Event" EntitySet="EventSet" />
+            <End Role="User" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="EventGroup" Association="FelBookDBModel.EventGroup">
+            <End Role="Event" EntitySet="EventSet" />
+            <End Role="Group" EntitySet="GroupSet" />
+          </AssociationSet>
+          <AssociationSet Name="EventStatus" Association="FelBookDBModel.EventStatus">
+            <End Role="Event" EntitySet="EventSet" />
+            <End Role="Status" EntitySet="StatusSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -713,6 +789,7 @@
           <Property Type="String" Name="SchoolEmail" Nullable="true" />
           <NavigationProperty Name="ReadMessages" Relationship="FelBookDBModel.MessageReaders" FromRole="User" ToRole="Message" />
           <NavigationProperty Name="MyComments" Relationship="FelBookDBModel.UserComment" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="EventsCreated" Relationship="FelBookDBModel.EventUser" FromRole="User" ToRole="Event" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -727,6 +804,7 @@
           <NavigationProperty Name="Creator" Relationship="FelBookDBModel.UserGroupCreator" FromRole="Group" ToRole="User" />
           <NavigationProperty Name="Parent" Relationship="FelBookDBModel.GroupChildren" FromRole="Group" ToRole="Group1" />
           <NavigationProperty Name="Children" Relationship="FelBookDBModel.GroupChildren" FromRole="Group1" ToRole="Group" />
+          <NavigationProperty Name="Events" Relationship="FelBookDBModel.EventGroup" FromRole="Group" ToRole="Event" />
         </EntityType>
         <Association Name="UserGroupMembership">
           <End Type="FelBookDBModel.User" Role="User" Multiplicity="*" />
@@ -771,6 +849,8 @@
           <NavigationProperty Name="Files" Relationship="FelBookDBModel.StatusInformationFiles" FromRole="StatusInformation" ToRole="File" />
           <NavigationProperty Name="Group" Relationship="FelBookDBModel.GroupStatuses" FromRole="StatusInformation" ToRole="Group" />
           <NavigationProperty Name="User" Relationship="FelBookDBModel.UserStatuses" FromRole="Status" ToRole="User" />
+          <Property Type="Int32" Name="EventId" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="FelBookDBModel.EventStatus" FromRole="Status" ToRole="Event" />
         </EntityType>
         <EntityType Name="Link">
           <Key>
@@ -887,6 +967,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="From" Nullable="false" />
+          <Property Type="DateTime" Name="To" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Text" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="FelBookDBModel.EventUser" FromRole="Event" ToRole="User" />
+          <NavigationProperty Name="Group" Relationship="FelBookDBModel.EventGroup" FromRole="Event" ToRole="Group" />
+          <NavigationProperty Name="Status" Relationship="FelBookDBModel.EventStatus" FromRole="Event" ToRole="Status" />
+        </EntityType>
+        <Association Name="EventUser">
+          <End Type="FelBookDBModel.Event" Role="Event" Multiplicity="*" />
+          <End Type="FelBookDBModel.User" Role="User" Multiplicity="1" />
+        </Association>
+        <Association Name="EventGroup">
+          <End Type="FelBookDBModel.Event" Role="Event" Multiplicity="*" />
+          <End Type="FelBookDBModel.Group" Role="Group" Multiplicity="0..1" />
+        </Association>
+        <Association Name="EventStatus">
+          <End Type="FelBookDBModel.Event" Role="Event" Multiplicity="0..1" />
+          <End Type="FelBookDBModel.Status" Role="Status" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -939,6 +1044,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="EventId" ColumnName="EventId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -983,6 +1089,17 @@
         <MappingFragment StoreEntitySet="WallItemSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Unread" ColumnName="Unread" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventSet">
+      <EntityTypeMapping TypeName="IsTypeOf(FelBookDBModel.Event)">
+        <MappingFragment StoreEntitySet="EventSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="From" ColumnName="From" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1117,6 +1234,32 @@
         <ScalarProperty Name="Id" ColumnName="Readers_Id" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="EventUser" TypeName="FelBookDBModel.EventUser" StoreEntitySet="EventSet">
+      <EndProperty Name="User">
+        <ScalarProperty Name="Id" ColumnName="User_Id" />
+      </EndProperty>
+      <EndProperty Name="Event">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventGroup" TypeName="FelBookDBModel.EventGroup" StoreEntitySet="EventSet">
+      <EndProperty Name="Group">
+        <ScalarProperty Name="Id" ColumnName="Group_Id" />
+      </EndProperty>
+      <EndProperty Name="Event">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Group_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventStatus" TypeName="FelBookDBModel.EventStatus" StoreEntitySet="StatusSet">
+      <EndProperty Name="Event">
+        <ScalarProperty Name="Id" ColumnName="Event_Id" />
+      </EndProperty>
+      <EndProperty Name="Status">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Event_Id" IsNull="false" />
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -1140,16 +1283,20 @@
         <EntityTypeShape EntityType="FelBookDBModel.User" Width="1.5" PointX="6.25" PointY="4.5" Height="4.8792529296874978" />
         <EntityTypeShape EntityType="FelBookDBModel.Group" Width="1.5" PointX="10.75" PointY="4.625" Height="2.7494921874999996" />
         <AssociationConnector Association="FelBookDBModel.UserGroupMembership">
-          <ConnectorPoint PointX="7.75" PointY="5.5940309376954271" />
-          <ConnectorPoint PointX="9.0416666666666661" PointY="5.5940309376954263" />
-          <ConnectorPoint PointX="9.2083333333333339" PointY="5.5940309376954271" />
-          <ConnectorPoint PointX="10.75" PointY="5.5940309376954271" />
+          <ConnectorPoint PointX="7.75" PointY="5.410891092574948" />
+          <ConnectorPoint PointX="8.8541646666666658" PointY="5.4108910925749472" />
+          <ConnectorPoint PointX="9.0208313333333336" PointY="5.410891092574948" />
+          <ConnectorPoint PointX="9.385415666666665" PointY="5.4108910925749472" />
+          <ConnectorPoint PointX="9.5520823333333329" PointY="5.410891092574948" />
+          <ConnectorPoint PointX="10.75" PointY="5.410891092574948" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.GroupAdministration">
-          <ConnectorPoint PointX="7.75" PointY="6.1407654688477136" />
-          <ConnectorPoint PointX="9.0416666666666661" PointY="6.1407654688477127" />
-          <ConnectorPoint PointX="9.2083333333333339" PointY="6.1407654688477136" />
-          <ConnectorPoint PointX="10.75" PointY="6.1407654688477136" />
+          <ConnectorPoint PointX="7.75" PointY="6.1606938016426884" />
+          <ConnectorPoint PointX="8.8541646666666658" PointY="6.1606938016426875" />
+          <ConnectorPoint PointX="9.0208313333333336" PointY="6.1606938016426884" />
+          <ConnectorPoint PointX="9.385415666666665" PointY="6.1606938016426875" />
+          <ConnectorPoint PointX="9.5520823333333329" PointY="6.1606938016426884" />
+          <ConnectorPoint PointX="10.75" PointY="6.1606938016426884" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.Followings">
           <ConnectorPoint PointX="6.7819230769230767" PointY="10.134013671875" />
@@ -1195,10 +1342,12 @@
           <ConnectorPoint PointX="8.375" PointY="7.800768984374999" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.UserGroupCreator">
-          <ConnectorPoint PointX="7.75" PointY="5.0470154688477136" />
-          <ConnectorPoint PointX="9.0416666666666661" PointY="5.0470154688477127" />
-          <ConnectorPoint PointX="9.2083333333333339" PointY="5.0470154688477136" />
-          <ConnectorPoint PointX="10.75" PointY="5.0470154688477136" />
+          <ConnectorPoint PointX="7.75" PointY="4.955445546287474" />
+          <ConnectorPoint PointX="8.8541646666666658" PointY="4.9554455462874731" />
+          <ConnectorPoint PointX="9.0208313333333336" PointY="4.955445546287474" />
+          <ConnectorPoint PointX="9.385415666666665" PointY="4.9554455462874731" />
+          <ConnectorPoint PointX="9.5520823333333329" PointY="4.955445546287474" />
+          <ConnectorPoint PointX="10.75" PointY="4.955445546287474" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.SentMessages">
           <ConnectorPoint PointX="6.25" PointY="8.189753417968749" />
@@ -1218,17 +1367,19 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="FelBookDBModel.WallItem" Width="1.5" PointX="2.625" PointY="4.625" Height="1.4033821614583326" />
         <AssociationConnector Association="FelBookDBModel.WallItemUser">
-          <ConnectorPoint PointX="4.125" PointY="5.4211531575520828" />
-          <ConnectorPoint PointX="4.416666666666667" PointY="5.4211531575520819" />
-          <ConnectorPoint PointX="4.583333333333333" PointY="5.4211531575520828" />
-          <ConnectorPoint PointX="6.25" PointY="5.4211531575520828" />
+          <ConnectorPoint PointX="4.125" PointY="5.2782618993225316" />
+          <ConnectorPoint PointX="4.416666666666667" PointY="5.2782618993225308" />
+          <ConnectorPoint PointX="4.583333333333333" PointY="5.2782618993225316" />
+          <ConnectorPoint PointX="6.25" PointY="5.2782618993225316" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.StatusWallItem">
           <ConnectorPoint PointX="9.125" PointY="6.625" />
           <ConnectorPoint PointX="9.125" PointY="4.25" />
+          <ConnectorPoint PointX="7.083333333333333" PointY="4.2499999999999991" />
+          <ConnectorPoint PointX="6.916666666666667" PointY="4.25" />
           <ConnectorPoint PointX="4.5" PointY="4.25" />
-          <ConnectorPoint PointX="4.5" PointY="5.850481736328125" />
-          <ConnectorPoint PointX="4.125" PointY="5.850481736328125" />
+          <ConnectorPoint PointX="4.5" PointY="5.99724076953125" />
+          <ConnectorPoint PointX="4.125" PointY="5.99724076953125" />
         </AssociationConnector>
         <AssociationConnector Association="FelBookDBModel.MessageReaders">
           <ConnectorPoint PointX="5" PointY="9.7679906907136136" />
@@ -1237,6 +1388,21 @@
         <AssociationConnector Association="FelBookDBModel.UserComment">
           <ConnectorPoint PointX="7.1875" PointY="10.518616536458334" />
           <ConnectorPoint PointX="7.1875" PointY="11.375" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="FelBookDBModel.Event" Width="1.5" PointX="8.5" PointY="1.5" Height="1.9802864583333331" />
+        <AssociationConnector Association="FelBookDBModel.EventUser">
+          <ConnectorPoint PointX="8.5" PointY="2.5862939453125" />
+          <ConnectorPoint PointX="7" PointY="2.5862939453125" />
+          <ConnectorPoint PointX="7" PointY="4.5" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.EventGroup">
+          <ConnectorPoint PointX="9.96875" PointY="3.8648893229166661" />
+          <ConnectorPoint PointX="9.96875" PointY="5.8302753740599584" />
+          <ConnectorPoint PointX="10.75" PointY="5.8302753740599584" />
+        </AssociationConnector>
+        <AssociationConnector Association="FelBookDBModel.EventStatus">
+          <ConnectorPoint PointX="9.468748999999999" PointY="4.0571907552083326" />
+          <ConnectorPoint PointX="9.468748999999999" PointY="6.625" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

@@ -37,12 +37,12 @@
 <!--
 <p>
 	<input type="file" name="Files[0]" />
-	<input type="text" name="FileDescriptions[0]"></p>
+	<input type="text" name="FileDescriptions[0]"/></p>
 <p>
 	Pictures</p>
 <p>
 	<input type="file" name="Images[0]" />
-	<input type="text" name="ImageDescriptions[0]">
+	<input type="text" name="ImageDescriptions[0]"/>
 </p>
 <p>
 	Links:</p>
