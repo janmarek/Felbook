@@ -87,71 +87,80 @@ namespace Felbook.Models
 			db.AddToStatusSet(status);
 
 			// obrázky
-			for (int i = 0; i < formModel.Images.Count; i++)
+			if (formModel.Images != null)
 			{
-				var uploadedImage = formModel.Images[i];
-
-				// vynechat neobrázky
-				if (uploadedImage == null || uploadedImage.ContentLength == 0 || !ImageHelper.IsImage(uploadedImage.ContentType))
+				for (int i = 0; i < formModel.Images.Count; i++)
 				{
-					continue;
+					var uploadedImage = formModel.Images[i];
+
+					// vynechat neobrázky
+					if (uploadedImage == null || uploadedImage.ContentLength == 0 || !ImageHelper.IsImage(uploadedImage.ContentType))
+					{
+						continue;
+					}
+
+					// vyrobit entitu
+					var img = new Image {
+						Description = formModel.ImageDescriptions[i],
+					};
+					db.ImageSet.AddObject(img);
+
+					status.Images.Add(img);
+
+					// uložit db, aby entita měla id a tudíž se dala vymyslet cesta k obrázku
+					db.SaveChanges();
+
+					// uložit soubor
+					imageService.SaveImage(img, uploadedImage.InputStream);
 				}
-
-				// vyrobit entitu
-				var img = new Image {
-					Description = formModel.ImageDescriptions[i],
-				};
-				db.ImageSet.AddObject(img);
-
-				status.Images.Add(img);
-
-				// uložit db, aby entita měla id a tudíž se dala vymyslet cesta k obrázku
-				db.SaveChanges();
-
-				// uložit soubor
-				imageService.SaveImage(img, uploadedImage.InputStream);
 			}
 
 			// soubory
-			for (int i = 0; i < formModel.Files.Count; i++)
+			if (formModel.Files != null)
 			{
-				var uploadedFile = formModel.Files[i];
-
-				if (uploadedFile == null || uploadedFile.ContentLength == 0)
+				for (int i = 0; i < formModel.Files.Count; i++)
 				{
-					continue;
+					var uploadedFile = formModel.Files[i];
+
+					if (uploadedFile == null || uploadedFile.ContentLength == 0)
+					{
+						continue;
+					}
+
+					// vyrobit entitu
+					var file = new File {
+						Description = formModel.FileDescriptions[i],
+						FileName = uploadedFile.FileName,
+					};
+					db.FileSet.AddObject(file);
+
+					status.Files.Add(file);
+
+					// uložit db, aby entita měla id a tudíž se dala vymyslet cesta k souboru
+					db.SaveChanges();
+
+					// uložit soubor
+					fileService.SaveFile(file, uploadedFile);
 				}
-
-				// vyrobit entitu
-				var file = new File {
-					Description = formModel.FileDescriptions[i],
-					FileName = uploadedFile.FileName,
-				};
-				db.FileSet.AddObject(file);
-
-				status.Files.Add(file);
-
-				// uložit db, aby entita měla id a tudíž se dala vymyslet cesta k souboru
-				db.SaveChanges();
-
-				// uložit soubor
-				fileService.SaveFile(file, uploadedFile);
 			}
 
 			// odkazy
-			for (int i = 0; i < formModel.Links.Count; i++)
+			if (formModel.Links != null)
 			{
-				var url = formModel.Links[i];
-
-				if (String.IsNullOrWhiteSpace(url))
+				for (int i = 0; i < formModel.Links.Count; i++)
 				{
-					continue;
-				}
+					var url = formModel.Links[i];
 
-				status.Links.Add(new Link {
-					URL = url,
-					Description = formModel.LinkDescriptions[i],
-				});
+					if (String.IsNullOrWhiteSpace(url))
+					{
+						continue;
+					}
+
+					status.Links.Add(new Link {
+						URL = url,
+						Description = formModel.LinkDescriptions[i],
+					});
+				}
 			}
 
 			db.SaveChanges();

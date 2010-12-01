@@ -13,6 +13,9 @@
     <link href="../../Content/colorbox.css" rel="stylesheet" type="text/css" media="screen" />
 
     <script type="text/javascript" src="../../Scripts/felbook.js"></script>
+    <script type="text/javascript" src="../../Scripts/messages.js"></script>
+    <script type="text/javascript" src="../../Scripts/registration.js"></script>
+    <script type="text/javascript" src="../../Scripts/status.js"></script>
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
     
 

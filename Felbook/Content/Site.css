@@ -445,3 +445,16 @@ table th
 {
     margin-left: 30px;
 }
+
+
+/* Status
+----------------------------------------------------------*/
+#status-pictures-cont, #status-links-cont, #status-files-cont 
+{
+	display: none;
+}
+
+
+/* Status
+----------------------------------------------------------*/
+.ui-widget {font-size:100% !important}
