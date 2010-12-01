@@ -108,7 +108,7 @@ namespace Felbook.Tests.Models
             // TODO - vytvoření uživatele "good user" s heslem "good passwod"
             // pokud existuje, tak je zálohován původní a nahrazen testovacím
             User user = User.CreateUser(0, "Ota", "Sandr", 
-                DateTime.Now, DateTime.Now, "mail", "good user", "");
+                DateTime.Now, "mail", "good user", "");
 			user.ChangePassword("good password");
             db.UserSet.AddObject(user);
             db.SaveChanges();
@@ -224,7 +224,7 @@ namespace Felbook.Tests.Models
 
             // vytvoření duplicateUser
             User user = User.CreateUser(0, "Ota", "Sandr",
-                DateTime.Now, DateTime.Now, "mail", "duplicateUser", "");
+                DateTime.Now, "mail", "duplicateUser", "");
 			user.ChangePassword("good password");
             db.UserSet.AddObject(user);
             db.SaveChanges();
@@ -343,7 +343,7 @@ namespace Felbook.Tests.Models
 
             // vytvoření someUser s goodPassword
             User user = User.CreateUser(0, "Ota", "Sandr",
-                DateTime.Now, DateTime.Now, "mail", "someUser", "");
+                DateTime.Now, "mail", "someUser", "");
 			user.ChangePassword("goodPassword");
             db.UserSet.AddObject(user);
             db.SaveChanges();

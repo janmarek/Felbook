@@ -92,7 +92,7 @@ namespace Felbook.Tests
 
             expected = new Message();
             User mockUser = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "test user", "");
+                DateTime.Now, "mail", "test user", "");
 
             expected.Recievers.Add(mockUser);
             expected.Sender = mockUser;
@@ -121,10 +121,10 @@ namespace Felbook.Tests
             MessageService target = new MessageService(DbEntities);
 
             User mockSender = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "sender", "");
+                DateTime.Now, "mail", "sender", "");
             DbEntities.UserSet.AddObject(mockSender);
             User mockReciever = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "reciever", "");
+                DateTime.Now, "mail", "reciever", "");
             DbEntities.UserSet.AddObject(mockReciever);
             DbEntities.SaveChanges();
             
@@ -173,10 +173,10 @@ namespace Felbook.Tests
             MessageService target = new MessageService(DbEntities);
 
             User mockSender = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "sender", "");
+                DateTime.Now, "mail", "sender", "");
             DbEntities.UserSet.AddObject(mockSender);
             User mockReciever = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "reciever", "");
+                DateTime.Now, "mail", "reciever", "");
             DbEntities.UserSet.AddObject(mockReciever);
             DbEntities.SaveChanges();
 
@@ -217,10 +217,10 @@ namespace Felbook.Tests
             MessageService target = new MessageService(DbEntities);
 
             User mockSender = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "sender", "");
+                DateTime.Now, "mail", "sender", "");
             DbEntities.UserSet.AddObject(mockSender);
             User mockReciever = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "reciever", "");
+                DateTime.Now, "mail", "reciever", "");
             DbEntities.UserSet.AddObject(mockReciever);
             DbEntities.SaveChanges();
 
@@ -262,10 +262,10 @@ namespace Felbook.Tests
             MessageService target = new MessageService(DbEntities);
 
             User mockSender = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "sender", "");
+                DateTime.Now, "mail", "sender", "");
             DbEntities.UserSet.AddObject(mockSender);
             User mockReciever = User.CreateUser(0, "test", "test",
-                DateTime.Now, DateTime.Now, "mail", "reciever", "");
+                DateTime.Now, "mail", "reciever", "");
             DbEntities.UserSet.AddObject(mockReciever);
             DbEntities.SaveChanges();
 

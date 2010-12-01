@@ -89,7 +89,7 @@ namespace Felbook.Tests
             IWallService wallService = null; // Snad ji zatím nepotřebuji
             GroupService target = new GroupService(DBEntities, wallService);
  
-            User user = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User user = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(user);
             DBEntities.SaveChanges();
@@ -122,7 +122,7 @@ namespace Felbook.Tests
             IWallService wallService = null;
             GroupService target = new GroupService(DBEntities, wallService);
 
-            User user = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User user = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(user);
 
@@ -164,10 +164,10 @@ namespace Felbook.Tests
             IWallService wallService = null;
             GroupService target = new GroupService(DBEntities, wallService);
 
-            User creator = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User creator = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(creator);
-            User member = User.CreateUser(0, "group", "member", DateTime.Now, DateTime.Now,
+            User member = User.CreateUser(0, "group", "member", DateTime.Now,
                 "mail", "groupMember", "1234");
             DBEntities.UserSet.AddObject(member);
 
@@ -211,7 +211,7 @@ namespace Felbook.Tests
             catch (InvalidOperationException)
             { }
 
-            User user = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User user = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(user);
 
@@ -250,7 +250,7 @@ namespace Felbook.Tests
             catch (InvalidOperationException)
             { }
 
-            User user = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User user = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(user);
 
@@ -280,10 +280,10 @@ namespace Felbook.Tests
             IWallService wallService = null;
             GroupService target = new GroupService(DBEntities, wallService);
 
-            User creator = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User creator = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(creator);
-            User member = User.CreateUser(0, "group", "member", DateTime.Now, DateTime.Now,
+            User member = User.CreateUser(0, "group", "member", DateTime.Now,
                 "mail", "groupMember", "1234");
             DBEntities.UserSet.AddObject(member);
 
@@ -333,7 +333,7 @@ namespace Felbook.Tests
             IWallService wallService = null;
             GroupService target = new GroupService(DBEntities, wallService);
 
-            User user = User.CreateUser(0, "group", "creator", DateTime.Now, DateTime.Now,
+            User user = User.CreateUser(0, "group", "creator", DateTime.Now,
                 "mail", "groupCreator", "1234");
             DBEntities.UserSet.AddObject(user);
 

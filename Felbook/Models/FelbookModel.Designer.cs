@@ -1662,18 +1662,16 @@ namespace Felbook.Models
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="surname">Initial value of the Surname property.</param>
         /// <param name="created">Initial value of the Created property.</param>
-        /// <param name="lastLogged">Initial value of the LastLogged property.</param>
         /// <param name="mail">Initial value of the Mail property.</param>
         /// <param name="username">Initial value of the Username property.</param>
         /// <param name="passwordHash">Initial value of the PasswordHash property.</param>
-        public static User CreateUser(global::System.Int32 id, global::System.String name, global::System.String surname, global::System.DateTime created, global::System.DateTime lastLogged, global::System.String mail, global::System.String username, global::System.String passwordHash)
+        public static User CreateUser(global::System.Int32 id, global::System.String name, global::System.String surname, global::System.DateTime created, global::System.String mail, global::System.String username, global::System.String passwordHash)
         {
             User user = new User();
             user.Id = id;
             user.Name = name;
             user.Surname = surname;
             user.Created = created;
-            user.LastLogged = lastLogged;
             user.Mail = mail;
             user.Username = username;
             user.PasswordHash = passwordHash;
@@ -1785,9 +1783,9 @@ namespace Felbook.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.DateTime LastLogged
+        public Nullable<global::System.DateTime> LastLogged
         {
             get
             {
@@ -1802,8 +1800,8 @@ namespace Felbook.Models
                 OnLastLoggedChanged();
             }
         }
-        private global::System.DateTime _LastLogged;
-        partial void OnLastLoggedChanging(global::System.DateTime value);
+        private Nullable<global::System.DateTime> _LastLogged;
+        partial void OnLastLoggedChanging(Nullable<global::System.DateTime> value);
         partial void OnLastLoggedChanged();
     
         /// <summary>

@@ -66,11 +66,11 @@ namespace Felbook.Tests
             TestModel = new MockModel();
 
             User user1 = User.CreateUser(0, "Jindra", "Hrnčír", DateTime.Now,
-                  DateTime.Now, "hrncir.jindra@nebelvir.br", "hpotter", "alohomora");
+                  "hrncir.jindra@nebelvir.br", "hpotter", "alohomora");
             TestModel.UserList.Add(user1);
 
             User user2 = User.CreateUser(1, "Tomáš", "Raddle", DateTime.Now,
-                DateTime.Now, "tomas.raddle@zmijozel.br", "voltmetr", "avadaKadevra");
+                "tomas.raddle@zmijozel.br", "voltmetr", "avadaKadevra");
             TestModel.UserList.Add(user2);
 
             Message firstMsg = Message.CreateMessage(0, "Text", DateTime.Now);

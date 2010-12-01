@@ -136,7 +136,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Created" Type="datetime" Nullable="false" />
-    <Property Name="LastLogged" Type="datetime" Nullable="false" />
+    <Property Name="LastLogged" Type="datetime" Nullable="true" />
     <Property Name="Mail" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="false" />
@@ -691,7 +691,7 @@
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="String" Name="Surname" Nullable="false" />
           <Property Type="DateTime" Name="Created" Nullable="false" />
-          <Property Type="DateTime" Name="LastLogged" Nullable="false" />
+          <Property Type="DateTime" Name="LastLogged" Nullable="true" />
           <Property Type="String" Name="Mail" Nullable="false" />
           <NavigationProperty Name="JoinedGroups" Relationship="FelBookDBModel.UserGroupMembership" FromRole="User" ToRole="Group" />
           <NavigationProperty Name="AdminedGroups" Relationship="FelBookDBModel.GroupAdministration" FromRole="User" ToRole="Group" />
