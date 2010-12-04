@@ -10,6 +10,7 @@ using System.ComponentModel;
 namespace Felbook.Models
 {
 
+    [MetadataType(typeof(UserMetadata))]
 	public partial class User
 	{
 
@@ -65,7 +66,7 @@ namespace Felbook.Models
 		/// <returns>heslo je platné</returns>
 		public bool CheckPassword(string password)
 		{
-			return CalculateHash(password) == PasswordHash;
+            return CalculateHash(password) == PasswordHash;
 		}
 
 
@@ -110,5 +111,14 @@ namespace Felbook.Models
         
         #endregion
     }
+   
+    #region Validace
+    public class UserMetadata
+    {
+        [ICQ(ErrorMessage = "ICQ is not valid.")]
+        [DisplayName("ICQ")]
+        public string ICQ { get; set; }
+    }
+    #endregion
 
 }

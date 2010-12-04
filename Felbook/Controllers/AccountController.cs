@@ -116,7 +116,9 @@ namespace Felbook.Controllers
                     User actualUser = Model.UserService.FindByUsername(model.UserName);
                     int userId = actualUser.Id;
                     string fileDir = "../Web_Data/profile_images/";
-                    string fileFullPath = Path.Combine(HttpContext.Server.MapPath(fileDir + userId), "profileimage" + ".png" /*+ fileExtension*/);
+                    //název souboru je vždy stejný
+                    string fileName = "profileimage.png";
+                    string fileFullPath = Path.Combine(HttpContext.Server.MapPath(fileDir + userId), fileName);
                     string fileDirPath = Path.GetDirectoryName(fileFullPath);
 
                     try
@@ -140,9 +142,6 @@ namespace Felbook.Controllers
                     }
                     else 
                     { 
-                        //název souboru je vždy stejný
-                        string fileName = "profileimage.png";
-
                         //zjistím si cesty k souboru
                         string sourceFile = Path.Combine(HttpContext.Server.MapPath(fileDir + "/default/"), fileName);
                         string destFile = System.IO.Path.Combine(fileDirPath, fileName);
@@ -171,27 +170,64 @@ namespace Felbook.Controllers
         {
             TryUpdateModel(CurrentUser);
 
-            if (model.OldPassword != "" && String.Equals(model.Password, model.ConfirmPassword)) 
+            //upload změna profilového obrázku
+            Felbook.Helpers.ImageHelper imageOperator = new Felbook.Helpers.ImageHelper(); //pomocná třída pro operace s obrázky
+            HttpPostedFileBase imageToUpload = Request.Files["profileimage"];
+            int userId = CurrentUser.Id;
+            string fileDir = "../Web_Data/profile_images/";
+            //název souboru je vždy stejný
+            string fileName = "profileimage.png";
+            string fileFullPath = Path.Combine(HttpContext.Server.MapPath(fileDir + userId), fileName);
+            string fileDirPath = Path.GetDirectoryName(fileFullPath);
+            bool uploadImage = false;
+
+            if (imageToUpload.ContentLength == 0)
+            {
+                uploadImage = false;
+            }
+            else if (Felbook.Helpers.ImageHelper.IsImage(imageToUpload.ContentType))
+            {
+                uploadImage = true;
+            }
+            else
+            {
+                ModelState.AddModelError("file", "Your file wasn't image.");
+            }   
+
+            if (model.OldPassword != null && String.Equals(model.Password, model.ConfirmPassword)) 
             { 
-                User user = Model.UserService.FindByUsername(model.Username);
-                if (user.CheckPassword(model.OldPassword))
+                if (CurrentUser.CheckPassword(model.OldPassword))
                 {
-                    user.ChangePassword(model.Password);
+                    CurrentUser.ChangePassword(model.Password);
                 }
                 else 
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("", "The password provided is incorrect.");
                 }
             }
 
             if (ModelState.IsValid)
             {
-                
+                if (uploadImage == true)
+                {
+                    try
+                    {
+                        System.IO.File.Delete(fileFullPath);
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("file", "Unexpected file error.");
+                        return View(model);
+                    }              
+                    imageOperator.ImageResize(imageToUpload, fileFullPath, 90, 120);
+                }
+
                 Model.UserService.Edit(CurrentUser);
                 return RedirectToAction("Index", "Profile", new { username = model.Username });
             }
-
-            return RedirectToAction("Index", "Profile", new { username = model.Username });
+            //v případě nějaké chyby se vrátí tohle
+            //return View(model);
+            return RedirectToAction("Edit", "Profile", new { username = model.Username });
         }
 
 
