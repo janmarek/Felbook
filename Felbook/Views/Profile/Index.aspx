@@ -19,7 +19,7 @@
 	<% if (Request.IsAuthenticated && Model.CurrentUser == Model.User)
 	{ %>
 	<h3>Add status</h3>
-	<% using (Html.BeginForm("AddStatus", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	<% using (Html.BeginForm("AddStatus", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", @class = "statusForm" }))
 	{
 		Html.RenderPartial("AddStatusFormContent");
 	}

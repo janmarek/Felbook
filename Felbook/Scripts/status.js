@@ -1,4 +1,12 @@
 ﻿$(function () {
+	// form validation
+	$('form.statusForm').submit(function (e) {
+		if (!$('#statusText').val()) {
+			alert("Status is not filled.");
+			e.preventDefault();
+		}
+	});
+
 	// pictures
 	$('#status-pictures-btn').click(function (e) {
 		e.preventDefault();

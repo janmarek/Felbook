@@ -55,7 +55,7 @@
 			<%
 				if (Request.IsAuthenticated && Model.Group.HasMember(Model.CurrentUser))
 				{
-					using (Html.BeginForm("AddStatus", "Group", new { id = Model.Group.Id }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+					using (Html.BeginForm("AddStatus", "Group", new { id = Model.Group.Id }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "statusForm" }))
 					{
 						Html.RenderPartial("AddStatusFormContent");
 					}
