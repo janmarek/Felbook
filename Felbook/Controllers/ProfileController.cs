@@ -48,6 +48,7 @@ namespace Felbook.Controllers
 
 
 
+		[Authorize]
 		public ActionResult Edit()
 		{
 			return View(CurrentUser);
@@ -55,7 +56,7 @@ namespace Felbook.Controllers
 
 
 
-		[HttpPost, ValidateAntiForgeryToken]
+		[HttpPost, ValidateAntiForgeryToken, Authorize]
 		public ActionResult Edit(FormCollection collection)
 		{
 			TryUpdateModel(CurrentUser);
@@ -71,7 +72,7 @@ namespace Felbook.Controllers
 
 
 
-		[HttpPost, ValidateAntiForgeryToken]
+		[HttpPost, ValidateAntiForgeryToken, Authorize]
 		public ActionResult AddStatus(StatusFormModel formModel)
 		{
 			Model.StatusService.AddStatus(CurrentUser, formModel);

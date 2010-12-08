@@ -52,15 +52,20 @@
 		</ul>
 
 		<div id="wall">
-			<% using (Html.BeginForm("AddStatus", "Group", new { id = Model.Group.Id}, FormMethod.Post, new { enctype = "multipart/form-data" }))
-			{
-				Html.RenderPartial("AddStatusFormContent");
-			}
-		
-			foreach (var status in Model.Group.Statuses.OrderByDescending(s => s.Id))
-			{ 
-				Html.RenderPartial("Status", Model.CreateStatusViewModel(status));
-			} %>
+			<%
+				if (Request.IsAuthenticated && Model.Group.HasMember(Model.CurrentUser))
+				{
+					using (Html.BeginForm("AddStatus", "Group", new { id = Model.Group.Id }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+					{
+						Html.RenderPartial("AddStatusFormContent");
+					}
+				}
+
+				foreach (var status in Model.Group.Statuses.OrderByDescending(s => s.Id))
+				{
+					Html.RenderPartial("Status", Model.CreateStatusViewModel(status));
+				}
+			%>
 		</div>
 
 		<div id="info">

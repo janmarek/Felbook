@@ -16,14 +16,17 @@
 		<%= Model.User.Surname %>
 		<% Html.RenderPartial("FollowLink", new Felbook.Models.FollowLinkViewModel(Model.CurrentUser, Model.User)); %>
 	</h2>
-	<h3>
-		Add status</h3>
+	<% if (Request.IsAuthenticated && Model.CurrentUser == Model.User)
+	{ %>
+	<h3>Add status</h3>
 	<% using (Html.BeginForm("AddStatus", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 	{
 		Html.RenderPartial("AddStatusFormContent");
-	} %>
+	}
+
+	}%>
 	<h3>
-		My statuses</h3>
+		Statuses</h3>
 	<% foreach (var status in Model.User.Statuses.OrderByDescending(status => status.Id))
 	{ %>
 	<% Html.RenderPartial("Status", Model.CreateStatusViewModel(status)); %>

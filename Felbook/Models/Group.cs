@@ -48,8 +48,7 @@ namespace Felbook.Models
 		/// <returns></returns>
 		public bool HasMember(User user)
 		{
-			return user.JoinedGroups.Contains(this);
-			//return Users.Contains(user);
+			return Users.Contains(user);
 		}
 
 

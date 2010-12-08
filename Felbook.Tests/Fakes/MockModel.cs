@@ -24,6 +24,11 @@ namespace Felbook.Tests.Fakes
 
         #region Interface methods
 
+		public IEventService EventService
+		{
+			get { return null; }
+		}
+
         public IGroupService GroupService 
         {
             get
