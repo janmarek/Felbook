@@ -86,5 +86,18 @@ namespace Felbook.Tests
 			group.Creator = user;
 			Assert.IsTrue(group.IsCreatedBy(user));
 		}
+
+
+		[TestMethod]
+		public void GetAllSubGroupsTest()
+		{
+			Group group = new Group();
+			Group group2 = new Group();
+			group.Children.Add(group2);
+			Group group3 = new Group();
+			group2.Children.Add(group3);
+
+			Assert.AreEqual(2, group.GetAllSubGroups().Count());
+		}
 	}
 }

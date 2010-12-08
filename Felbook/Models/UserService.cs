@@ -111,6 +111,13 @@ namespace Felbook.Models
         {
 			usr.JoinedGroups.Add(grp);
             grp.Users.Add(usr);
+
+			foreach (var parent in grp.Parents)
+			{
+				usr.JoinedGroups.Add(parent);
+				parent.Users.Add(usr);
+			}
+
 			db.SaveChanges();
         }
 
@@ -123,6 +130,13 @@ namespace Felbook.Models
         {
 			usr.JoinedGroups.Remove(grp);
             grp.Users.Remove(usr);
+
+			foreach (var subGroup in grp.GetAllSubGroups())
+			{
+				usr.JoinedGroups.Remove(subGroup);
+				subGroup.Users.Remove(usr);
+			}
+
 			db.SaveChanges();
         }
 

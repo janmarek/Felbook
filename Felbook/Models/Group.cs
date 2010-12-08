@@ -31,6 +31,24 @@ namespace Felbook.Models
 		}
 
 
+		public IEnumerable<Group> GetAllSubGroups()
+		{
+			var list = new List<Group>();
+			AddChildrenToList(this, list);
+
+			return list;
+		}
+
+		private void AddChildrenToList(Group group, List<Group> list)
+		{
+			foreach (var child in group.Children)
+			{
+				list.Add(child);
+				AddChildrenToList(child, list);
+			}
+		}
+
+
 		/// <summary>
 		/// Má alespoň jednoho rodiče
 		/// </summary>
