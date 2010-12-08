@@ -217,17 +217,16 @@ namespace Felbook.Controllers
                     catch (Exception)
                     {
                         ModelState.AddModelError("file", "Unexpected file error.");
-                        return View(model);
+                        return View("Index", "Profile", new { username = model.Username });
                     }              
                     imageOperator.ImageResize(imageToUpload, fileFullPath, 90, 120);
                 }
 
                 Model.UserService.Edit(CurrentUser);
-                return RedirectToAction("Index", "Profile", new { username = model.Username });
+                return View("Index", "Profile", new { username = model.Username });
             }
             //v případě nějaké chyby se vrátí tohle
-            //return View(model);
-            return RedirectToAction("Edit", "Profile", new { username = model.Username });
+            return View("Edit", "../Profile", new { username = model.Username });
         }
 
 

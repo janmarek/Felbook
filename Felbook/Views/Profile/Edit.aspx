@@ -14,7 +14,7 @@
         Passwords are required to be a minimum of <%: ViewData["PasswordLength"] %> characters in length.
     </p>
     <%: Html.ValidationSummary(true, "Account editation was unsuccessful. Please correct the errors and try again.") %>
-    <% using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    <% using (Html.BeginForm("Edit", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
        { %> 
         <%: Html.AntiForgeryToken() %>
         <div>
@@ -215,6 +215,9 @@
                 </div>
                 </div>
                 <p>&nbsp;<input type="submit" value="Edit profile" /></p>
+                <span style="font-weight:bold; color:Blue;"><%= ViewData["EditResult"] %></span>
+                <br />
+                <%= Html.ActionLink("Back to profile", "Index", "Profile", new { username = Page.User.Identity.Name }, null)%>
         </div>
     <% } %>
 

@@ -91,25 +91,17 @@ namespace Felbook.Models
                 this.oldPasswrod = value;
             } 
         }
-        #region Validace
-        
 
-        /*[ValidatePasswordLength]
-        [DataType(DataType.Password)]
-        [DisplayName("Password *")]*/
         public string Password { 
             get {return this.password;}
             set { this.password = value;} 
         }
 
-        //[DataType(DataType.Password)]
-        //[DisplayName("Confirm password *")]
+
         public string ConfirmPassword {
             get { return this.confirmPassword;}
             set { this.confirmPassword = value;} 
         }
-        
-        #endregion
     }
    
     #region Validace
@@ -118,6 +110,15 @@ namespace Felbook.Models
         [ICQ(ErrorMessage = "ICQ is not valid.")]
         [DisplayName("ICQ")]
         public string ICQ { get; set; }
+
+        [Email(ErrorMessage = "School email is not valid.")]
+        [DisplayName("School email address")]
+        public string SchoolEmail { get; set; }
+
+        [ICQ(ErrorMessage = "Phone is not valid.")]
+        [DisplayName("Phone")]
+        public string Phone { get; set; }
+
     }
     #endregion
 
