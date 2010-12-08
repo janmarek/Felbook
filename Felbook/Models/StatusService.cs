@@ -83,6 +83,14 @@ namespace Felbook.Models
 
 		public void AddStatus(User user, Group group, StatusFormModel formModel)
 		{
+			if (group != null)
+			{
+				if (!group.HasMember(user))
+				{
+					throw new StatusException("User is not member of group");
+				}
+			}
+
 			var status = new Status { Text = formModel.Status, User = user, Group = group };
 			db.AddToStatusSet(status);
 
