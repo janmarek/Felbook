@@ -23,7 +23,7 @@ at <%= Model.Status.Created%></p>
 		foreach (var img in Model.Status.Images)
 		{
 	%>
-	<%= Model.ImageOutput.GetHtml(img) %>
+	<%= Model.ImageOutput.GetHtml(img, "status" + Model.Status.Id) %>
 	<%
 		}
 	%>

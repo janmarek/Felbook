@@ -92,9 +92,10 @@ namespace Felbook.Helpers
 			this.imageService = imageService;
 		}
 
-		public string GetHtml(Models.Image image)
+		public string GetHtml(Models.Image image, string rel = null)
 		{
-			return "<a href=\"" + imageService.GetImageSrc(image) + "\" target=\"_blank\" class=\"colorbox\">" +
+			return "<a href=\"" + imageService.GetImageSrc(image) + "\" target=\"_blank\" class=\"colorbox\"" +
+				(rel != null ? " rel=\"" + rel + "\"" : "") + ">" +
 				"<img src=\"" + imageService.GetThumbnailSrc(image) + "\" " +
 				"width=\"" + imageService.GetImageThumbnailWidth(image) + "\" " +
 				"height=\"" + imageService.GetImageThumbnailHeight(image) + "\">" +
