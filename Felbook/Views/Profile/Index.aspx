@@ -38,15 +38,9 @@
                 </p>
 			<h2>Main information:</h2>
             <ul>
-                <li>Name: <%= Model.User.FullName %></li>
-            <% if (!String.IsNullOrEmpty(Model.User.TitleAfter))
-               { %>
-               <li>Name with titles: <%= Model.User.Title %> <%= Model.User.Username %>, <%= Model.User.TitleAfter %></li>              
-            <% }
-               else if (!String.IsNullOrEmpty(Model.User.Title))
-               { %> 
-               <li>Name with titles: <%= Model.User.Title %> <%= Model.User.Username %></li>
-            <% } %> 
+                <li>Name: <%= Model.User.Title %> <%= Model.User.FullName %><%
+                                                                            	if (!String.IsNullOrEmpty(Model.User.TitleAfter))
+																			   { %>, <%= Model.User.TitleAfter%><% } %></li>
 		        <li>Username: <%= Model.User.Username %></li>
                 <li>Email: <%= Model.User.Mail %></li>
 			</ul>
