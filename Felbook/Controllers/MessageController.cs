@@ -121,7 +121,7 @@ namespace Felbook.Controllers
             {
                 int countOfMessages = msgList.Count - (10 * page) + 10;
 
-                if (countOfMessages > 0)
+                if (countOfMessages > 0 || page == 1)
                 {
                     pageList = msgList.GetRange(10 * (page - 1), countOfMessages);
                 }
