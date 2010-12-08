@@ -61,13 +61,16 @@ namespace Felbook.Helpers
 
 		public static Dimensions CalculateSize(int width, int height, int maxWidth, int maxHeight)
 		{
-			height = (height * maxWidth) / width;
-			width = maxWidth;
-
-			if (height > maxHeight)
+			if (width > maxWidth || height > maxHeight)
 			{
-				width = (width * maxHeight) / height;
-				height = maxHeight;
+				height = (height * maxWidth) / width;
+				width = maxWidth;
+
+				if (height > maxHeight)
+				{
+					width = (width * maxHeight) / height;
+					height = maxHeight;
+				}
 			}
 
 			return new Dimensions {
