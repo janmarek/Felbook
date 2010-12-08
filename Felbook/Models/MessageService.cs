@@ -125,9 +125,20 @@ namespace Felbook.Models
         /// <returns>počet nepřečtených zpráv</returns>
         public int NumberOfUnreadMessages(User user)
         {
+            // pomalejší, ale jistější algoritmus
+            int count = 0;
 
-            return user.Messages.Count - user.ReadMessages.Count;
-            
+            foreach (var message in user.Messages)
+            {
+                if (!user.ReadMessages.Contains(message))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+            //return user.Messages.Count - user.ReadMessages.Count;
+
         }
 
         #endregion
