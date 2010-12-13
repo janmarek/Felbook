@@ -79,7 +79,7 @@
                     <div class="editor-field">
                         <%: Html.TextBoxFor(model => model.Specialization)%>
                     </div>
-
+                    
                     <!-- Title -->
                     <div class="editor-label">
                         <%: Html.LabelFor(model => model.Title)%>
@@ -122,11 +122,11 @@
                         <%: Html.ValidationMessageFor(model => model.TitleAfter)%>
 
                         <select id="selectTitleAfter">               
-                            <option value="phd" selected="selected">Ph.D.</option>
-                            <option value="thd" selected="selected">Th.D.</option>
+                            <option value="ph.d" selected="selected">Ph.D.</option>
+                            <option value="th.d" selected="selected">Th.D.</option>
                             <option value="csc" selected="selected">CSc.</option>
                             <option value="drsc" selected="selected">DrSc.</option>
-                            <option value="drhc" selected="selected">dr. h. c.</option>
+                            <option value="dr.h.c" selected="selected">dr. h. c.</option>
                             <option value="dr" selected="selected">Dr.</option>
                             <option value="phmr" selected="selected">PhMr.</option>
                             <option value="dis" selected="selected">DiS.</option>                           

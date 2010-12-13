@@ -1,5 +1,54 @@
 ﻿$(function () {
-	//přidání titulu do titulů
+
+    //při editování existujícího profilu musím odstranit již zadané tituly ze select elementu
+    $("#Title").ready(function () {
+        var titles = $("#Title").val().split('.');
+        var actualTitle = "";
+
+        jQuery.each(titles, function () {
+            actualTitle = this;
+            $("#selectTitle option").each(function (index) {
+                if (actualTitle.toLowerCase() == $(this).attr("value")) {
+                    $(this).remove();
+                }
+            });
+        });
+    });
+
+    $("#TitleAfter").ready(function () {
+        var titles = $("#TitleAfter").val().split('.');
+        var actualTitle = "";
+
+        //ošetření titulů Ph.D, Th.D, dr. h. c.,
+        var pointer = 0;
+        jQuery.each(titles, function () {
+            if (this == "Ph") {
+                titles[pointer] = "ph.d";
+                titles[pointer + 1] = "null";
+            }
+            if (this == "Th") {
+                titles[pointer] = "th.d";
+                titles[pointer + 1] = "null";
+            }
+            if (this == "dr") {
+                titles[pointer] = "dr.h.c";
+                titles[pointer + 1] = "null";
+                titles[pointer + 2] = "null";
+            }
+            pointer++;
+        });
+
+        jQuery.each(titles, function () {
+            actualTitle = this;
+            $("#selectTitleAfter option").each(function (index) {
+                if (actualTitle.toLowerCase() == jQuery.trim($(this).attr("value"))) {
+                    $(this).remove();
+                }
+            });
+        });
+    });
+    
+    //přidání titulu do titulů
 	$("#addTitle").click(function () {
 		$("#Title").val($("#Title").val() + $("#selectTitle option:selected").text());
 		$("#selectTitle option:selected").remove();
@@ -16,7 +65,7 @@
 		$("#Title").val("");
 
 		$("#selectTitle option").each(function () {
-			$(this).remove();
+            $(this).remove();
 		});
 
 		var newOptions = {
@@ -60,11 +109,11 @@
 		});
 
 		var newOptions = {
-			'phd': 'Ph.D.',
-			'thd': 'Th.D.',
+			'ph.d': 'Ph.D.',
+			'th.d': 'Th.D.',
 			'csc': 'CSc.',
 			'drsc': 'DrSc.',
-			'drhc': 'dr. h. c.',
+			'dr.h.c': 'dr. h. c.',
 			'dr': 'Dr.',
 			'phmr': 'PhMr.',
 			'dis': 'DiS.'
@@ -80,3 +129,4 @@
 		select.val(selectedOption);
 	});
 });
+
