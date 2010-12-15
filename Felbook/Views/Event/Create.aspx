@@ -23,6 +23,7 @@
             </div>
                                  
             <div class="editor-label">
+                <p>Format for date: DD.MM.YYYY HH:MM:SS</p>
                 <%: Html.LabelFor(model => model.From) %>
             </div>
             <div class="editor-field">
@@ -34,6 +35,7 @@
                 <%: Html.LabelFor(model => model.To) %>
             </div>
             <div class="editor-field"> <!-- String.Format("{0:g}", Model.To)-->
+                <p>Format for date: DD.MM.YYYY HH:MM:SS</p>
                 <%: Html.TextBoxFor(model => model.To) %>
                 <%: Html.ValidationMessageFor(model => model.To) %>
             </div>
