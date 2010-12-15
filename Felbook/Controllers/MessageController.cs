@@ -83,9 +83,9 @@ namespace Felbook.Controllers
         #region MessageList
 
         /// <summary>
-        /// Zobrazit zprávy seznam zpráv
+        /// Zobrazí seznam zpráv (i se správným odsazením)
         /// </summary>
-        /// <param name="page">page</param>
+        /// <param name="page">číslo stránky se zprávami</param>
         /// <returns></returns>
         [Authorize]
         public ActionResult Index(int page)
@@ -148,10 +148,9 @@ namespace Felbook.Controllers
         /// <summary>
         /// Pomocná metoda pro zobrazení seznamu zpráv
         /// </summary>
-        /// <param name="inputList">inputList</param>
-        /// <param name="outputList">outputList</param>
-        /// <param name="indent">indent</param>
-        /// <returns></returns>
+        /// <param name="inputList">Seznam zpráv, u kterých se budou připravovat pro zobrazení</param>
+        /// <param name="outputList">Výstupní seznam s již zpracovanými zprávami</param>
+        /// <param name="indent">Aktuální odszení zprávy</param>
         private void CreateListForView(List<Message> inputList, List<MessageModelView> outputList, int indent)
         {
 
@@ -219,9 +218,9 @@ namespace Felbook.Controllers
         #region MessageDetail
 
         /// <summary>
-        /// Zobrazit detaily zprávy
+        /// Zobrazí detaily zprávy
         /// </summary>
-        /// <param name="id">id</param>
+        /// <param name="id">Id zprávy, jejiž detaily se mají zobrazit</param>
         /// <returns></returns>
         [Authorize]
         public ActionResult Detail(int id)
@@ -240,6 +239,11 @@ namespace Felbook.Controllers
             }
         }
 
+        /// <summary>
+        /// Označí zprávu jako nepřečtenou aktuálně přihlášeným uživatelem
+        /// </summary>
+        /// <param name="id">Id zprávy, která má být označena jako nepřetená</param>
+        /// <returns></returns>
         [Authorize]
         public ActionResult UnreadMessage(int msgid)
         {
@@ -258,7 +262,7 @@ namespace Felbook.Controllers
         #region SendMessage
 
         /// <summary>
-        /// Poslat zprávu
+        /// Zobrazí formulář na posílání zprávu
         /// </summary>
         /// <returns></returns>
         [Authorize]
@@ -268,7 +272,7 @@ namespace Felbook.Controllers
         }
 
         /// <summary>
-        /// Pomocná metoda, která připravuje seznam uživatelů skupina pro autocomplete funkc.
+        /// Pomocná metoda, která připravuje seznam uživatelů skupina pro autocomplete funkci
         /// </summary>
         /// <returns>Zobrazovací model s připravenými seznami</returns>
         private SendMessageModel prepareMessageModelToSend()
@@ -310,9 +314,9 @@ namespace Felbook.Controllers
         #region ReplyMessage
 
         /// <summary>
-        /// Odpovědět na zprávu
+        /// Zobrazí formulář pro odpovídání na zprávy
         /// </summary>
-        /// <param name="id">id</param>
+        /// <param name="id">Id zprávy, na ktrou se odpovídá</param>
         /// <returns></returns>
         [Authorize]
         public ActionResult ReplyMessage(int msgID)
@@ -330,6 +334,11 @@ namespace Felbook.Controllers
             }
         }
 
+        /// <summary>
+        /// Pomocná metoda, která připravuje zprávu, na kterou bude uživatel odpovídat
+        /// </summary>
+        /// <param name="id">Id zprávy, na ktrou se odpovídá</param>
+        /// <returns>Zobrazovací model s danou zprávou</returns>
         private SendMessageModel prepareMessageModelToReply(Message msg)
         {
             return new SendMessageModel
