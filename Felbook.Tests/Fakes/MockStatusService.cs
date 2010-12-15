@@ -21,18 +21,28 @@ namespace Felbook.Tests.Fakes
         public void AddCommentToStatus(User author, Status commentedStatus, string text)
         {
             throw new NotImplementedException();
-        }
+        }    
 
-        public void AddStatus(User user, Group group, StatusFormModel formModel)
-        {
-            throw new NotImplementedException();
-        }
+		public void AddStatus(User user, Group group, Event ev, StatusFormModel formModel)
+		{
+			throw new NotImplementedException();
+		}
 
-        public void AddStatus(User user, StatusFormModel formModel)
-        {
-            throw new NotImplementedException();
-        }
+		public void AddStatus(User user, Event ev, StatusFormModel formModel)
+		{
+			throw new NotImplementedException();
+		}
 
-        #endregion  
-    }
+		public void AddStatus(User user, Group group, StatusFormModel formModel)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void AddStatus(User user, StatusFormModel formModel)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }
