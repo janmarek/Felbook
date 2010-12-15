@@ -1,7 +1,7 @@
 ﻿$(function () {
 
     //při editování existujícího profilu musím odstranit již zadané tituly ze select elementu
-    $("#Title").ready(function () {
+    $("#Title").each(function () {
         var titles = $("#Title").val().split('.');
         var actualTitle = "";
 
@@ -15,7 +15,7 @@
         });
     });
 
-    $("#TitleAfter").ready(function () {
+    $("#TitleAfter").each(function () {
         var titles = $("#TitleAfter").val().split('.');
         var actualTitle = "";
 
