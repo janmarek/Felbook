@@ -49,6 +49,7 @@
 			<li><a href="#info">Detailed information</a></li>
 			<li><a href="#subgroups">Subgroups</a></li>
 			<li><a href="#members">Members</a></li>
+            <li><a href="#events">Events</a></li>
 		</ul>
 
 		<div id="wall">
@@ -105,6 +106,30 @@
 			<% } %>
 			</ul>
 		</div>
+
+        <div id="events">
+            <p>
+                <%: Html.ActionLink("Create New", "Create", "Event") %>
+            </p>
+            <ul>
+            <% foreach (var ev in Model.Group.Events)
+               { %>
+               <li>
+               <% Html.RenderPartial("Event", new Felbook.Models.EventViewModel{
+                      Status = ev.Status,
+                      CurrentUser = ev.User,
+                      Group = ev.Group,
+                      From = ev.From,
+                      To = ev.To,
+                      Name = ev.Name,
+                      Text = ev.Text,
+                      ImageOutput = Model.ImageOutput,
+                      FileOutput = Model.FileOutput,});
+               %>
+               </li>
+               <% } %>
+            </ul>
+        </div>
 
 		<div id="members">
 			<% Html.RenderPartial("UserList", new Felbook.Models.UserListViewModel(Model.CurrentUser, Model.Group.Users)); %>

@@ -20,6 +20,10 @@ namespace Felbook.Models
 		
 		void AddStatus(User user, StatusFormModel formModel);
 
+        void AddStatus(User user, Group group, Event ev, StatusFormModel formModel);
+
+        void AddStatus(User user, Event ev, StatusFormModel formModel);
+
     }
     
     public class StatusService : IStatusService
@@ -79,9 +83,18 @@ namespace Felbook.Models
             //}
         }
 
+        public void AddStatus(User user, Group group, StatusFormModel formModel)
+        {
+            AddStatus(user, group, null, formModel);
+        }
+
+        public void AddStatus(User user, Event ev, StatusFormModel formModel) 
+        {
+            AddStatus(user, null, ev, formModel);
+        }
 
 
-		public void AddStatus(User user, Group group, StatusFormModel formModel)
+		public void AddStatus(User user, Group group, Event ev, StatusFormModel formModel)
 		{
 			if (group != null)
 			{
@@ -91,7 +104,7 @@ namespace Felbook.Models
 				}
 			}
 
-			var status = new Status { Text = formModel.Status, User = user, Group = group };
+			var status = new Status { Text = formModel.Status, User = user, Group = group, Event = ev };
 			db.AddToStatusSet(status);
 
 			// obrázky
@@ -192,7 +205,7 @@ namespace Felbook.Models
 
 		public void AddStatus(User user, StatusFormModel formModel)
 		{
-			AddStatus(user, null, formModel);
+			AddStatus(user, null, null, formModel);
 		}
 
 	}

@@ -24,6 +24,9 @@
             <th>
                 Text
             </th>
+            <th>
+                Group
+            </th>
         </tr>
 
     <% foreach (var item in Model) { %>
@@ -45,6 +48,17 @@
             </td>
             <td>
                 <%: item.Text %>
+            </td>
+            <td>
+                <% if (item.Group != null){ %>
+                       <%: Html.ActionLink(item.Group.Name, "Detail", "Group", new { id = item.Group.Id },null) %>
+                       <%
+                   }
+                   else{ %>
+                   No group
+                   <%                       
+                   }
+                %>
             </td>
         </tr>
     

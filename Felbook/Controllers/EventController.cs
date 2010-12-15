@@ -13,8 +13,14 @@ namespace Felbook.Models
 
     public class EventViewModel
     {
-        public IEnumerable<Event> Events { get; set; }
+        public IEnumerable<Status> Status { get; set; }
         public User CurrentUser { get; set; }
+        public Group Group { get; set; }
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+        public String Name { get; set; }
+        public String Text { get; set; }
+
         public ImageOutputHelper ImageOutput { get; set; }
         public FileOutputHelper FileOutput { get; set; }
 
@@ -31,6 +37,9 @@ namespace Felbook.Controllers
 {
     public class EventController : FelbookController
     {
+        public EventViewModel CreateEventViewModel(IEnumerable<Status> status, User user, Group group, DateTime from, DateTime To, String name, String text) {
+            return new EventViewModel { Status = status, CurrentUser = user, Group = group, From = from, To = To, Name = name, Text = text, FileOutput = new FileOutputHelper(Model.FileService), ImageOutput = new ImageOutputHelper(Model.ImageService) };
+        }
         //
         // GET: /Event/
         [Authorize]
@@ -44,7 +53,8 @@ namespace Felbook.Controllers
 
         public ActionResult Details(int id)
         {
-            return View(Model.EventService.FindEventById(id));
+            Event ev = Model.EventService.FindEventById(id);
+            return View(CreateEventViewModel(ev.Status,ev.User,ev.Group,ev.From,ev.To,ev.Name,ev.Text));
         }
 
         //
